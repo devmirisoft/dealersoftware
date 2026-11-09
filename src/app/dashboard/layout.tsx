@@ -129,45 +129,46 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           z-index: 25; /* above page sticky headers (z-20), below sidebar overlay (30) */
           height: 72px;
           padding: 0 22px;
-          background: #333333;
+          background: #fff;
+          border-bottom: 1px solid #e8ecf4;
           box-shadow: none;
           display: flex;
           align-items: center;
           gap: 12px;
-          color: #fff;
+          color: #0f172a;
         }
         .dl-hamburger {
           flex-shrink: 0;
           width: 34px;
           height: 34px;
           border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.18);
-          background: rgba(255,255,255,0.12);
+          border: 1px solid #e2e8f0;
+          background: #f8fafc;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          color: #fff;
+          color: #0f172a;
           transition: background 0.15s;
         }
-        .dl-hamburger:hover { background: rgba(255,255,255,0.2); }
+        .dl-hamburger:hover { background: #f1f5f9; }
         .dl-divider {
           width: 1px;
           height: 31px;
           flex-shrink: 0;
-          background: rgba(255,255,255,0.25);
+          background: #e2e8f0;
         }
         .dl-title {
-          font-size: 14.5px;
+          font-size: 16px;
           font-weight: 700;
-          color: #fff;
+          color: #0f172a;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
         .dl-sub {
-          font-size: 10.5px;
-          color: rgba(255,255,255,0.8);
+          font-size: 11px;
+          color: #64748b;
           margin-top: 2px;
           white-space: nowrap;
           overflow: hidden;
@@ -191,8 +192,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         .dl-search-area .ss-input-row {
           height: 37px;
           border-radius: 999px;
-          background: rgba(255,255,255,0.16);
-          border: 1px solid rgba(255,255,255,0.2);
+          background: #f4f6fb;
+          border: 1px solid #e8ecf4;
           box-shadow: none;
           padding-right: 12px;
         }
@@ -200,13 +201,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         .dl-search-area .ss-input-row { padding-left: 14px; }
         .dl-search-area form:focus-within,
         .dl-search-area .ss-input-row.focused {
-          background: rgba(255,255,255,0.22);
-          border-color: rgba(255,255,255,0.45);
+          background: #fff;
+          border-color: #c7d2fe;
         }
-        .dl-search-area input { font-size: 12px; }
-        .dl-search-area input::placeholder { color: rgba(255,255,255,0.85); }
+        .dl-search-area input { font-size: 12px; color: #0f172a; }
+        .dl-search-area input::placeholder { color: #94a3b8; }
         .dl-search-area form > div:first-child,
-        .dl-search-area .ss-icon { color: #fff; }
+        .dl-search-area .ss-icon,
+        .dl-search-area .ss-clear { color: #94a3b8; }
         .dl-actions {
           display: flex;
           align-items: center;
@@ -219,16 +221,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           height: 36px;
           flex-shrink: 0;
           border-radius: 50%;
-          background: rgba(255,255,255,0.12);
-          border: 1px solid rgba(255,255,255,0.14);
-          color: #fff;
+          background: transparent;
+          border: 1px solid transparent;
+          color: #475569;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           transition: background .16s;
         }
-        .dl-icon-btn:hover { background: rgba(255,255,255,0.22); }
+        .dl-icon-btn:hover { background: #f1f5f9; }
         .dl-icon-btn svg { width: 15px; height: 15px; }
         .dl-help svg { width: 12px; height: 12px; }
         .dl-help span { display: none; }
@@ -240,7 +242,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           height: 8.5px;
           border-radius: 50%;
           background: #ef4444;
-          box-shadow: 0 0 0 2px #333333;
+          box-shadow: 0 0 0 2px #fff;
         }
         .dl-menu-root { position: relative; }
         .dl-user {
@@ -250,7 +252,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           padding: 0 4px 0 0;
           background: transparent;
           border: 0;
-          color: #fff;
+          color: #0f172a;
           cursor: pointer;
           font-family: inherit;
         }
@@ -259,8 +261,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           height: 36px;
           flex-shrink: 0;
           border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.4);
-          background: rgba(255,255,255,0.12);
+          border: 0;
+          background: #0f1f45;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 700;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -337,12 +342,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         .dl-notif-time { display: block; font-size: 11px; color: #94a3b8; margin-top: 3px; }
         .dl-notif-empty { padding: 24px 14px; text-align: center; font-size: 13px; color: #64748b; }
         /* ponytail: pages use hardcoded colors, so dark mode inverts the page and flips back
-           the already-dark header/sidebar and media. Replace with real dark: styles if needed. */
+           the already-dark sidebar and media. Replace with real dark: styles if needed. */
         html.dl-dark {
           filter: invert(1) hue-rotate(180deg);
           background: #fff;
         }
-        html.dl-dark .dl-topbar,
+        html.dl-dark .dl-topbar img,
         html.dl-dark .sb-panel,
         html.dl-dark main :is(img, video, canvas, iframe) {
           filter: invert(1) hue-rotate(180deg);
@@ -442,8 +447,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   aria-haspopup="menu"
                   aria-expanded={userMenu}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="dl-avatar" src={String(user?.ADMIN_IMAGE || "/image.png")} alt="" />
+                  {user?.ADMIN_IMAGE ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img className="dl-avatar" src={String(user.ADMIN_IMAGE)} alt="" />
+                  ) : (
+                    <span className="dl-avatar" aria-hidden="true">{String(displayName).charAt(0).toUpperCase()}</span>
+                  )}
                   <span className="dl-user-name">{displayName}</span>
                   <ChevronDown size={14} />
                 </button>

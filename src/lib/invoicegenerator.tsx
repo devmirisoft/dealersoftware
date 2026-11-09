@@ -27,6 +27,7 @@ import {
 } from "@/lib/invoiceTemplate";
 import { getCurrentSession, getCurrentUser } from "@/lib/currentUser";
 import { normalizeScopeId, resolveOrderDealerId } from "@/lib/staffOrderScope.js";
+import { loadVariantMeta, type VariantMeta } from "@/lib/catalogueClient";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface OrderInvoiceData {
@@ -287,31 +288,6 @@ async function fetchOrderProductNotes(orderId: string): Promise<Array<Record<str
     }
 }
 
-// Parse PACK OF column from description HTML table: returns { catNo â†’ packSize }
-function parsePackSizes(html: string): Record<string, number> {
-    const result: Record<string, number> = {};
-    if (!html) return result;
-
-    const theadMatch = html.match(/<thead>([\s\S]*?)<\/thead>/i);
-    if (!theadMatch) return result;
-    const headers = [...theadMatch[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-        .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-    const packIdx = headers.findIndex(h => /pack|qty|quantity/i.test(h));
-    if (packIdx === -1) return result;
-
-    const tbodyMatch = html.match(/<tbody>([\s\S]*?)<\/tbody>/i);
-    if (!tbodyMatch) return result;
-
-    [...tbodyMatch[1].matchAll(/<tr>([\s\S]*?)<\/tr>/gi)].forEach(tr => {
-        const cells = [...tr[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-            .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-        const catNo = cells[0];
-        const packStr = cells[packIdx] ?? "1";
-        const n = parseInt(packStr, 10);
-        if (catNo) result[catNo] = isNaN(n) ? 1 : n;
-    });
-    return result;
-}
 
 function invoiceNumber(orderId: string): string {
     return formatDisplayOrderNumber(orderId);
@@ -516,19 +492,10 @@ export async function buildInvoiceTemplateData(
     const rowMeta: Array<{ quantity: number; pieces: number; netAmount: number }> = [];
     const stagedRows: InvoiceDisplayRow[] = [];
 
-    // Build pack lookup from products.json (public data)
+    // Pack lookup from the catalogue; on failure the default pack size of 1 is used.
     const packLookup: Record<string, number> = {};
-    try {
-        const resp = await fetch("/data/products.json");
-        if (resp.ok) {
-            const plist = await resp.json();
-            for (const p of plist) {
-                Object.assign(packLookup, parsePackSizes(p.Description ?? ""));
-            }
-        }
-    } catch {
-        // ignore errors - default pack size = 1 will be used
-    }
+    const variantMeta = await loadVariantMeta().catch(() => ({} as Record<string, VariantMeta>));
+    for (const [catNo, meta] of Object.entries(variantMeta)) packLookup[catNo] = meta.packSize;
 
     if (orderItems.length > 0) {
         orderItems.forEach((item) => {

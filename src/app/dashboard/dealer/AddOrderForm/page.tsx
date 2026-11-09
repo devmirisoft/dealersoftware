@@ -131,7 +131,7 @@ type CustomDiscountRequest = {
 // Display only the product name, dropping any " - descriptor" suffix.
 const shortProductName = (name: string) => name.split(" - ")[0].trim();
 
-// ─── Product meta from nested_products.json ───────────────────────────────────
+// ─── Product meta from the catalogue ───────────────────────────────────────────
 type ProductMeta = { image: string | null; productName: string; packSize: number };
 
 type CatalogueNumberOption = {

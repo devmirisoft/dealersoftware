@@ -4,10 +4,10 @@ import DateInput from "@/components/ui/date-input";
 import { formatDisplayOrderNumber } from '@/lib/orderDisplay';
 import { formatPeriodLabel } from "@/lib/salesPeriods";
 import Link from "next/link";
-import { LayoutDashboard, UserRoundPlus, Users, SquareUser, Plus, ClipboardList, Search, Wallet, Calendar, CalendarCheck,CreditCard, IndianRupee, FileText, ArrowUp, ArrowDown } from 'lucide-react';
+import { Users, Wallet, Calendar, CalendarCheck, CreditCard, IndianRupee, FileText, ArrowUp, ArrowDown, ArrowRight, ShoppingCart, UserRound, Percent, ChartColumn, Globe, LayoutGrid, MapPin, Trophy, TrendingUp, Download } from 'lucide-react';
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   QueryClient,
   QueryClientProvider,
@@ -17,8 +17,8 @@ import {
   useInfiniteQuery,
 } from "@tanstack/react-query";
 import {
-  BarChart,
-  Bar,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -29,7 +29,7 @@ import {
 } from "recharts";
 import { fetchDealerStatusOverrides, normalizeDealerStatus, type DealerStatusDocument } from "@/lib/dealerStatus";
 import PendingProductsPreview from "@/components/dashboard/PendingProductsPreview";
-import { getCurrentUser, refreshCurrentUser } from "@/lib/currentUser";
+import { refreshCurrentUser } from "@/lib/currentUser";
 import { staffRoleBadge } from "@/lib/staffRoleLabel";
 import { SegmentedDropdown, type SegItem } from "@/components/SegmentedTabs";
 
@@ -93,14 +93,6 @@ type AdminStats = {
   staffCount: number;
   orderCount: number;
   PorderCount: number;
-};
-
-type AdminUser = {
-  username?: string;
-  email?: string;
-  role?: string;
-  name?: string;
-  ADMIN_IMAGE?: string;
 };
 
 type DealerSummary = {
@@ -209,10 +201,6 @@ type SaleSummaryResponse = {
 
 const ASM_PAGE_SIZE = 20;
 
-function toDateInput(date: Date) {
-  return date.toISOString().slice(0, 10);
-}
-
 type FinPeriod = "month" | "quarter" | "year" | "all";
 const FIN_PERIODS: Array<{ value: FinPeriod; label: string; previous: string }> = [
   { value: "month", label: "This Month", previous: "last month" },
@@ -222,7 +210,7 @@ const FIN_PERIODS: Array<{ value: FinPeriod; label: string; previous: string }> 
 ];
 const FIN_PERIOD_MONTHS = { month: 1, quarter: 3, year: 12 } as const;
 
-/** Local calendar day; toDateInput is UTC and would put the 1st of a month in the previous one in IST. */
+/** Local calendar day; toISOString is UTC and would put the 1st of a month in the previous one in IST. */
 function localDay(date: Date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
@@ -244,6 +232,15 @@ function inr(value: number) {
   return `₹${value.toLocaleString("en-IN")}`;
 }
 
+/** Axis ticks: 2Cr, 50L, 75K. */
+function shortInr(value: number) {
+  const abs = Math.abs(value);
+  if (abs >= 1e7) return `${+(value / 1e7).toFixed(1)}Cr`;
+  if (abs >= 1e5) return `${+(value / 1e5).toFixed(1)}L`;
+  if (abs >= 1e3) return `${+(value / 1e3).toFixed(1)}K`;
+  return String(value);
+}
+
 function pctChange(current: number, previous: number | undefined) {
   return previous ? ((current - previous) / previous) * 100 : null;
 }
@@ -259,61 +256,6 @@ function FinDelta({ change, vs, unit = "%" }: { change: number | null; vs: strin
     </span>
   );
 }
-
-const logoImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpEaVwAg53quyQVTj-mv49IsltHY8yDluFOPemDksHkQ&s=10";
-
-
-const NAV_ITEMS = [
-  {
-    label: "Dealer List",
-    href: "/dashboard/admin/dealer/DealerList",
-    icon: <LayoutDashboard />
-  },
-  {
-    label: "Add Dealer",
-    href: "/dashboard/admin/dealer/AddDealerForm",
-    icon: <UserRoundPlus />
-  },
-  {
-    label: "Staff List",
-    href: "/dashboard/admin/staff/stafflist",
-    icon: <Users />
-  },
-  {
-    label: "Add Staff",
-    href: "/dashboard/admin/staff/addstaff",
-    icon: <SquareUser />
-  },
-  {
-    label: "Products  ",
-    href: "/Pages/products",
-    icon: <SquareUser />
-  },
-  {
-    label: "Add products",
-    href: "/Pages/products/addproducts",
-    icon: <SquareUser />
-  },
-  { label: "Order List",
-     href: "/orders",
-     icon: <ClipboardList size={15} />
-  },
-  { label: "Dealer Category Report",
-     href: "/dashboard/admin/reports/dealer-category",
-    icon: <ClipboardList size={15} />
-  },
-  { label: "Pending Orders",
-     href: "/Pages/Ordermanagement/outstandingorders",
-    icon: <ClipboardList size={15} />
-  },
-];
-
-const STAT_CONFIG = [
-  { key: "PorderCount", label: "Pending Orders", color: "#f59e0b" },
-  { key: "dealerCount", label: "Total Distributors", color: "#10b981" },
-  { key: "orderCount", label: "Total Orders", color: "#3b82f6" },
-  { key: "staffCount", label: "Total Staff", color: "#8b5cf6" },
-];
 
 const dashboardQueryClient = new QueryClient({
   defaultOptions: {
@@ -399,7 +341,6 @@ export default function AdminDashboard() {
 
 function AdminDashboardInner() {
   const router = useRouter();
-  const pathname = usePathname();
 
   const [data, setData] = useState<Item[]>([]);
   const [dealerData, setDealerData] = useState<Dealer[]>([]);
@@ -414,22 +355,16 @@ function AdminDashboardInner() {
     orderCount: 0,
     PorderCount: 0,
   });
-  const [adminUser, setAdminUser] = useState<AdminUser>({});
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [distributorPage, setDistributorPage] = useState(1);
-  const [distributorSearchInput, setDistributorSearchInput] = useState("");
-  const [distributorSearch, setDistributorSearch] = useState("");
-  const [saleFrom, setSaleFrom] = useState("");
-  const [saleTo, setSaleTo] = useState("");
-  const today = useMemo(() => toDateInput(new Date()), []);
+  // Sales overview opens on this month; picking dates by hand switches it to a custom range.
+  const [salePeriod, setSalePeriod] = useState<FinPeriod | "custom">("month");
+  const [saleFrom, setSaleFrom] = useState(() => finRange("month", 0).from);
+  const [saleTo, setSaleTo] = useState(() => finRange("month", 0).to);
+  // Local day, so the default "this month" range never ends past the calendar's max.
+  const today = useMemo(() => localDay(new Date()), []);
   const [saleRegion, setSaleRegion] = useState("");
   const [saleAsm, setSaleAsm] = useState("");
   const [saleCity, setSaleCity] = useState("");
-
-  useEffect(() => {
-    setAdminUser((getCurrentUser() ?? {}) as AdminUser);
-  }, []);
 
   // Fetch dashboard data
   useEffect(() => {
@@ -566,17 +501,6 @@ function AdminDashboardInner() {
     staffQ.refetch();
   };
 
-  const {
-    data: distributorResponse,
-    isLoading: distributorsLoading,
-    isError: distributorsError,
-  } = useQuery<DealerPaginationResponse>({
-    queryKey: ["adminDashboardDistributors", distributorPage, distributorSearch],
-    queryFn: () => fetchJson<DealerPaginationResponse>(`/api/admin/dealers?page=${distributorPage}&limit=10&search=${encodeURIComponent(distributorSearch)}`),
-    placeholderData: keepPreviousData,
-    staleTime: 5 * 60 * 1000,
-  });
-
   // ASMs are paged into the dropdown as it scrolls rather than fetched all at once.
   const asmQ = useInfiniteQuery({
     queryKey: ["adminDashboardAsms", saleRegion],
@@ -599,6 +523,26 @@ function AdminDashboardInner() {
     queryFn: () => fetchJson<SaleSummaryResponse>(`/api/admin/sales-summary?${saleQuery}`),
     placeholderData: keepPreviousData,
   });
+
+  // The same span one period back, with the same filters, for the "vs last month" delta.
+  const salePrevious = salePeriod === "all" || salePeriod === "custom" ? null : finRange(salePeriod, 1);
+  const salePrevQ = useQuery<SaleSummaryResponse>({
+    queryKey: ["adminSaleSummary", "previous", salePrevious?.from, salePrevious?.to, saleRegion, saleAsm, saleCity],
+    queryFn: () => fetchJson<SaleSummaryResponse>(`/api/admin/sales-summary?from=${salePrevious?.from}&to=${salePrevious?.to}&region=${saleRegion}&asm=${saleAsm}&city=${encodeURIComponent(saleCity)}`),
+    enabled: salePrevious !== null,
+  });
+  const saleChange = salePrevious && !saleSummaryQ.isPlaceholderData
+    ? pctChange(saleSummaryQ.data?.data.total ?? 0, salePrevQ.data?.data.total)
+    : null;
+  const saleVs = FIN_PERIODS.find((period) => period.value === salePeriod)?.previous ?? "";
+  const pickSalePeriod = (next: string) => {
+    const period = next as FinPeriod | "custom";
+    setSalePeriod(period);
+    if (period === "custom") return;
+    const range = period === "all" ? { from: "", to: "" } : finRange(period, 0);
+    setSaleFrom(range.from);
+    setSaleTo(range.to);
+  };
 
   // Financial overview: the chosen period to date, and the same span one period back for the deltas.
   const [finPeriod, setFinPeriod] = useState<FinPeriod>("month");
@@ -658,14 +602,6 @@ function AdminDashboardInner() {
     }),
   ], [asmOptions]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDistributorPage(1);
-      setDistributorSearch(distributorSearchInput);
-    }, 400);
-    return () => clearTimeout(timer);
-  }, [distributorSearchInput]);
-
   const outstandingOrders = (outstandingOrdersQ.data?.data ?? []).filter((o) => o.order_status === "0" || o.accept_order === "0");
   const totalPendingOrders = outstandingOrdersQ.data?.total ?? outstandingOrders.length;
   const pendingApprovals = (discountApprovalsQ.data?.data ?? []).filter(r => r.status === "pending").length;
@@ -708,14 +644,6 @@ function AdminDashboardInner() {
     return acc;
   }, {} as Record<string, number>)).sort(([a], [b]) => a.localeCompare(b));
   const totalDistributors = adminData.dealerCount || dealersQ.data?.total || dealerRows.length;
-  const distributorRows = useMemo(() => (distributorResponse?.data ?? []).map((dealer) => ({
-    ...dealer,
-    status: statusMap.get(String(dealer.Dealer_Id)) ?? normalizeDealerStatus(dealer.status),
-  })), [distributorResponse?.data, statusMap]);
-  const distributorTotal = distributorResponse?.total ?? ((distributorPage - 1) * 10 + distributorRows.length);
-  const distributorTotalPages = distributorResponse?.last_page ?? Math.max(1, Math.ceil(distributorTotal / 10));
-  const distributorStartIndex = distributorRows.length > 0 ? (distributorPage - 1) * 10 + 1 : 0;
-  const distributorEndIndex = distributorRows.length > 0 ? (distributorPage - 1) * 10 + distributorRows.length : 0;
   const regionalLineData = useMemo(() => regionalSalesData.map((point) => ({
     ...point,
     label: formatPeriodLabel(point.period, regionalGranularity),
@@ -725,37 +653,54 @@ function AdminDashboardInner() {
   const selectedRegionalDistributors = regionalTopDistributors[selectedRegion] ?? [];
   const hasRegionalSales = regionalSalesData.some((point) => SALES_REGIONS.some((region) => point[region] > 0));
 
-  const distributorPageNumbers = (): (number | "...")[] => {
-    const pages: (number | "...")[] = [];
-    if (distributorTotalPages <= 7) {
-      for (let i = 1; i <= distributorTotalPages; i++) pages.push(i);
-    } else {
-      pages.push(1);
-      if (distributorPage > 3) pages.push("...");
-      for (let i = Math.max(2, distributorPage - 1); i <= Math.min(distributorTotalPages - 1, distributorPage + 1); i++) pages.push(i);
-      if (distributorPage < distributorTotalPages - 2) pages.push("...");
-      pages.push(distributorTotalPages);
-    }
-    return pages;
-  };
+  const staffTotal = adminData.staffCount || staffQ.data?.count || staffRows.length;
+  const kpis = [
+    {
+      label: "Pending Orders",
+      icon: <ShoppingCart size={24} aria-hidden />,
+      value: totalPendingOrders,
+      href: "/Pages/Ordermanagement/outstandingorders",
+      action: "Review pending orders",
+      meta: <span className="status-inline"><span className="status-dot orange" />{totalPendingOrders} awaiting review</span>,
+    },
+    {
+      label: "Total Distributors",
+      icon: <Users size={24} aria-hidden />,
+      value: totalDistributors,
+      href: "/dashboard/admin/dealer/DealerList",
+      action: "Open distributor list",
+      meta: (
+        <>
+          <span className="status-inline"><span className="status-dot green" />{activeDealers} active</span>
+          <span className="status-inline"><span className="status-dot red" />{inactiveDealers} inactive</span>
+        </>
+      ),
+    },
+    {
+      label: "Staff",
+      icon: <UserRound size={24} aria-hidden />,
+      value: staffTotal,
+      href: "/dashboard/admin/staff/stafflist",
+      action: "View staff list",
+      meta: (
+        <>
+          <span className="status-inline"><span className="status-dot purple" />{roleCounts["1"] ?? 0} sales manager</span>
+          <span className="status-inline"><span className="status-dot blue" />{roleCounts["2"] ?? 0} field</span>
+        </>
+      ),
+    },
+    {
+      label: "Discount Approvals",
+      icon: <Percent size={24} aria-hidden />,
+      value: pendingApprovals,
+      href: "/dashboard/admin/custom-discount-approvals",
+      action: "Review discount approvals",
+      meta: <span className="status-inline"><span className={`status-dot ${pendingApprovals > 0 ? "orange" : "green"}`} />{pendingApprovals > 0 ? "Needs attention" : "All clear"}</span>,
+    },
+  ];
 
-  const handleDistributorPageChange = (newPage: number) => {
-    if (newPage < 1 || newPage > distributorTotalPages) return;
-    setDistributorPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const chartData = data.map((item) => ({
-    name: `${item.order_id}`,
-    value: Number(item.total),
-  }));
-
-  const dealerChartData = dealerData.map((dealer) => ({
-    name: dealer.Dealer_Name.substring(0, 12),
-    value: Number(dealer.total),
-  }));
-
-
+  const tooltipStyle = { backgroundColor: "#fff", border: "1px solid #e8ecf4", borderRadius: "12px", boxShadow: "0 10px 30px rgba(15,23,42,.10)", color: "#0f172a", fontSize: "12px" };
+  const axisTick = { fontSize: 11, fill: "#94a3b8" };
 
   return (
     <>
@@ -764,628 +709,234 @@ function AdminDashboardInner() {
         html, body { margin: 0; padding: 0; }
         button, input { font: inherit; }
 
-        :root {
-          --apple-bg: #f5f5f7;
-          --apple-surface: rgba(255, 255, 255, 0.88);
-          --apple-surface-solid: #ffffff;
-          --apple-text: #1d1d1f;
-          --apple-secondary: #6e6e73;
-          --apple-tertiary: #8e8e93;
-          --apple-blue: #006162;
-          --apple-green: #34c759;
-          --apple-orange: #ff9500;
-          --apple-red: #ff3b30;
-          --apple-purple: #af52de;
-          --apple-line: rgba(60, 60, 67, 0.11);
-          --apple-shadow: 0 1px 2px rgba(0,0,0,.02), 0 10px 34px rgba(0,0,0,.045);
-        }
-
         .root {
+          --db-bg: #f4f6fb;
+          --db-surface: #ffffff;
+          --db-text: #0f172a;
+          --db-secondary: #64748b;
+          --db-tertiary: #94a3b8;
+          --db-line: #e8ecf4;
+          --db-navy: #0f1f45;
+          --db-brand: #1e3a8a;
+          --db-brand-soft: #e8eefb;
+          --db-shadow: 0 1px 2px rgba(15,23,42,.04), 0 6px 20px rgba(15,23,42,.05);
           min-height: 100vh;
-          background:
-            radial-gradient(circle at 12% -10%, rgba(0, 122, 255, .055), transparent 28%),
-            var(--apple-bg);
-          color: var(--apple-text);
-          font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+          background: var(--db-bg);
+          color: var(--db-text);
+          font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
-          text-rendering: optimizeLegibility;
         }
 
         .dashboard-shell {
           width: min(100%, 1840px);
           margin: 0 auto;
-          padding: 38px 34px 48px;
+          padding: 32px 32px 48px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
           /* Styles here are px, so the root font-size scale misses them; shrink 25%. */
           zoom: .75;
         }
 
-        .dashboard-header {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 24px;
-          margin-bottom: 30px;
-        }
-
-        .eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-          color: var(--apple-blue);
-          font-size: 12px;
-          line-height: 1;
-          font-weight: 650;
-          margin-bottom: 10px;
-        }
-
-        .eyebrow-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 999px;
-          background: var(--apple-blue);
-          box-shadow: 0 0 0 4px rgba(0, 122, 255, .09);
-        }
-
-        .page-title {
-          margin: 0;
-          font-size: clamp(32px, 4vw, 46px);
-          line-height: 1.02;
-          letter-spacing: -.045em;
-          font-weight: 720;
-          color: var(--apple-text);
-        }
-
-        .page-subtitle {
-          max-width: 620px;
-          margin: 10px 0 0;
-          color: var(--apple-secondary);
-          font-size: 15px;
-          line-height: 1.45;
-          letter-spacing: -.01em;
-        }
-
-        .profile-chip {
-          display: flex;
-          align-items: center;
-          gap: 11px;
-          flex-shrink: 0;
-          padding: 7px 9px 7px 7px;
-          border: 1px solid rgba(60, 60, 67, .09);
-          background: rgba(255,255,255,.72);
-          box-shadow: 0 4px 18px rgba(0,0,0,.035);
-          backdrop-filter: saturate(180%) blur(18px);
-          border-radius: 999px;
-        }
-
-        .profile-avatar {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .profile-copy { min-width: 0; padding-right: 5px; }
-        .profile-name {
-          max-width: 180px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          color: var(--apple-text);
-          font-size: 12px;
-          font-weight: 650;
-        }
-        .profile-role {
-          color: var(--apple-tertiary);
-          font-size: 10.5px;
-          margin-top: 1px;
-        }
-
-        .section-label {
-          margin: 0 0 12px 2px;
-          color: var(--apple-secondary);
-          font-size: 12px;
-          font-weight: 650;
-          letter-spacing: .01em;
+        .card {
+          min-width: 0;
+          padding: 22px;
+          background: var(--db-surface);
+          border: 1px solid var(--db-line);
+          border-radius: 18px;
+          box-shadow: var(--db-shadow);
         }
 
         .summary-error {
           display: flex;
           align-items: center;
           gap: 12px;
-          margin-bottom: 16px;
           padding: 12px 14px;
-          border: 1px solid rgba(255, 59, 48, .16);
-          background: rgba(255,255,255,.8);
-          border-radius: 16px;
+          border: 1px solid #fecaca;
+          background: #fff5f5;
+          border-radius: 14px;
           color: #b42318;
           font-size: 13px;
         }
+        .retry-button { margin-left: auto; border: 0; background: transparent; color: var(--db-brand); cursor: pointer; font-weight: 650; padding: 4px 7px; }
 
-        .retry-button {
-          margin-left: auto;
-          border: 0;
-          background: transparent;
-          color: var(--apple-blue);
-          cursor: pointer;
-          font-weight: 650;
-          padding: 4px 7px;
+        /* KPI cards: the arrow link's ::after covers the card, so the whole card is the link. */
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+        .kpi { position: relative; display: flex; align-items: flex-start; gap: 16px; transition: transform .18s ease, box-shadow .18s ease; }
+        .kpi:hover { transform: translateY(-1px); box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 12px 28px rgba(15,23,42,.08); }
+        .icon-tile { display: grid; place-items: center; flex-shrink: 0; width: 54px; height: 54px; border-radius: 14px; background: var(--db-brand-soft); color: var(--db-brand); }
+        .kpi-body { flex: 1; min-width: 0; }
+        .kpi-label { color: var(--db-secondary); font-size: 14px; font-weight: 600; }
+        .kpi-value { margin-top: 6px; font-size: 34px; line-height: 1.1; font-weight: 750; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+        .kpi-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 10px; color: var(--db-secondary); font-size: 12.5px; }
+        .kpi-go {
+          align-self: flex-end; flex-shrink: 0;
+          display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px;
+          background: var(--db-brand-soft); color: var(--db-brand);
+          transition: background .16s, color .16s;
         }
+        .kpi-go::after { content: ""; position: absolute; inset: 0; }
+        .kpi:hover .kpi-go { background: var(--db-brand); color: #fff; }
+        .kpi-go:focus-visible { outline: 2px solid var(--db-brand); outline-offset: 2px; }
 
-        .metrics-grid {
-          display: grid;
-          grid-template-columns: repeat(12, minmax(0, 1fr));
-          gap: 14px;
-          margin-bottom: 30px;
+        .status-inline { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .status-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--db-tertiary); }
+        .status-dot.green { background: #22c55e; }
+        .status-dot.orange { background: #f59e0b; }
+        .status-dot.red { background: #ef4444; }
+        .status-dot.blue { background: #3b82f6; }
+        .status-dot.purple { background: #8b5cf6; }
+
+        /* Staff by role: one scrolling row of pills. */
+        .staff-roles { display: flex; align-items: center; gap: 14px; padding: 12px 18px; }
+        .staff-roles .kpi-label { flex-shrink: 0; }
+        .role-pills { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: thin; }
+        .role-pill {
+          flex-shrink: 0; display: inline-flex; align-items: center; gap: 10px;
+          padding: 4px 4px 4px 14px; border-radius: 999px;
+          border: 1px solid var(--db-line); background: #f8fafc;
+          color: var(--db-text); font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
+          transition: background .15s, border-color .15s;
         }
+        .role-pill:hover { background: var(--db-brand-soft); border-color: #c7d2fe; }
+        .role-count { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 999px; background: var(--db-brand); color: #fff; font-size: 12px; font-variant-numeric: tabular-nums; }
 
-        .metric-card,
-        .panel {
-          background: var(--apple-surface);
-          border: 1px solid rgba(60, 60, 67, .075);
-          box-shadow: var(--apple-shadow);
-          backdrop-filter: saturate(180%) blur(20px);
+        .panel-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 18px; margin-bottom: 18px; }
+        .panel-heading { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .icon-chip { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 11px; background: var(--db-brand-soft); color: var(--db-brand); }
+        .panel-title { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+        .panel-sub { margin-top: 3px; color: var(--db-secondary); font-size: 12.5px; }
+
+        .btn-primary {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 9px 16px; border-radius: 999px;
+          background: var(--db-navy); color: #fff;
+          font-size: 13px; font-weight: 650; text-decoration: none; white-space: nowrap;
+          transition: background .16s;
         }
+        .btn-primary:hover { background: var(--db-brand); }
 
-        .metric-card {
-          grid-column: span 3;
-          min-height: 158px;
-          padding: 20px 21px;
-          border-radius: 22px;
-          position: relative;
-          overflow: hidden;
-          transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
-        }
+        /* Sales overview */
+        .sale-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        .sale-field { display: flex; align-items: center; gap: 8px; color: var(--db-secondary); font-size: 12.5px; font-weight: 600; }
+        .sale-field input { padding: 6px 10px; border: 1px solid var(--db-line); border-radius: 10px; background: #fff; color: var(--db-text); font-weight: 600; }
+        .sales-body { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(0, 2.2fr); gap: 28px; }
+        .sales-summary { display: flex; flex-direction: column; gap: 8px; padding-right: 28px; border-right: 1px solid var(--db-line); }
+        .sale-total-label { font-size: 15px; font-weight: 650; }
+        .sale-total { font-size: 40px; line-height: 1.1; font-weight: 750; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+        .sale-total-meta { color: var(--db-tertiary); font-size: 12px; line-height: 1.45; }
+        .sale-filters { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: auto; padding-top: 18px; border-top: 1px solid var(--db-line); }
+        .sale-filter { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .sale-filter > span { display: inline-flex; align-items: center; gap: 6px; color: var(--db-secondary); font-size: 12px; font-weight: 600; }
+        .sale-chart { min-height: 300px; }
 
-        .metric-card:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 1px 2px rgba(0,0,0,.02), 0 14px 38px rgba(0,0,0,.055);
-        }
+        .fin-delta { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 3px; font-size: 12.5px; }
+        .fin-delta b { font-weight: 650; }
+        .fin-delta.up { color: #16a34a; }
+        .fin-delta.down { color: #dc2626; }
+        .fin-vs { margin-left: 4px; color: var(--db-tertiary); }
 
-        .metric-card.wide { grid-column: span 6; }
+        .row-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; }
+        .row-grid.wide-left { grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr); }
 
-        .metric-label {
-          color: var(--apple-secondary);
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: -.005em;
-        }
-
-        .metric-value {
-          margin-top: 12px;
-          color: var(--apple-text);
-          font-size: clamp(28px, 3.2vw, 38px);
-          line-height: 1;
-          font-weight: 700;
-          letter-spacing: -.045em;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .metric-meta {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 8px 12px;
-          margin-top: 15px;
-          color: var(--apple-secondary);
-          font-size: 11.5px;
-          line-height: 1.35;
-        }
-
-        .status-inline {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          white-space: nowrap;
-        }
-
-        .status-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 999px;
-          background: var(--apple-tertiary);
-        }
-        .status-dot.green { background: var(--apple-green); }
-        .status-dot.orange { background: var(--apple-orange); }
-        .status-dot.red { background: var(--apple-red); }
-        .status-dot.blue { background: var(--apple-blue); }
-        .status-dot.purple { background: var(--apple-purple); }
-
-        .metric-link {
-          color: var(--apple-blue);
-          text-decoration: none;
-          font-size: 11.5px;
-          font-weight: 620;
-          white-space: nowrap;
-        }
-        .metric-link:hover { text-decoration: underline; text-underline-offset: 2px; }
-        .metric-card .metric-link::after { content: ""; position: absolute; inset: 0; }
-
-        .metrics-left {
-          grid-column: span 6;
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 14px;
-        }
-        .metrics-left .metric-card { grid-column: auto; }
-        .metrics-left { grid-template-rows: auto auto 1fr; }
-
-        .metrics-left .fin-overview { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 16px; container-type: inline-size; }
-        .metrics-left .fin-overview:hover { transform: none; }
-        .fin-head { display: flex; align-items: center; gap: 14px; }
-        .fin-icon {
-          display: grid; place-items: center; flex-shrink: 0;
-          width: 48px; height: 48px; border-radius: 14px;
-          background: linear-gradient(135deg, #4f7cff, #7b4dff); color: #fff;
-        }
-        .fin-heading { flex: 1; min-width: 0; }
-        .fin-title { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
-        .fin-sub { margin-top: 2px; color: var(--apple-secondary); font-size: 12.5px; }
+        /* Financial overview */
+        .fin-overview { display: flex; flex-direction: column; gap: 16px; container-type: inline-size; }
+        .fin-overview .panel-header { margin-bottom: 0; }
         .fin-pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-        .fin-pair { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 16px; border: 1px solid; }
-        .fin-pair.blue { background: rgba(0, 122, 255, .045); border-color: rgba(0, 122, 255, .12); --fin-tone: #0a64d6; }
-        .fin-pair.green { background: rgba(52, 199, 89, .06); border-color: rgba(52, 199, 89, .16); --fin-tone: #1a8f3c; }
+        .fin-pair { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 14px; border: 1px solid; }
+        .fin-pair.blue { background: #f3f6fd; border-color: #dfe6f7; --fin-tone: var(--db-brand); }
+        .fin-pair.green { background: #f1faf4; border-color: #d6efdf; --fin-tone: #15803d; }
         .fin-pair-head { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 650; }
-        .fin-pair .fin-chip { color: var(--fin-tone); background: color-mix(in srgb, var(--fin-tone) 12%, transparent); }
+        .fin-pair .fin-chip { border-radius: 10px; color: #fff; background: var(--fin-tone); }
         .fin-pair-value { font-size: 24px; font-weight: 750; letter-spacing: -.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
-        .fin-pair-value span { color: var(--apple-tertiary); font-weight: 500; }
+        .fin-pair-value span { color: var(--db-tertiary); font-weight: 500; }
         .fin-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .fin-split > div { display: flex; flex-direction: column; gap: 4px; }
-        .fin-split > div + div { padding-left: 12px; border-left: 1px solid var(--apple-line); }
-        .fin-split span { color: var(--apple-secondary); font-size: 11.5px; }
+        .fin-split > div + div { padding-left: 12px; border-left: 1px solid var(--db-line); }
+        .fin-split span { color: var(--db-secondary); font-size: 11.5px; }
         .fin-split strong { font-size: 14px; font-variant-numeric: tabular-nums; }
-        .fin-trend { padding: 8px 10px; border-radius: 10px; background: rgba(255, 255, 255, .6); }
+        .fin-trend { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.7); }
         .fin-chip { display: inline-grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 999px; }
-        .fin-chip.green { color: #1a8f3c; background: rgba(52, 199, 89, .12); }
-        .fin-chip.purple { color: #8e3fc4; background: rgba(175, 82, 222, .12); }
-        .fin-chip.blue { color: #0a64d6; background: rgba(0, 122, 255, .1); }
-        .fin-chip.orange { color: #c46a00; background: rgba(255, 149, 0, .14); }
-        .fin-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 14px; border-top: 1px solid var(--apple-line); }
+        .fin-chip.green { color: #15803d; background: #dcfce7; }
+        .fin-chip.purple { color: #7e22ce; background: #f3e8ff; }
+        .fin-chip.blue { color: var(--db-brand); background: var(--db-brand-soft); }
+        .fin-chip.orange { color: #c2410c; background: #ffedd5; }
+        .fin-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 14px; border-top: 1px solid var(--db-line); }
         .fin-tile { display: flex; gap: 10px; min-width: 0; padding: 0 12px; }
         .fin-tile:first-child { padding-left: 0; }
-        .fin-tile + .fin-tile { border-left: 1px solid var(--apple-line); }
-        .fin-tile-label { color: var(--apple-secondary); font-size: 11px; }
+        .fin-tile + .fin-tile { border-left: 1px solid var(--db-line); }
+        .fin-tile-label { color: var(--db-secondary); font-size: 11.5px; }
         .fin-tile-value { margin: 2px 0 4px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
-        .fin-delta { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 3px; font-size: 11px; }
-        .fin-delta b { font-weight: 650; }
-        .fin-delta.up { color: #1a8f3c; }
-        .fin-delta.down { color: #d70015; }
-        .fin-vs { margin-left: 4px; color: var(--apple-tertiary); }
-        @container (max-width: 420px) {
+        @container (max-width: 520px) {
           .fin-pairs { grid-template-columns: 1fr; }
           .fin-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 14px; }
           .fin-tile:nth-child(odd) { padding-left: 0; border-left: 0; }
         }
-        @container (max-width: 640px) {
-          .fin-pair-value { font-size: 20px; }
-        }
 
-        /* Staff by role: one scrolling row under the financial overview. */
-        .metrics-grid .staff-roles { grid-column: 1 / -1; min-height: 0; display: flex; align-items: center; gap: 14px; padding: 12px 16px; }
-        .metrics-grid .staff-roles:hover { transform: none; }
-        .staff-roles .metric-label { flex-shrink: 0; }
-        .staff-roles .role-pills { flex-wrap: nowrap; overflow-x: auto; margin-top: 0; scrollbar-width: thin; }
-        .staff-roles .role-pill { flex-shrink: 0; white-space: nowrap; }
-        .role-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-        .role-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          padding: 5px 5px 5px 14px;
-          border-radius: 999px;
-          border: 1px solid rgba(60, 60, 67, .12);
-          background: rgba(118, 118, 128, .06);
-          color: var(--apple-text);
-          font-size: 13px;
-          font-weight: 600;
-          text-decoration: none;
-          transition: background-color 150ms ease, border-color 150ms ease;
+        /* Tabs: a light rail with the active option filled navy. */
+        .pill-tabs { display: flex; gap: 4px; max-width: 100%; overflow-x: auto; scrollbar-width: none; padding: 4px; margin-bottom: 16px; border-radius: 12px; background: #f1f4f9; }
+        .pill-tabs.fit { display: inline-flex; }
+        .pill-tabs::-webkit-scrollbar { display: none; }
+        .pill-tab {
+          flex-shrink: 0; border: 0; border-radius: 9px; background: transparent;
+          color: var(--db-secondary); padding: 7px 13px;
+          font-size: 12.5px; font-weight: 600; cursor: pointer;
+          transition: background .16s, color .16s;
         }
-        .role-pill:hover { background: rgba(0, 113, 227, .08); border-color: rgba(0, 113, 227, .3); }
-        .role-count {
-          display: inline-grid;
-          place-items: center;
-          min-width: 28px;
-          height: 28px;
-          padding: 0 6px;
-          border-radius: 999px;
-          background: white;
-          color: ;
-          font-size: 12px;
-          font-variant-numeric: tabular-nums;
-        }
+        .pill-tab:hover:not(:disabled) { color: var(--db-text); }
+        .pill-tab.active { background: var(--db-navy); color: #fff; }
+        .pill-tab:disabled { cursor: default; opacity: .55; }
 
-        .sale-panel {
-          grid-column: span 6;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .sale-range { display: flex; flex-wrap: wrap; gap: 10px; }
-        .sale-field { display: flex; align-items: center; gap: 8px; color: var(--apple-secondary); font-size: 12px; font-weight: 600; }
-        .sale-all-time {
-          padding: 6px 12px;
-          border: 1px solid rgba(60, 60, 67, .14);
-          border-radius: 10px;
-          background: var(--apple-surface);
-          color: var(--apple-secondary);
-          font-size: 12px;
-          font-weight: 650;
-          cursor: pointer;
-        }
-        .sale-all-time:hover:not(:disabled) { color: var(--apple-text); }
-        .sale-all-time:disabled { opacity: .45; cursor: default; }
+        .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+        .leg { display: inline-flex; align-items: center; gap: 5px; color: var(--db-secondary); font-size: 11.5px; white-space: nowrap; }
+        .leg-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; }
 
-        .sale-report {
-          margin-left: auto;
-          align-self: center;
-          padding: 6px 12px;
-          border-radius: 10px;
-          background: #02474C;
-          color: #fff;
-          font-size: 12px;
-          font-weight: 650;
-          text-decoration: none;
-        }
-        .sale-report:hover { background: #007C80; }
-
-        .sale-field input {
-          padding: 6px 10px;
-          border: 1px solid rgba(60, 60, 67, .14);
-          border-radius: 10px;
-          background: var(--apple-surface);
-          color: var(--apple-text);
-          font: inherit;
-          font-weight: 600;
-        }
-        .sale-total-label { color: var(--apple-secondary); font-size: 12px; font-weight: 600; }
-        .sale-total { font-size: 30px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-        .sale-total-meta { margin-top: -4px; color: var(--apple-tertiary); font-size: 11.5px; }
-        .sale-filters { display: flex; flex-wrap: wrap; gap: 10px; }
-        .sale-chart { flex: 1; min-height: 220px; }
-        .sale-note { margin: 0; color: var(--apple-tertiary); font-size: 11.5px; line-height: 1.45; }
-
-        .analytics-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1.55fr) minmax(330px, .9fr);
-          gap: 16px;
-          margin-bottom: 16px;
-        }
-
-        .charts-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px;
-          margin-bottom: 16px;
-        }
-
-        .panel {
-          border-radius: 24px;
-          padding: 22px;
-          min-width: 0;
-        }
-
-        .panel-header {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 18px;
-          margin-bottom: 18px;
-        }
-
-        .panel-title {
-          color: var(--apple-text);
-          font-size: 16px;
-          line-height: 1.2;
-          font-weight: 680;
-          letter-spacing: -.022em;
-        }
-
-        .panel-sub {
-          margin-top: 4px;
-          color: var(--apple-secondary);
-          font-size: 11.5px;
-          line-height: 1.35;
-        }
-
-        .legend {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-          gap: 7px 10px;
-          max-width: 62%;
-        }
-
-        .leg {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          color: var(--apple-secondary);
-          font-size: 10.5px;
-          white-space: nowrap;
-        }
-
-        .leg-dot {
-          width: 6px;
-          height: 6px;
-          flex: 0 0 auto;
-          border-radius: 50%;
-        }
-
-        .chart-canvas { width: 100%; height: 290px; }
-        .chart-canvas.compact { height: 260px; }
+        .chart-canvas { width: 100%; height: 300px; }
 
         .empty-state {
-          width: 100%;
-          height: 100%;
-          display: grid;
-          place-items: center;
-          color: var(--apple-tertiary);
-          font-size: 12px;
-          text-align: center;
+          width: 100%; height: 100%; min-height: 220px;
+          display: grid; place-items: center; align-content: center; gap: 14px;
+          color: var(--db-tertiary); font-size: 13px; text-align: center;
         }
-
-        .region-tabs-wrap {
-          overflow-x: auto;
-          padding-bottom: 2px;
-          margin-bottom: 15px;
-          scrollbar-width: none;
-        }
-        .region-tabs-wrap::-webkit-scrollbar { display: none; }
-
-        .region-tabs {
-          display: inline-flex;
-          gap: 3px;
-          padding: 3px;
-          min-width: max-content;
-          border-radius: 12px;
-          background: rgba(118, 118, 128, .12);
-        }
-
-        .region-tab {
-          border: 0;
-          border-radius: 9px;
-          background: transparent;
-          color: var(--apple-secondary);
-          padding: 6px 10px;
-          font-size: 10.5px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
-        }
-
-        .region-tab.active {
-          background: #fff;
-          color: var(--apple-text);
-          box-shadow: 0 1px 4px rgba(0,0,0,.10);
-        }
-
-        .region-tab:disabled {
-          cursor: default;
-          opacity: .55;
-        }
+        .empty-state svg { color: #cbd5e1; }
 
         .ranking-list { display: flex; flex-direction: column; }
-
-        .ranking-row {
-          display: grid;
-          grid-template-columns: 30px minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 10px;
-          padding: 12px 0;
-          border-top: 1px solid var(--apple-line);
-        }
+        .ranking-row { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 13px 4px; border-top: 1px solid var(--db-line); }
         .ranking-row:first-child { border-top: 0; }
+        .rank-number { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: #f1f4f9; color: var(--db-secondary); font-size: 12px; font-weight: 700; }
+        .rank-number.top { background: var(--db-brand-soft); color: var(--db-brand); }
+        .ranking-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; font-weight: 600; }
+        .ranking-meta { margin-top: 2px; color: var(--db-tertiary); font-size: 11.5px; }
+        .ranking-value { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-        .rank-number {
-          width: 25px;
-          height: 25px;
-          display: grid;
-          place-items: center;
-          border-radius: 50%;
-          background: rgba(118,118,128,.10);
-          color: var(--apple-secondary);
-          font-size: 10px;
-          font-weight: 700;
+        /* Reports */
+        .reports-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+        .report-column { border: 1px solid var(--db-line); border-radius: 12px; overflow: hidden; }
+        .report-column-title { padding: 10px 14px; background: #f6f8fc; border-bottom: 1px solid var(--db-line); font-size: 13px; font-weight: 700; }
+        .report-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 42px; padding: 0 14px; border-top: 1px solid var(--db-line); font-size: 13px; }
+        .report-column-title + .report-item { border-top: 0; }
+        .report-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--db-secondary); }
+        .report-value { font-weight: 650; font-variant-numeric: tabular-nums; }
+        .report-loading { padding: 18px 14px; color: var(--db-tertiary); font-size: 13px; }
+
+        @media (max-width: 1000px) {
+          .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
-        .rank-number.top { background: rgba(0,122,255,.10); color: var(--apple-blue); }
-
-        .ranking-name {
-          min-width: 0;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          color: var(--apple-text);
-          font-size: 12.5px;
-          font-weight: 610;
+        @media (max-width: 900px) {
+          .row-grid, .row-grid.wide-left, .sales-body { grid-template-columns: minmax(0, 1fr); }
+          .sales-summary { padding-right: 0; border-right: 0; }
         }
-        .ranking-meta { margin-top: 2px; color: var(--apple-tertiary); font-size: 10.5px; }
-        .ranking-value { color: var(--apple-text); font-size: 12px; font-weight: 680; font-variant-numeric: tabular-nums; white-space: nowrap; }
-
-        .reports-panel { margin-bottom: 2px; }
-        .reports-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 26px;
-        }
-
-        .report-column-title {
-          margin-bottom: 5px;
-          color: var(--apple-secondary);
-          font-size: 11px;
-          font-weight: 650;
-        }
-
-        .report-item {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 12px;
-          min-height: 39px;
-          border-top: 1px solid var(--apple-line);
-          font-size: 12px;
-        }
-        .report-item:first-of-type { border-top: 0; }
-        .report-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--apple-secondary); }
-        .report-value { color: var(--apple-text); font-weight: 650; font-variant-numeric: tabular-nums; }
-        .report-loading { padding: 22px 0; color: var(--apple-tertiary); font-size: 12px; }
-
-        @media (max-width: 1180px) {
-          .metric-card { grid-column: span 4; }
-          .metric-card.wide { grid-column: span 8; }
-          .metrics-left, .sale-panel { grid-column: span 12; }
-          .analytics-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 850px) {
-          .dashboard-shell { padding: 28px 20px 36px; }
-          .dashboard-header { align-items: flex-start; }
-          .profile-copy { display: none; }
-          .profile-chip { padding-right: 7px; }
-          .metric-card { grid-column: span 6; }
-          .metric-card.wide { grid-column: span 12; }
-          .metrics-left, .sale-panel { grid-column: span 12; }
-          .charts-grid, .reports-grid { grid-template-columns: 1fr; }
-          .legend { max-width: 100%; justify-content: flex-start; }
-          .panel-header { flex-direction: column; }
-        }
-
         @media (max-width: 560px) {
-          .dashboard-shell { padding: 24px 16px 32px; }
-          .dashboard-header { margin-bottom: 24px; }
-          .page-title { font-size: 34px; }
-          .page-subtitle { font-size: 14px; }
-          .profile-chip { display: none; }
-          .metrics-grid { gap: 10px; }
-          .metric-card, .metric-card.wide { grid-column: span 12; min-height: 140px; padding: 18px; border-radius: 20px; }
-          .metrics-left { grid-template-columns: 1fr; }
-          .panel { padding: 18px; border-radius: 20px; }
+          .dashboard-shell { padding: 20px 16px 32px; gap: 14px; }
+          .kpi-grid, .reports-grid { grid-template-columns: minmax(0, 1fr); }
+          .card { padding: 18px; }
+          .sale-total { font-size: 32px; }
           .chart-canvas { height: 250px; }
-          .chart-canvas.compact { height: 230px; }
-          .ranking-row { grid-template-columns: 28px minmax(0, 1fr) auto; }
         }
       `}</style>
 
       <div className="root">
         <main className="dashboard-shell">
-          <header className="dashboard-header">
-            {/* <div>
-              <div className="eyebrow"><span className="eyebrow-dot" /> Admin overview</div>
-              <h1 className="page-title">Dashboard</h1>
-              <p className="page-subtitle">A focused view of sales, distributors, approvals and regional performance.</p>
-            </div> */}
-
-            <div className="profile-chip" aria-label="Current administrator">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="profile-avatar" src={adminUser.ADMIN_IMAGE || "/image.png"} alt="" />
-              <div className="profile-copy">
-                <div className="profile-name">{loading ? "Loading…" : (adminUser.name || adminUser.username || "Administrator")}</div>
-                <div className="profile-role">{adminUser.role || "Administrator"}</div>
-              </div>
-            </div>
-          </header>
-
-          <div className="section-label">At a glance</div>
-
           {summaryError && (
             <div className="summary-error">
               Some summary data failed to load.
@@ -1393,52 +944,142 @@ function AdminDashboardInner() {
             </div>
           )}
 
-          <section className="metrics-grid" aria-label="Dashboard summary">
-            <div className="metrics-left">
-            <article className="metric-card">
-              <div className="metric-label">Pending Orders</div>
-              <div className="metric-value">{summaryLoading ? "—" : totalPendingOrders}</div>
-              <div className="metric-meta">
-                <span className="status-inline"><span className="status-dot orange" />{totalPendingOrders} awaiting review</span>
-                <Link href="/Pages/Ordermanagement/outstandingorders" className="metric-link">Review →</Link>
-              </div>
-            </article>
+          <section className="kpi-grid" aria-label="Dashboard summary">
+            {kpis.map((kpi) => (
+              <article key={kpi.label} className="card kpi">
+                <span className="icon-tile">{kpi.icon}</span>
+                <div className="kpi-body">
+                  <div className="kpi-label">{kpi.label}</div>
+                  <div className="kpi-value">{summaryLoading ? "—" : kpi.value}</div>
+                  <div className="kpi-meta">{kpi.meta}</div>
+                </div>
+                <Link href={kpi.href} className="kpi-go" aria-label={kpi.action}><ArrowRight size={16} aria-hidden /></Link>
+              </article>
+            ))}
+          </section>
 
-            <article className="metric-card">
-              <div className="metric-label">Total Distributors</div>
-              <div className="metric-value">{summaryLoading ? "—" : totalDistributors}</div>
-              <div className="metric-meta">
-                <span className="status-inline"><span className="status-dot green" />{activeDealers} active</span>
-                <span className="status-inline"><span className="status-dot red" />{inactiveDealers} inactive</span>
-                <Link href="/dashboard/admin/dealer/DealerList" className="metric-link">Open →</Link>
-              </div>
-            </article>
+          <section className="card staff-roles" aria-label="Staff by role">
+            <div className="kpi-label">Staff by role</div>
+            <div className="role-pills">
+              {summaryLoading ? <span className="report-loading">Loading…</span>
+                : staffByRole.length === 0 ? <span className="report-loading">No staff yet.</span>
+                : staffByRole.map(([label, count]) => (
+                  <Link key={label} href="/dashboard/admin/staff/stafflist" className="role-pill">
+                    <span>{label}</span>
+                    <span className="role-count">{count}</span>
+                  </Link>
+                ))}
+            </div>
+          </section>
 
-            <article className="metric-card">
-              <div className="metric-label">Staff</div>
-              <div className="metric-value">{summaryLoading ? "—" : (adminData.staffCount || staffQ.data?.count || staffRows.length)}</div>
-              <div className="metric-meta">
-                <span className="status-inline"><span className="status-dot purple" />{roleCounts["1"] ?? 0} sales manager</span>
-                <span className="status-inline"><span className="status-dot blue" />{roleCounts["2"] ?? 0} field</span>
-                <Link href="/dashboard/admin/staff/stafflist" className="metric-link">View →</Link>
+          <section className="card" aria-label="Sales overview">
+            <header className="panel-header">
+              <div className="panel-heading">
+                <span className="icon-chip"><ChartColumn size={18} aria-hidden /></span>
+                <div className="panel-title">Sales Overview</div>
               </div>
-            </article>
-
-            <article className="metric-card">
-              <div className="metric-label">Discount Approvals</div>
-              <div className="metric-value">{summaryLoading ? "—" : pendingApprovals}</div>
-              <div className="metric-meta">
-                <span className="status-inline"><span className={`status-dot ${pendingApprovals > 0 ? "orange" : "green"}`} />{pendingApprovals > 0 ? "Needs attention" : "All clear"}</span>
-                <Link href="/dashboard/admin/custom-discount-approvals" className="metric-link">Review →</Link>
+              <div className="sale-controls">
+                <label className="sale-field">
+                  <span>From</span>
+                  <DateInput value={saleFrom} min={saleEarliest} max={saleTo || today} onChange={(event) => { setSaleFrom(event.target.value); setSalePeriod("custom"); }} />
+                </label>
+                <label className="sale-field">
+                  <span>To</span>
+                  <DateInput value={saleTo} min={saleFrom} max={today} onChange={(event) => { setSaleTo(event.target.value); setSalePeriod("custom"); }} />
+                </label>
+                <SegmentedDropdown
+                  label="Sales period"
+                  value={salePeriod}
+                  onChange={pickSalePeriod}
+                  items={[...FIN_PERIODS, { value: "custom", label: "Custom range" }].map((period) => ({ value: period.value, label: period.label, icon: <Calendar size={13} aria-hidden /> }))}
+                />
+                <a className="btn-primary" href={`/api/admin/sales-summary?${saleQuery}&format=xlsx`}>
+                  <Download size={14} aria-hidden /> Download report
+                </a>
               </div>
-            </article>
+            </header>
 
-            <article className="metric-card fin-overview" aria-label="Financial overview">
-              <header className="fin-head">
-                <span className="fin-icon"><Wallet size={22} aria-hidden /></span>
-                <div className="fin-heading">
-                  <div className="fin-title">Financial Overview</div>
-                  <div className="fin-sub">Billed, Booking and Payment summary</div>
+            <div className="sales-body">
+              <div className="sales-summary">
+                <div className="sale-total-label">Total Sales</div>
+                <div className="sale-total">{saleSummaryQ.isPending ? "—" : inr(saleSummaryQ.data?.data.total ?? 0)}</div>
+                <FinDelta change={saleChange} vs={saleVs} />
+                <div className="sale-total-meta">
+                  {saleSummaryQ.isError
+                    ? "Sales summary failed to load."
+                    : `${saleSummaryQ.data?.data.orderCount ?? 0} accepted orders · ${saleFrom || saleTo ? `${saleFrom || "start"} to ${saleTo || "today"}` : "all time"}${saleAsm ? ` · ${asmStates.join(", ") || "no states assigned"}` : ""}${saleCity ? ` · ${saleCity}` : ""}`}
+                </div>
+                <div className="sale-filters">
+                  <div className="sale-filter">
+                    <span><Globe size={13} aria-hidden /> Region</span>
+                    <SegmentedDropdown
+                      label="Region"
+                      value={saleRegion}
+                      onChange={(next) => { setSaleRegion(next); setSaleAsm(""); setSaleCity(""); }}
+                      items={saleRegionItems}
+                    />
+                  </div>
+                  <div className="sale-filter">
+                    <span><LayoutGrid size={13} aria-hidden /> ASM</span>
+                    <SegmentedDropdown
+                      label="ASM"
+                      value={saleAsm}
+                      onChange={(next) => { setSaleAsm(next); setSaleCity(""); }}
+                      items={asmItems}
+                      onLoadMore={() => { if (asmQ.hasNextPage && !asmQ.isFetchingNextPage) asmQ.fetchNextPage(); }}
+                      loadingMore={asmQ.isFetchingNextPage}
+                    />
+                  </div>
+                  <div className="sale-filter">
+                    <span><MapPin size={13} aria-hidden /> City</span>
+                    <SegmentedDropdown
+                      label="City"
+                      value={saleCity}
+                      onChange={setSaleCity}
+                      items={saleCityItems}
+                      disabled={saleCityOptions.length === 0}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="sale-chart">
+                {saleSummaryQ.isPending ? (
+                  <div className="empty-state">Loading sales…</div>
+                ) : saleSeries.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={saleSeries} margin={{ top: 8, right: 8, left: -4, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="saleFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#1e3a8a" stopOpacity={0.28} />
+                          <stop offset="100%" stopColor="#1e3a8a" stopOpacity={0.02} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid stroke="#eef1f6" vertical={false} />
+                      <XAxis dataKey="label" tick={axisTick} axisLine={false} tickLine={false} />
+                      <YAxis tick={axisTick} axisLine={false} tickLine={false} width={52} tickFormatter={shortInr} />
+                      <Tooltip
+                        cursor={{ stroke: "#cbd5e1", strokeWidth: 1 }}
+                        contentStyle={tooltipStyle}
+                        labelStyle={{ color: "#64748b", marginBottom: "5px" }}
+                        formatter={(value) => [inr(Number(value ?? 0)), "Net sale"]}
+                      />
+                      <Area type="monotone" dataKey="total" stroke="#1e3a8a" strokeWidth={2.5} fill="url(#saleFill)" activeDot={{ r: 5, fill: "#1e3a8a", stroke: "#fff", strokeWidth: 2 }} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="empty-state">No accepted sales in this range.</div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          <section className="row-grid">
+            <article className="card fin-overview" aria-label="Financial overview">
+              <header className="panel-header">
+                <div className="panel-heading">
+                  <span className="icon-chip"><Wallet size={18} aria-hidden /></span>
+                  <div className="panel-title">Financial Overview</div>
                 </div>
                 <SegmentedDropdown
                   label="Period"
@@ -1454,7 +1095,7 @@ function AdminDashboardInner() {
               {/* Shown as "X / Y" pairs, not ratios. */}
               <div className="fin-pairs">
                 <section className="fin-pair blue">
-                  <div className="fin-pair-head"><span className="fin-chip"><CalendarCheck size={17} aria-hidden /></span>Billed / Booking</div>
+                  <div className="fin-pair-head"><span className="fin-chip"><FileText size={17} aria-hidden /></span>Billed / Booking</div>
                   <div className="fin-pair-value">{finShow(fin?.billed)} <span>/</span> {finShow(fin?.total)}</div>
                   <div className="fin-split">
                     <div><span>Total Billed</span><strong>{finShow(fin?.billed)}</strong></div>
@@ -1491,110 +1132,64 @@ function AdminDashboardInner() {
               </div>
             </article>
 
-          </div>
+            <article className="card">
+              <header className="panel-header">
+                <div className="panel-heading">
+                  <span className="icon-chip"><Trophy size={18} aria-hidden /></span>
+                  <div>
+                    <div className="panel-title">Top Distributors by Region</div>
+                    <div className="panel-sub">Select a zone to review its highest net sales distributors</div>
+                  </div>
+                </div>
+              </header>
 
-            <article className="panel sale-panel">
-              <div className="panel-title">Sale Chart</div>
-              <div className="sale-range">
-                <label className="sale-field">
-                  <span>From</span>
-                  <DateInput value={saleFrom} min={saleEarliest} max={saleTo} onChange={(event) => setSaleFrom(event.target.value)} />
-                </label>
-                <label className="sale-field">
-                  <span>To</span>
-                  <DateInput value={saleTo} min={saleFrom} max={today} onChange={(event) => setSaleTo(event.target.value)} />
-                </label>
-                <button
-                  type="button"
-                  className="sale-all-time"
-                  disabled={!saleFrom && !saleTo}
-                  onClick={() => { setSaleFrom(""); setSaleTo(""); }}
-                >
-                  All time
-                </button>
-                <a className="sale-report" href={`/api/admin/sales-summary?${saleQuery}&format=xlsx`}>
-                  Download report
-                </a>
+              <div className="pill-tabs" role="group" aria-label="Region">
+                {SALES_REGIONS.map((region) => (
+                  <button
+                    key={region}
+                    type="button"
+                    className={`pill-tab${selectedRegion === region ? " active" : ""}`}
+                    aria-pressed={selectedRegion === region}
+                    onClick={() => setSelectedRegion(region)}
+                  >
+                    {formatRegionLabel(region)}
+                  </button>
+                ))}
               </div>
 
-              <div className="sale-total-label">Booking</div>
-              <div className="sale-total">{saleSummaryQ.isPending ? "—" : `₹${(saleSummaryQ.data?.data.total ?? 0).toLocaleString("en-IN")}`}</div>
-              <div className="sale-total-meta">
-                {saleSummaryQ.isError
-                  ? "Sales summary failed to load."
-                  : `${saleSummaryQ.data?.data.orderCount ?? 0} accepted orders · ${saleFrom || saleTo ? `${saleFrom || "start"} to ${saleTo || "today"}` : "all time"}${saleAsm ? ` · ${asmStates.join(", ") || "no states assigned"}` : ""}${saleCity ? ` · ${saleCity}` : ""}`}
-              </div>
-              <div className="sale-filters">
-                <SegmentedDropdown
-                  label="Region"
-                  value={saleRegion}
-                  onChange={(next) => { setSaleRegion(next); setSaleAsm(""); setSaleCity(""); }}
-                  items={saleRegionItems}
-                />
-                <SegmentedDropdown
-                  label="ASM"
-                  value={saleAsm}
-                  onChange={(next) => { setSaleAsm(next); setSaleCity(""); }}
-                  items={asmItems}
-                  onLoadMore={() => { if (asmQ.hasNextPage && !asmQ.isFetchingNextPage) asmQ.fetchNextPage(); }}
-                  loadingMore={asmQ.isFetchingNextPage}
-                />
-                <SegmentedDropdown
-                  label="City"
-                  value={saleCity}
-                  onChange={setSaleCity}
-                  items={saleCityItems}
-                  disabled={saleCityOptions.length === 0}
-                />
-              </div>
-
-              <div className="sale-chart">
-                {saleSummaryQ.isPending ? (
-                  <div className="empty-state">Loading sales…</div>
-                ) : saleSeries.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={saleSeries} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                      <CartesianGrid stroke="rgba(60,60,67,.10)" vertical={false} />
-                      <XAxis dataKey="label" tick={{ fontSize: 10.5, fill: "#8e8e93" }} axisLine={false} tickLine={false} />
-                      <YAxis tick={{ fontSize: 10.5, fill: "#8e8e93" }} axisLine={false} tickLine={false} width={52} />
-                      <Tooltip
-                        cursor={{ stroke: "rgba(60,60,67,.12)", strokeWidth: 1 }}
-                        contentStyle={{ backgroundColor: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: "14px", boxShadow: "0 10px 30px rgba(0,0,0,.10)", color: "#1d1d1f", fontSize: "11px" }}
-                        labelStyle={{ color: "#6e6e73", marginBottom: "5px" }}
-                        formatter={(value) => [`₹${Number(value ?? 0).toLocaleString("en-IN")}`, "Net sale"]}
-                      />
-                      <Line type="monotone" dataKey="total" stroke="#00494B" strokeWidth={2.25} dot={false} activeDot={{ r: 4, fill: "#ffffff", stroke: "#00494B", strokeWidth: 2 }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+              <div className="ranking-list">
+                {loading ? (
+                  <div className="empty-state">Loading distributors…</div>
+                ) : selectedRegionalDistributors.length > 0 ? (
+                  selectedRegionalDistributors.map((dealer, index) => (
+                    <div key={`${selectedRegion}-${dealer.dealerId || dealer.dealerName}-${index}`} className="ranking-row">
+                      <span className={`rank-number${index < 3 ? " top" : ""}`}>{index + 1}</span>
+                      <div style={{ minWidth: 0 }}>
+                        <div className="ranking-name">{dealer.dealerName}</div>
+                        <div className="ranking-meta">{formatRegionLabel(selectedRegion)} region</div>
+                      </div>
+                      <div className="ranking-value">{inr(Number(dealer.total))}</div>
+                    </div>
+                  ))
                 ) : (
-                  <div className="empty-state">No accepted sales in this range.</div>
+                  <div className="empty-state">
+                    <Trophy size={72} strokeWidth={1.25} aria-hidden />
+                    No distributors found for the {formatRegionLabel(selectedRegion).toLowerCase()} region.
+                  </div>
                 )}
-              </div>
-            </article>
-
-            <article className="metric-card staff-roles">
-              <div className="metric-label">Staff by role</div>
-              <div className="role-pills">
-                {summaryLoading ? <span className="report-loading">Loading…</span>
-                  : staffByRole.length === 0 ? <span className="report-loading">No staff yet.</span>
-                  : staffByRole.map(([label, count]) => (
-                    <Link key={label} href="/dashboard/admin/staff/stafflist" className="role-pill">
-                      <span>{label}</span>
-                      <span className="role-count">{count}</span>
-                    </Link>
-                  ))}
               </div>
             </article>
           </section>
 
-          <div className="section-label">Regional performance</div>
-
-          <section className="analytics-grid">
-            <article className="panel">
-              <div className="panel-header">
-                <div>
-                  <div className="panel-title">RSM Net Sales</div>
-                  <div className="panel-sub">{regionalGranularitySub}</div>
+          <section className="row-grid wide-left">
+            <article className="card">
+              <header className="panel-header">
+                <div className="panel-heading">
+                  <span className="icon-chip"><TrendingUp size={18} aria-hidden /></span>
+                  <div>
+                    <div className="panel-title">Regional Performance</div>
+                    <div className="panel-sub">{regionalGranularitySub}</div>
+                  </div>
                 </div>
                 <div className="legend">
                   {SALES_REGIONS.map((region) => (
@@ -1604,23 +1199,21 @@ function AdminDashboardInner() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </header>
 
-              <div className="region-tabs-wrap">
-                <div className="region-tabs" role="group" aria-label="Net sales period">
-                  {GRANULARITY_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      className={`region-tab${regionalGranularity === option.value ? " active" : ""}`}
-                      aria-pressed={regionalGranularity === option.value}
-                      disabled={regionalSalesLoading}
-                      onClick={() => setRegionalGranularity(option.value)}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
+              <div className="pill-tabs fit" role="group" aria-label="Net sales period">
+                {GRANULARITY_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`pill-tab${regionalGranularity === option.value ? " active" : ""}`}
+                    aria-pressed={regionalGranularity === option.value}
+                    disabled={regionalSalesLoading}
+                    onClick={() => setRegionalGranularity(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
               </div>
 
               <div className="chart-canvas">
@@ -1628,17 +1221,17 @@ function AdminDashboardInner() {
                   <div className="empty-state">Loading regional sales…</div>
                 ) : hasRegionalSales ? (
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={regionalLineData} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                      <CartesianGrid stroke="rgba(60,60,67,.10)" vertical={false} />
-                      <XAxis dataKey="label" tick={{ fontSize: 10.5, fill: "#8e8e93" }} axisLine={false} tickLine={false} />
-                      <YAxis tick={{ fontSize: 10.5, fill: "#8e8e93" }} axisLine={false} tickLine={false} width={52} />
+                    <LineChart data={regionalLineData} margin={{ top: 8, right: 8, left: -4, bottom: 0 }}>
+                      <CartesianGrid stroke="#eef1f6" vertical={false} />
+                      <XAxis dataKey="label" tick={axisTick} axisLine={false} tickLine={false} />
+                      <YAxis tick={axisTick} axisLine={false} tickLine={false} width={52} tickFormatter={shortInr} />
                       <Tooltip
-                        cursor={{ stroke: "rgba(60,60,67,.12)", strokeWidth: 1 }}
-                        contentStyle={{ backgroundColor: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: "14px", boxShadow: "0 10px 30px rgba(0,0,0,.10)", color: "#1d1d1f", fontSize: "11px" }}
-                        labelStyle={{ color: "#6e6e73", marginBottom: "5px" }}
+                        cursor={{ stroke: "#cbd5e1", strokeWidth: 1 }}
+                        contentStyle={tooltipStyle}
+                        labelStyle={{ color: "#64748b", marginBottom: "5px" }}
                         formatter={(value, _name, item) => {
                           const region = String(item?.dataKey ?? "") as SalesRegionKey;
-                          return [`₹${Number(value ?? 0).toLocaleString("en-IN")}`, formatRegionLabel(region)];
+                          return [inr(Number(value ?? 0)), formatRegionLabel(region)];
                         }}
                       />
                       {SALES_REGIONS.map((region) => (
@@ -1648,8 +1241,8 @@ function AdminDashboardInner() {
                           dataKey={region}
                           stroke={REGION_META[region].color}
                           strokeWidth={2.25}
-                          dot={false}
-                          activeDot={{ r: 4, fill: "#ffffff", stroke: REGION_META[region].color, strokeWidth: 2 }}
+                          dot={{ r: 3, strokeWidth: 0, fill: REGION_META[region].color }}
+                          activeDot={{ r: 5, fill: "#fff", stroke: REGION_META[region].color, strokeWidth: 2 }}
                         />
                       ))}
                     </LineChart>
@@ -1660,111 +1253,27 @@ function AdminDashboardInner() {
               </div>
             </article>
 
-            <article className="panel">
-              <div className="panel-header">
-                <div>
-                  <div className="panel-title">Top Distributors by Region</div>
-                  <div className="panel-sub">Select a zone to review its highest net sales distributors</div>
+            <article className="card">
+              <header className="panel-header">
+                <div className="panel-heading">
+                  <span className="icon-chip"><Users size={18} aria-hidden /></span>
+                  <div>
+                    <div className="panel-title">Top Distributors</div>
+                    <div className="panel-sub">Distributor performance by total value</div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="region-tabs-wrap">
-                <div className="region-tabs">
-                  {SALES_REGIONS.map((region) => (
-                    <button
-                      key={region}
-                      type="button"
-                      className={`region-tab${selectedRegion === region ? " active" : ""}`}
-                      onClick={() => setSelectedRegion(region)}
-                    >
-                      {formatRegionLabel(region)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
+              </header>
               <div className="ranking-list">
                 {loading ? (
-                  <div className="empty-state" style={{ minHeight: 220 }}>Loading distributors…</div>
-                ) : selectedRegionalDistributors.length > 0 ? (
-                  selectedRegionalDistributors.map((dealer, index) => (
-                    <div key={`${selectedRegion}-${dealer.dealerId || dealer.dealerName}-${index}`} className="ranking-row">
+                  <div className="empty-state">Loading distributors…</div>
+                ) : dealerData.length > 0 ? (
+                  dealerData.slice(0, 5).map((dealer, index) => (
+                    <div key={`${dealer.Dealer_Name}-${index}`} className="ranking-row">
                       <span className={`rank-number${index < 3 ? " top" : ""}`}>{index + 1}</span>
-                      <div style={{ minWidth: 0 }}>
-                        <div className="ranking-name">{dealer.dealerName}</div>
-                        <div className="ranking-meta">{formatRegionLabel(selectedRegion)} region</div>
-                      </div>
-                      <div className="ranking-value">₹{Number(dealer.total).toLocaleString("en-IN")}</div>
+                      <div className="ranking-name">{dealer.Dealer_Name}</div>
+                      <div className="ranking-value">{inr(Number(dealer.total))}</div>
                     </div>
                   ))
-                ) : (
-                  <div className="empty-state" style={{ minHeight: 220 }}>No distributors found for the {formatRegionLabel(selectedRegion).toLowerCase()} region.</div>
-                )}
-              </div>
-            </article>
-          </section>
-
-          <div className="section-label">Sales leaders</div>
-
-          <section className="charts-grid">
-            <article className="panel">
-              <div className="panel-header">
-                <div>
-                  <div className="panel-title">Top Orders</div>
-                  <div className="panel-sub">Highest order values in the current dataset</div>
-                </div>
-                <span className="leg"><span className="leg-dot" style={{ background: "#006162" }} />Order value</span>
-              </div>
-              <div className="chart-canvas compact">
-                {loading ? (
-                  <div className="empty-state">Loading chart…</div>
-                ) : data.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
-                      <CartesianGrid stroke="rgba(60,60,67,.08)" vertical={false} />
-                      <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#8e8e93" }} axisLine={false} tickLine={false} />
-                      <YAxis tick={{ fontSize: 10, fill: "#8e8e93" }} axisLine={false} tickLine={false} width={50} />
-                      <Tooltip
-                        cursor={{ fill: "rgba(0,122,255,.035)" }}
-                        contentStyle={{ backgroundColor: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: "14px", boxShadow: "0 10px 30px rgba(0,0,0,.10)", fontSize: "11px" }}
-                        labelStyle={{ color: "#6e6e73" }}
-                        formatter={(value) => `₹${Number(value).toLocaleString("en-IN")}`}
-                      />
-                      <Bar dataKey="value" fill="#006162" radius={[8, 8, 2, 2]} maxBarSize={38} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="empty-state">No order data available.</div>
-                )}
-              </div>
-            </article>
-
-            <article className="panel">
-              <div className="panel-header">
-                <div>
-                  <div className="panel-title">Top Distributors</div>
-                  <div className="panel-sub">Distributor performance by total value</div>
-                </div>
-                <span className="leg"><span className="leg-dot" style={{ background: "#ffa581" }} />Total value</span>
-              </div>
-              <div className="chart-canvas compact">
-                {loading ? (
-                  <div className="empty-state">Loading chart…</div>
-                ) : dealerData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={dealerChartData} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
-                      <CartesianGrid stroke="rgba(60,60,67,.08)" vertical={false} />
-                      <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#8e8e93" }} axisLine={false} tickLine={false} />
-                      <YAxis tick={{ fontSize: 10, fill: "#8e8e93" }} axisLine={false} tickLine={false} width={50} />
-                      <Tooltip
-                        cursor={{ fill: "#ffa58122" }}
-                        contentStyle={{ backgroundColor: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: "14px", boxShadow: "0 10px 30px rgba(0,0,0,.10)", fontSize: "11px" }}
-                        labelStyle={{ color: "#6e6e73" }}
-                        formatter={(value) => `₹${Number(value).toLocaleString("en-IN")}`}
-                      />
-                      <Bar dataKey="value" fill="#ffA581" radius={[8, 8, 2, 2]} maxBarSize={38} />
-                    </BarChart>
-                  </ResponsiveContainer>
                 ) : (
                   <div className="empty-state">No distributor data available.</div>
                 )}
@@ -1772,16 +1281,22 @@ function AdminDashboardInner() {
             </article>
           </section>
 
-          <section className="panel reports-panel">
-            <div className="panel-header">
-              <div>
-                <div className="panel-title">Reports</div>
-                <div className="panel-sub">Quick ranked view of your strongest orders and distributors</div>
+          <section className="card" aria-label="Reports">
+            <header className="panel-header">
+              <div className="panel-heading">
+                <span className="icon-chip"><FileText size={18} aria-hidden /></span>
+                <div>
+                  <div className="panel-title">Reports</div>
+                  <div className="panel-sub">Quick ranked view of your strongest orders and distributors</div>
+                </div>
               </div>
-            </div>
+              <Link href="/dashboard/admin/reports/dealer-category" className="btn-primary">
+                View All Reports <ArrowRight size={14} aria-hidden />
+              </Link>
+            </header>
 
             <div className="reports-grid">
-              <div>
+              <div className="report-column">
                 <div className="report-column-title">Top orders</div>
                 {loading ? (
                   <div className="report-loading">Loading…</div>
@@ -1789,7 +1304,7 @@ function AdminDashboardInner() {
                   data.map((item) => (
                     <div key={item.order_id} className="report-item">
                       <span className="report-name">{formatDisplayOrderNumber(item.order_id)}</span>
-                      <span className="report-value">₹{Number(item.total).toLocaleString("en-IN")}</span>
+                      <span className="report-value">{inr(Number(item.total))}</span>
                     </div>
                   ))
                 ) : (
@@ -1797,7 +1312,7 @@ function AdminDashboardInner() {
                 )}
               </div>
 
-              <div>
+              <div className="report-column">
                 <div className="report-column-title">Top distributors</div>
                 {loading ? (
                   <div className="report-loading">Loading…</div>
@@ -1805,7 +1320,7 @@ function AdminDashboardInner() {
                   dealerData.map((dealer, index) => (
                     <div key={`${dealer.Dealer_Name}-${index}`} className="report-item">
                       <span className="report-name">{dealer.Dealer_Name}</span>
-                      <span className="report-value">₹{Number(dealer.total).toLocaleString("en-IN")}</span>
+                      <span className="report-value">{inr(Number(dealer.total))}</span>
                     </div>
                   ))
                 ) : (

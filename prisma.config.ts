@@ -9,6 +9,7 @@ export default defineConfig({
   },
 
   datasource: {
-    url: env("DATABASE_URL"),
+    // CLI/migrate needs the session connection (5432); runtime uses DATABASE_URL (pooler) via the PrismaPg adapter
+    url: env("DIRECT_URL"),
   },
 });

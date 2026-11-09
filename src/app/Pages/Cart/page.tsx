@@ -3,94 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
+import { loadVariantMeta, type VariantMeta } from "@/lib/catalogueClient";
 import { cartPackPaise as packPaise, useCartStore } from "@/Store/store";
 import { SalePrice, salePaise } from "@/components/SalePrice";
 import { useTodaysSale } from "@/hooks/useTodaysSale";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-type ProductMeta = { image: string | null; productName: string; packSize: number; specSummary: string };
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-function parsePackSizes(html: string): Record<string, number> {
-  const result: Record<string, number> = {};
-  if (!html) return result;
-  const theadMatch = html.match(/<thead>([\s\S]*?)<\/thead>/i);
-  if (!theadMatch) return result;
-  const headers = [...theadMatch[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-    .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-  const packIdx = headers.findIndex(h => /pack|qty|quantity/i.test(h));
-  if (packIdx === -1) return result;
-  const tbodyMatch = html.match(/<tbody>([\s\S]*?)<\/tbody>/i);
-  if (!tbodyMatch) return result;
-  [...tbodyMatch[1].matchAll(/<tr>([\s\S]*?)<\/tr>/gi)].forEach(tr => {
-    const cells = [...tr[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-      .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-    const catNo = cells[0];
-    const n = parseInt(cells[packIdx] ?? "1", 10);
-    if (catNo) result[catNo] = isNaN(n) ? 1 : n;
-  });
-  return result;
-}
-
-function parseSpecSummaries(html: string): Record<string, string> {
-  const result: Record<string, string> = {};
-  if (!html) return result;
-
-  const theadMatch = html.match(/<thead>([\s\S]*?)<\/thead>/i);
-  const tbodyMatch = html.match(/<tbody>([\s\S]*?)<\/tbody>/i);
-  if (!theadMatch || !tbodyMatch) return result;
-
-  const headers = [...theadMatch[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-    .map(m => m[1].replace(/<[^>]*>/g, "").trim())
-    .filter(Boolean);
-  if (headers.length < 2) return result;
-
-  const specHeaders = headers.slice(1).filter((header) => !/pack\s*of|pack|qty|quantity/i.test(header));
-  if (specHeaders.length === 0) return result;
-
-  [...tbodyMatch[1].matchAll(/<tr>([\s\S]*?)<\/tr>/gi)].forEach(tr => {
-    const cells = [...tr[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-      .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-    const catNo = cells[0];
-    if (!catNo) return;
-
-    const specParts = specHeaders
-      .map((header, index) => {
-        const value = cells[index + 1];
-        return value ? `${header}: ${value}` : "";
-      })
-      .filter(Boolean);
-
-    if (specParts.length > 0) {
-      result[catNo] = specParts.join(" · ");
-    }
-  });
-
-  return result;
-}
-
-function buildVariantLookup(data: any[]): Record<string, ProductMeta> {
-  const map: Record<string, ProductMeta> = {};
-  for (const product of data) {
-    const image = (product.images ?? product.Images ?? []).find(Boolean) ?? null;
-    const productName = product.name ?? product.Name ?? "";
-    const description = product.Description ?? "";
-    const packMap = parsePackSizes(description);
-    const specMap = parseSpecSummaries(description);
-    for (const variant of product.variants ?? []) {
-      const sku = variant.SKU ?? variant.sku;
-      const variantImage = (variant.images ?? variant.Images ?? []).find(Boolean) ?? image;
-      map[sku] = {
-        image: variantImage,
-        productName,
-        packSize: packMap[sku] ?? 1,
-        specSummary: specMap[sku] ?? "",
-      };
-    }
-  }
-  return map;
-}
 
 function fmt(paise: number) {
   return `₹${(paise / 100).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -107,13 +23,13 @@ export default function CartPage() {
   const togglePriority = useCartStore(s => s.togglePriority);
   const clearCart = useCartStore(s => s.clearCart);
 
-  const [lookup,    setLookup]    = useState<Record<string, ProductMeta>>({});
+  const [lookup,    setLookup]    = useState<Record<string, VariantMeta>>({});
   const [removed,   setRemoved]   = useState<string[]>([]);
   const saleOf = useTodaysSale();
 
   useEffect(() => {
-    axios.get("/data/products.json")
-      .then(res => setLookup(buildVariantLookup(res.data)))
+    loadVariantMeta()
+      .then(setLookup)
       .catch(() => {});
   }, []);
 

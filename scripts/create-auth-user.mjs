@@ -64,6 +64,8 @@ const result = await prisma.$transaction(async (tx) => {
     data: {
       email: email.trim(),
       normalizedEmail,
+      username: args.username?.trim() || null,
+      normalizedUsername: args.username?.trim().toLowerCase() || null,
       passwordHash,
       role,
       status: "ACTIVE",

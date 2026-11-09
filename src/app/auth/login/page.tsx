@@ -2,49 +2,42 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
 import {
-  ChartColumnIncreasing,
+  ArrowRight,
+  ChartColumn,
   Eye,
   EyeOff,
-  Globe,
+  FlaskConical,
   Handshake,
-  Lightbulb,
+  Headphones,
+  Lock,
+  Mail,
   RotateCcw,
-  Settings,
   ShieldCheck,
-  Users,
-  UsersRound,
+  Zap,
 } from "lucide-react"
 import type { StoredUser } from "@/lib/roleAccess"
 import { setCurrentUser } from "@/lib/currentUser"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { cn } from "@/lib/utils"
 
-
-const LOGO_SRC = "/Omsons_Logo.png"
-
-const PILLARS = [
-  { icon: Handshake, label: "Stronger Partnerships" },
-  { icon: ChartColumnIncreasing, label: "Better Business" },
-  { icon: Settings, label: "Efficient Operations" },
-  { icon: Users, label: "Shared Growth" },
-]
-
-const HIGHLIGHTS = [
-  { icon: Lightbulb, top: "Innovation for a", bottom: "Brighter Tomorrow" },
-  { icon: UsersRound, top: "Customer", bottom: "Satisfaction" },
-  { icon: Globe, top: "Delivering Quality to", bottom: "80+ Countries" },
-  { icon: ShieldCheck, top: "Trusted for", bottom: "40+ Years" },
+const FEATURES = [
+  { icon: FlaskConical, label: "Innovative Solutions" },
+  { icon: ShieldCheck, label: "Trusted Quality" },
+  { icon: Handshake, label: "Long-Term Partnership" },
+  { icon: Headphones, label: "Dedicated Support" },
+  { icon: Zap, label: "Reliable Performance" },
+  { icon: ChartColumn, label: "Business Growth" },
 ]
 
 const inputClass =
-  "h-12 w-full rounded-full bg-[#ebebeb] px-6 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-[#0a9bdb]"
+  "h-12 w-full rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+const labelClass = "mb-2 block text-[15px] font-medium text-slate-900"
+const fieldIconClass = "pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
 
 export default function Login() {
   const router = useRouter()
 
-  const [showNotice, setShowNotice] = useState(true)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPw, setShowPw] = useState(false)
@@ -62,24 +55,6 @@ export default function Login() {
   useEffect(() => {
     if (showOtp) otpInputRef.current?.focus()
   }, [showOtp])
-
-  useEffect(() => {
-    if (!showNotice) {
-      return
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setShowNotice(false)
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [showNotice])
 
   const completeLogin = (userData: StoredUser) => {
     const session = setCurrentUser(userData)
@@ -218,64 +193,63 @@ export default function Login() {
     }
   }
   return (
-    <main className="relative h-screen overflow-hidden bg-[#f6f6f6] text-slate-950">
-      <Image src="/background.png" alt="" fill priority sizes="100vw" className="object-cover" />
+    <main className="relative min-h-screen overflow-hidden bg-[#f6f9fd] text-slate-900">
+      {/* Soft corner blobs */}
+      <div aria-hidden className="pointer-events-none absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-blue-100/60" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-48 -right-32 h-[420px] w-[420px] rounded-full bg-blue-100/60" />
 
-      <div className="relative flex h-full items-center justify-center gap-10 px-4 sm:px-10 xl:gap-14">
+      <div className="relative flex min-h-screen items-center justify-center gap-12 px-4 py-10 sm:px-10 xl:gap-16">
 
         {/* ── Form card ──────────────────────────────────────────────── */}
         <form
-          className="mx-auto w-full max-w-[400px] shrink-0 rounded-[2rem] bg-white px-8 py-9 shadow-[0_10px_40px_rgba(15,23,42,0.14)] lg:mx-0"
+          className="w-full max-w-[460px] shrink-0 rounded-3xl border border-slate-100 bg-white px-8 py-10 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:px-12"
           onSubmit={handleLogin}
         >
           {/* Header */}
-          {/* ponytail: hue-rotate recolors the transparent orange logo to brand blue; swap for a blue PNG if one is made */}
-          <Image
-            src="/Omsons_Logo.png"
-            alt="Omsons Germany"
-            width={7052}
-            height={4172}
-            sizes="120px"
-            className="h-auto w-[120px] hue-rotate-[185deg]"
-          />
-          <h1 className="mt-10 text-[34px] font-bold leading-none text-slate-900">Login</h1>
-          <p className="mt-3 text-[15px] leading-snug text-slate-400">
-            Sign in with your assigned account. Your role is detected automatically
-          </p>
+          <svg viewBox="0 0 48 40" className="h-11 w-12 text-blue-600" fill="none" stroke="currentColor" strokeWidth="8" aria-hidden>
+            <path d="M4 6h18a14 14 0 0 1 0 28H14" />
+            <path d="M4 20h14" />
+          </svg>
+          <h1 className="mt-5 text-[32px] font-bold leading-tight tracking-tight text-slate-900">Welcome Back</h1>
+          <p className="mt-2 text-[16px] text-slate-500">Sign in to access your dashboard</p>
 
           {/* Fields */}
-          <div className="mt-8 space-y-6">
+          <div className="mt-9 space-y-6">
             <label className="block">
-              <span className="mb-2 block pl-2 text-[17px] text-[#0a9bdb]">Email or Username</span>
-              <input
-                type="text"
-                placeholder="Enter your email or username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="username"
-                className={inputClass}
-              />
+              <span className={labelClass}>Email or Username</span>
+              <div className="relative">
+                <Mail size={20} className={fieldIconClass} />
+                <input
+                  type="text"
+                  placeholder="Enter your email or username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="username"
+                  className={inputClass}
+                />
+              </div>
             </label>
 
             <label className="block">
-              <span className="mb-2 block pl-2 text-[17px] text-[#0a9bdb]">Password</span>
+              <span className={labelClass}>Password</span>
               <div className="relative">
+                <Lock size={20} className={fieldIconClass} />
                 <input
                   type={showPw ? "text" : "password"}
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
-                  className={cn(inputClass, "pr-14")}
+                  className={cn(inputClass, "pr-12")}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((visible) => !visible)}
-                  className="absolute right-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-slate-400 transition hover:bg-white hover:text-slate-700"
+                  className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
                   aria-label={showPw ? "Hide password" : "Show password"}
                   title={showPw ? "Hide password" : "Show password"}
                 >
-                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </label>
@@ -289,7 +263,7 @@ export default function Login() {
             )}
           >
             <div className="overflow-hidden">
-              <span className="mb-2 block pl-2 text-[15px] text-[#0a9bdb]">Verification Code</span>
+              <span className={labelClass}>Verification Code</span>
               <InputOTP
                 maxLength={6}
                 value={otpCode}
@@ -304,7 +278,7 @@ export default function Login() {
                     <InputOTPSlot
                       key={slot}
                       index={slot}
-                      className="h-11 w-10 rounded-xl border-0 bg-[#ebebeb] text-[15px] font-bold text-slate-900 first:rounded-xl last:rounded-xl data-[active=true]:bg-white data-[active=true]:ring-2 data-[active=true]:ring-[#0a9bdb]"
+                      className="h-12 w-auto max-w-12 flex-1 rounded-xl border border-slate-200 bg-white text-[16px] font-bold text-slate-900 first:rounded-xl first:border-l last:rounded-xl data-[active=true]:border-blue-500 data-[active=true]:ring-4 data-[active=true]:ring-blue-500/10"
                     />
                   ))}
                 </InputOTPGroup>
@@ -324,7 +298,7 @@ export default function Login() {
                   type="button"
                   onClick={handleRequestOtp}
                   disabled={otpLoading}
-                  className="flex items-center gap-1.5 text-[12px] font-semibold text-brand-600 hover:text-brand-500 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex items-center gap-1.5 text-[12px] font-semibold text-blue-600 hover:text-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <RotateCcw size={12} />
                   Resend Code
@@ -334,169 +308,62 @@ export default function Login() {
           </div>
 
           {/* Forgot password */}
-          <div className="mt-3 flex justify-end">
-            <button type="button" className="text-[13px] text-brand-600 hover:text-brand-500">
+          <div className="mt-4 flex justify-end">
+            <button type="button" className="text-[14px] font-medium text-blue-600 hover:text-blue-500">
               Forgot Password?
             </button>
           </div>
 
           {/* Error message */}
           {error && (
-            <p className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-2.5 text-[12px] font-semibold text-red-600">
+            <p className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-2.5 text-[13px] font-semibold text-red-600">
               {error}
             </p>
           )}
 
           {/* Submit */}
-          <div className="mt-10 flex justify-end">
-            <button
-              type="submit"
-              disabled={loading || otpLoading}
-              className="h-12 min-w-[150px] rounded-full bg-[#0a9bdb] px-8 text-[20px] font-semibold text-white shadow-[0_10px_24px_rgba(10,155,219,0.3)] transition hover:-translate-y-0.5 hover:bg-[#088bc6] active:translate-y-0 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {showOtp ? (otpLoading ? "Verifying..." : "Verify & Login") : loading ? "Signing in..." : "Login"}
-            </button>
+          <button
+            type="submit"
+            disabled={loading || otpLoading}
+            className="mt-8 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-blue-600 text-[17px] font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.28)] transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {showOtp ? (otpLoading ? "Verifying..." : "Verify & Login") : loading ? "Signing in..." : "Login"}
+            {!loading && !otpLoading && <ArrowRight size={18} />}
+          </button>
+
+          <div className="mt-8 flex items-center gap-3 text-[13px] text-slate-500">
+            <span className="h-px flex-1 bg-slate-200" />
+            <ShieldCheck size={16} />
+            Secure &amp; Encrypted
+            <span className="h-px flex-1 bg-slate-200" />
           </div>
         </form>
 
         {/* ── Brand panel ────────────────────────────────────────────── */}
-        <section className="relative hidden h-full min-w-0 items-center gap-10 lg:flex">
-          <div className="relative z-10 w-[480px] shrink-0">
-            <h2 className="text-[clamp(2rem,3vw,3.25rem)] font-bold leading-[1.1] tracking-tight text-[#0a9bdb]">
-              Welcome to <br />
-              <span className="whitespace-nowrap text-[#2dbe60]">Dealer Management</span> <br />
-              Software
-            </h2>
-            <div className="mt-5 h-1 w-40 rounded-full bg-[#2dbe60]" />
-            <p className="mt-6 text-[17px] leading-relaxed text-slate-700">
-              Your partner in Laboratory Glassware, Filtration Products and Laboratory Solutions.
-            </p>
+        <div aria-hidden className="hidden h-[440px] w-px bg-slate-200 lg:block" />
 
-            <ul className="mt-10 flex gap-6">
-              {PILLARS.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex w-20 flex-col items-center text-center">
-                  <span className="grid h-16 w-16 place-items-center rounded-full bg-white/80 text-[#2dbe60] shadow-[0_4px_12px_rgba(15,23,42,0.15)]">
-                    <Icon size={30} strokeWidth={1.8} />
-                  </span>
-                  <span className="mt-3 text-[13px] leading-tight text-slate-600">{label}</span>
-                </li>
-              ))}
-            </ul>
+        <section className="hidden w-[560px] min-w-0 lg:block">
+          <div className="h-1 w-20 rounded-full bg-blue-600" />
+          <h2 className="mt-8 text-[clamp(2.25rem,3.4vw,3.5rem)] font-bold leading-[1.1] tracking-tight text-slate-900">
+            Welcome to <br />
+            <span className="text-blue-600">Dealer Management Software</span>
+          </h2>
+          <p className="mt-6 text-[19px] leading-relaxed text-slate-600">
+            Your partner in Laboratory Glassware, Filtration Products and Laboratory Solutions.
+          </p>
 
-            <ul className="mt-12 grid grid-cols-2 gap-x-8 gap-y-8">
-              {HIGHLIGHTS.map(({ icon: Icon, top, bottom }) => (
-                <li key={bottom} className="flex items-center gap-3">
-                  <Icon size={44} strokeWidth={1.5} className="shrink-0 text-[#0a9bdb]" />
-                  <span className="text-[12px] leading-tight text-slate-700">
-                    {top}
-                    <span className="block text-[14px] font-semibold text-[#2dbe60]">{bottom}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/*
-            Products: cartridge, volumetric flask, hot plate. Everything is sized in --u (1% of the
-            hot plate's height), a fixed 5.5px so the group never rescales with the window. Margins are measured from the opaque pixels so the cartridge
-            body and flask bulb sit 4u apart, flask and beaker 8.5u; the hot plate image starts its beaker
-            41% in, hence its negative margin.
-          */}
-          <div className="hidden shrink-0 xl:flex">
-            <div className="flex items-end [--u:5.5px]">
-              <Image
-                src="/cartridge.png"
-                alt="Omsons filtration cartridge"
-                width={1460}
-                height={3023}
-                sizes="15vw"
-                className="mb-[calc(var(--u)*17)] h-[calc(var(--u)*48)] w-auto"
-              />
-              <Image
-                src="/volumetric%20flask.png"
-                alt="Omsons volumetric flask"
-                width={1361}
-                height={4002}
-                sizes="15vw"
-                className="relative z-10 mb-[calc(var(--u)*15)] ml-[calc(var(--u)*1.5)] h-[calc(var(--u)*62)] w-auto"
-              />
-              <Image
-                src="/hot%20plate.png"
-                alt="Omsons hotplate with magnetic stirrer"
-                width={2593}
-                height={5616}
-                sizes="25vw"
-                className="ml-[calc(var(--u)*-11)] h-[calc(var(--u)*100)] w-auto"
-              />
-            </div>
-          </div>
+          <ul className="mt-10 grid grid-cols-3 gap-x-6 gap-y-8">
+            {FEATURES.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex flex-col items-center text-center">
+                <span className="grid h-[72px] w-[72px] place-items-center rounded-2xl bg-blue-50 text-blue-600">
+                  <Icon size={30} strokeWidth={1.8} />
+                </span>
+                <span className="mt-3 max-w-[110px] text-[15px] leading-snug text-slate-600">{label}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
-
-      {showNotice && (
-        <div>
-          <div
-  className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-md"
-  onClick={() => setShowNotice(false)}
-  aria-hidden="true"
->
-  <div
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="testing-phase-title"
-    className="relative w-full max-w-[460px] rounded-3xl bg-zinc-100 p-6 text-center text-slate-900 shadow-[0_30px_80px_rgba(15,23,42,0.28)] ring-1 ring-black/5 sm:p-7"
-    onClick={(event) => event.stopPropagation()}
-  >
-    {/* Close button */}
-    <button
-      type="button"
-      onClick={() => setShowNotice(false)}
-      aria-label="Close"
-      className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-4 focus:ring-slate-100"
-    >
-    </button>
-
-    {/* Icon */}
-    <div className="mx-auto flex h-19 w-19 items-center justify-center rounded-full ">
-      {/* hue-rotate + brightness turns the orange logo sky blue (~#0891E2) */}
-      <img
-        src={LOGO_SRC}
-        alt="Omsons Logo"
-        className="h-19 w-19 object-contain hue-rotate-[190deg] brightness-110"
-      />
-    </div>
-
-    <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-black">
-Welcome to the Omsons Partner Portal
-    </p>
-
-    <p
-      id="testing-phase-title"
-      className="mt-2 text-lg font-semibold tracking-[-0.01em] text-slate-950 sm:text-xl"
-    >
-      Thank You for Being With Us
-    </p>
-
-    <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-[15px]">
-     We appreciate your continued trust in Omsons. Our new Order Management System is designed to provide a seamless, transparent, and efficient ordering experience, empowering you to serve your customers with confidence.
-    </p>
-
-    <div className="mt-5 rounded-2xl  px-4 py-3 text-sm leading-6">
-Together, we build success.    </div>
-
-    <div className="mt-6 flex justify-center">
-      {/* <button
-        type="button"
-        onClick={() => setShowNotice(false)}
-        className="inline-flex h-11 w-full items-center justify-center rounded-full bg-amber-500 px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(245,158,11,0.28)] transition hover:bg-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-200 sm:w-auto sm:px-8"
-      >
-        Let's Get Started
-      </button> */}
-    </div>
-  </div>
-</div>
-        </div>
-      )}
     </main>
   )
 }

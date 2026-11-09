@@ -366,7 +366,7 @@ export async function loadCatalogueProducts(): Promise<CatalogueProduct[]> {
   if (cachedProducts) return cachedProducts;
   if (cataloguePromise) return cataloguePromise;
 
-  // omsonsdata.json covers every product of the two older files, with explicit pack/piece pricing.
+  // omsonsdata.json is the only catalogue file, with explicit pack/piece pricing.
   cataloguePromise = Promise.all([
     fetchCatalogueFile("/data/omsonsdata.json"),
     fetchPostgresCatalogueProducts(),
@@ -380,4 +380,24 @@ export async function loadCatalogueProducts(): Promise<CatalogueProduct[]> {
     });
 
   return cataloguePromise;
+}
+
+export type VariantMeta = { image: string | null; productName: string; packSize: number; specSummary: string };
+
+/** Display meta keyed by variant SKU (the cart / order catalogue number). */
+export async function loadVariantMeta(): Promise<Record<string, VariantMeta>> {
+  const map: Record<string, VariantMeta> = {};
+  for (const product of await loadCatalogueProducts()) {
+    for (const variant of product.variants ?? []) {
+      const sku = keyFor(variant.sku);
+      if (!sku) continue;
+      map[sku] = {
+        image: variant.images?.find(Boolean) ?? product.images?.find(Boolean) ?? null,
+        productName: product.name ?? "",
+        packSize: numberValue(variant.packSize ?? variant.pack, 1) || 1,
+        specSummary: textValue(variant.specsText).split(/\s*;\s*/).filter(Boolean).join(" - "),
+      };
+    }
+  }
+  return map;
 }

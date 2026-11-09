@@ -2,110 +2,9 @@
 import { cartPackPaise, useCartStore } from "@/Store/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { loadVariantMeta, type VariantMeta } from "@/lib/catalogueClient";
 import { SalePrice, salePaise } from "@/components/SalePrice";
 import { useTodaysSale } from "@/hooks/useTodaysSale";
-
-// Types
-type ProductMeta = {
-  image: string | null;
-  productName: string;
-  packSize: number;
-  specSummary: string;
-};
-
-// Build a variant-SKU meta lookup from nested_products.json
-function buildVariantLookup(data: any[]): Record<string, ProductMeta> {
-  const map: Record<string, ProductMeta> = {};
-
-  for (const product of data) {
-    const image = (product.images ?? product.Images ?? []).find(Boolean) ?? null;
-    const productName = product.name ?? product.Name ?? "";
-    const desc = product.Description ?? "";
-
-    // Parse the description table to get per-variant pack sizes and specs
-    const packMap = parsePackSizes(desc);
-    const specMap = parseSpecSummaries(desc);
-
-    for (const variant of product.variants ?? []) {
-      const sku = variant.SKU ?? variant.sku;
-      const variantImage = (variant.images ?? variant.Images ?? []).find(Boolean) ?? image;
-      map[sku] = {
-        image: variantImage,
-        productName,
-        packSize: packMap[sku] ?? 1,
-        specSummary: specMap[sku] ?? "",
-      };
-    }
-  }
-  return map;
-}
-
-// Parse PACK OF column from description HTML table: returns { catNo -> packSize }
-function parsePackSizes(html: string): Record<string, number> {
-  const result: Record<string, number> = {};
-  if (!html) return result;
-
-  const theadMatch = html.match(/<thead>([\s\S]*?)<\/thead>/i);
-  if (!theadMatch) return result;
-  const headers = [...theadMatch[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-    .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-  const packIdx = headers.findIndex(h => /pack|qty|quantity/i.test(h));
-  if (packIdx === -1) return result;
-
-  const tbodyMatch = html.match(/<tbody>([\s\S]*?)<\/tbody>/i);
-  if (!tbodyMatch) return result;
-
-  [...tbodyMatch[1].matchAll(/<tr>([\s\S]*?)<\/tr>/gi)].forEach(tr => {
-    const cells = [...tr[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-      .map(m => m[1].replace(/<[^>]*>/g, "").trim());
-    const catNo = cells[0];
-    const packStr = cells[packIdx] ?? "1";
-    const n = parseInt(packStr, 10);
-    if (catNo) result[catNo] = isNaN(n) ? 1 : n;
-  });
-  return result;
-}
-
-function parseSpecSummaries(html: string): Record<string, string> {
-  const result: Record<string, string> = {};
-  if (!html) return result;
-
-  const theadMatch = html.match(/<thead>([\s\S]*?)<\/thead>/i);
-  const tbodyMatch = html.match(/<tbody>([\s\S]*?)<\/tbody>/i);
-  if (!theadMatch || !tbodyMatch) return result;
-
-  const headers = [...theadMatch[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-    .map((m) => m[1].replace(/<[^>]*>/g, "").trim())
-    .filter(Boolean);
-  if (headers.length < 2) return result;
-
-  const specHeaders = headers
-    .slice(1)
-    .filter((header) => !/pack\s*of|pack|qty|quantity/i.test(header));
-  if (specHeaders.length === 0) return result;
-
-  [...tbodyMatch[1].matchAll(/<tr>([\s\S]*?)<\/tr>/gi)].forEach((tr) => {
-    const cells = [...tr[1].matchAll(/<td>([\s\S]*?)<\/td>/gi)]
-      .map((m) => m[1].replace(/<[^>]*>/g, "").trim());
-    const catNo = cells[0];
-    if (!catNo) return;
-
-    const specParts = specHeaders
-      .map((header, index) => {
-        const value = cells[index + 1];
-        if (!value) return "";
-        return `${header}: ${value}`;
-      })
-      .filter(Boolean);
-
-    if (specParts.length > 0) {
-      result[catNo] = specParts.join(" - ");
-    }
-  });
-
-  return result;
-}
 
 /** Format paise to rupees */
 function fmt(paise: number): string {
@@ -123,13 +22,13 @@ export default function Cart() {
   const clearCart = useCartStore((s) => s.clearCart);
   const router    = useRouter();
 
-  const [lookup, setLookup] = useState<Record<string, ProductMeta>>({});
+  const [lookup, setLookup] = useState<Record<string, VariantMeta>>({});
   const saleOf = useTodaysSale();
 
   // Load product meta once
   useEffect(() => {
-    axios.get("/data/products.json")
-      .then(res => setLookup(buildVariantLookup(res.data)))
+    loadVariantMeta()
+      .then(setLookup)
       .catch(() => {});
   }, []);
 

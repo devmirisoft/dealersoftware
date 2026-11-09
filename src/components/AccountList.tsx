@@ -25,6 +25,7 @@ type UserData = {
   image?: string
   Dealer_Image?: string
   ADMIN_IMAGE?: string
+  ADMIN_EMAIL?: string
   imageUrl?: string
 }
 
@@ -46,7 +47,7 @@ function AccountList() {
     : user.name || user.username || "Staff"
 
   const userEmail =
-    role === "3" ? user.email || "admin@omsons.com"
+    role === "3" ? user.ADMIN_EMAIL || ""
     : role === "2" ? user.Dealer_Email || user.email || "dealer@omsons.com"
     : user.email || "staff@omsons.com"
 
