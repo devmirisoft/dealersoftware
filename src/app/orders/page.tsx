@@ -29,6 +29,7 @@ import { place } from "@/components/ui/floating-menu";
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Order = {
   order_id: string;
+  order_number?: string | null;
   order_date: string;
   orderDate?: string;
   order_amount: string;
@@ -935,7 +936,7 @@ function DispatchDetailsDrawer({
         <div className="dispatch-header">
           <div>
             <p className="dispatch-kicker">Dispatch Details</p>
-            <h2 className="dispatch-title">Order No: {formatDisplayOrderNumber(order.order_id)}</h2>
+            <h2 className="dispatch-title">Order No: {order.order_number || formatDisplayOrderNumber(order.order_id)}</h2>
             <p className="dispatch-subtitle">Dealer: {order.Dealer_Name || '—'}</p>
           </div>
           <button type="button" className="dispatch-close" onClick={onClose} aria-label="Close dispatch details">
@@ -1537,7 +1538,7 @@ export default function OrderHistoryPage() {
       const customDiscountSummary = customDiscountProgressMap[getCustomDiscountProgressKeyForOrder(o.order_id)];
       const base: Record<string, string | number> = {
         "S.No.":        (page - 1) * pageSize + i + 1,
-        "Order No":     formatDisplayOrderNumber(o.order_id),
+        "Order No":     o.order_number || formatDisplayOrderNumber(o.order_id),
         "Date":         (o.orderDate || o.order_date || "").slice(0, 10),
         "Due Date":     o.outstandingDate || "",
         "Amount (₹)":   amounts.grossAmount,
@@ -2034,8 +2035,8 @@ export default function OrderHistoryPage() {
                           type="text"
                           value={filters.orderId}
                           onChange={e => setFilter("orderId", e.target.value)}
-                          placeholder="e.g. 45…"
-                          maxLength={12}
+                          placeholder="e.g. A001…"
+                          maxLength={20}
                           autoComplete="off"
                           aria-label="Filter by order number"
                           className={`w-[72px] ${filterInputCls(!!filters.orderId)}`}
@@ -2189,7 +2190,7 @@ export default function OrderHistoryPage() {
                                 <div className="flex items-center gap-2">
                                   <span
                                     className="font-mono text-[11.05px] font-bold text-brand-600"
-                                    dangerouslySetInnerHTML={{ __html: formatDisplayOrderNumber(highlight(String(oid), filters.orderId)) }}
+                                    dangerouslySetInnerHTML={{ __html: highlight(order.order_number || formatDisplayOrderNumber(oid), filters.orderId) }}
                                   />
                                   {isDeleted && (
                                     <span className="px-1.5 py-0.5 bg-red-50 border border-red-200 text-red-700 rounded text-[8.5px] font-bold">DELETED</span>
