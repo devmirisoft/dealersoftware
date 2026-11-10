@@ -400,13 +400,13 @@ export default function LedgerDealerListPage() {
           <div
             style={{
               width: 32, height: 32,
-              border: '3px solid #e5e7eb', borderTopColor: '#6366f1',
+              border: '3px solid #e6ecf7', borderTopColor: '#6366f1',
               borderRadius: '50%',
               animation: 'spin 0.7s linear infinite',
               margin: '0 auto 12px',
             }}
           />
-          <p style={{ color: '#9ca3af', fontSize: 13 }}>Loading ledger…</p>
+          <p style={{ color: '#94a3b8', fontSize: 13 }}>Loading ledger…</p>
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       </div>

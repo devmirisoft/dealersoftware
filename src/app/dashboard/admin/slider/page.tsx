@@ -108,7 +108,7 @@ export default function SliderManager({
         <div className="flex items-center gap-2">
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] text-[12.5px] font-medium text-[#374151] cursor-pointer transition-all hover:bg-[#f1f5f9] hover:-translate-x-px"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] text-[12.5px] font-medium text-[#334155] cursor-pointer transition-all hover:bg-[#f1f5f9] hover:-translate-x-px"
           >Back</button>
           <h2 className="text-[15px] font-bold text-gray-900">{title}</h2>
         </div>
@@ -143,7 +143,7 @@ export default function SliderManager({
           ) : (
             <>
               <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mb-2">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" />
                   <circle cx="8.5" cy="8.5" r="1.5" />
                   <polyline points="21 15 16 10 5 21" />

@@ -118,7 +118,7 @@ export default function TermsAcceptancePage() {
   }, [rows, tab, search]);
 
   return (
-    <main className="min-h-screen bg-[#f4f6fa] px-6 py-7 text-[#1f2937]">
+    <main className="min-h-screen bg-gray-100 px-6 py-7 text-[#1e293b]">
       <div className="admin-page-shell">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -230,7 +230,7 @@ export default function TermsAcceptancePage() {
               {!loading && !error && visible.map((row) => (
                 <tr key={row.id} className="border-t border-[#eef1f6]">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-[#1f2937]">{row.businessName}</div>
+                    <div className="font-medium text-[#1e293b]">{row.businessName}</div>
                     <div className="text-xs text-[#667085]">{row.dealerCode || "No code"}</div>
                   </td>
                   <td className="px-4 py-3 text-[#59677a]">
@@ -321,7 +321,7 @@ function DealerDocumentModal({ dealer, onClose }: { dealer: TermsRow; onClose: (
             <button
               type="button"
               onClick={() => setEditing(true)}
-              className="h-9 rounded bg-[#1f2937] px-4 text-sm font-medium text-white hover:bg-[#374151] disabled:opacity-50"
+              className="h-9 rounded bg-[#1e293b] px-4 text-sm font-medium text-white hover:bg-[#334155] disabled:opacity-50"
             >
               Edit document
             </button>

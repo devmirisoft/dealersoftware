@@ -1634,7 +1634,7 @@ export default function OrderHistoryPage() {
         .dispatch-cat-pill { background: #fef3c7; color: #92400e; }
         .dispatch-line-id { background: #eef2ff; color: #4338ca; font-family: 'JetBrains Mono', monospace; }
         .dispatch-history-status { background: #eff6ff; color: #1d4ed8; }
-        .dispatch-product-name { font-size: 11.9px; font-weight: 700; color: #111827; }
+        .dispatch-product-name { font-size: 11.9px; font-weight: 700; color: #0f1f45; }
         .dispatch-product-desc { font-size: 10.2px; color: #64748b; margin-top: 4px; line-height: 1.5; }
         .dispatch-product-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
         .dispatch-product-grid span, .dispatch-history-meta span { font-size: 9.35px; color: #475569; font-family: 'JetBrains Mono', monospace; }
@@ -1657,7 +1657,7 @@ export default function OrderHistoryPage() {
         .dispatch-history-card { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
         .dispatch-history-item { padding: 12px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0; }
         .dispatch-history-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-        .dispatch-history-remark { font-size: 10.2px; color: #1f2937; line-height: 1.5; }
+        .dispatch-history-remark { font-size: 10.2px; color: #1e293b; line-height: 1.5; }
         .dispatch-history-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
         .dispatch-empty, .dispatch-error { padding: 16px; border-radius: 14px; font-size: 10.62px; }
         .dispatch-empty { background: #fff; border: 1px dashed #dbe2ee; color: #64748b; }
@@ -1668,7 +1668,7 @@ export default function OrderHistoryPage() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gray-50" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
+      <div className="min-h-screen bg-gray-100" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
 
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between gap-4 sticky top-[84px] z-20">
@@ -1903,7 +1903,7 @@ export default function OrderHistoryPage() {
 
             {section === "active" && isError && (
               <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round">
                   <circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" />
                 </svg>
                 <p className="text-[11.9px] leading-5 text-gray-600">
@@ -1933,7 +1933,7 @@ export default function OrderHistoryPage() {
 
             {section === "cancelled" && cancelledError && (
               <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round">
                   <circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" />
                 </svg>
                 <p className="text-[11.9px] leading-5 text-gray-600">Failed to load cancelled orders. Please try again.</p>
@@ -1963,7 +1963,7 @@ export default function OrderHistoryPage() {
                         ? (
                           <tr><td colSpan={cancelledColCount}>
                             <div className="flex flex-col items-center justify-center py-16 gap-3">
-                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.2" strokeLinecap="round">
+                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.2" strokeLinecap="round">
                                 <circle cx="12" cy="12" r="9" /><path d="m15 9-6 6M9 9l6 6" />
                               </svg>
                               <p className="text-[11.9px] leading-5 text-gray-600">No cancelled or declined orders found</p>
@@ -2150,7 +2150,7 @@ export default function OrderHistoryPage() {
                         ? (
                           <tr><td colSpan={colCount}>
                             <div className="flex flex-col items-center justify-center py-16 gap-3">
-                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.2" strokeLinecap="round">
+                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.2" strokeLinecap="round">
                                 <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
                                 <rect x="9" y="3" width="6" height="4" rx="1" />
                               </svg>

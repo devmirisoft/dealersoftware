@@ -10,10 +10,10 @@ type MongoGlobalCache = {
 };
 
 const mongoGlobal = globalThis as typeof globalThis & {
-  __omsonsMongoCache?: MongoGlobalCache;
+  __mongoCache?: MongoGlobalCache;
 };
 
-const cache = mongoGlobal.__omsonsMongoCache ?? (mongoGlobal.__omsonsMongoCache = {});
+const cache = mongoGlobal.__mongoCache ?? (mongoGlobal.__mongoCache = {});
 const MONGO_TIMEOUT_MS = 5000;
 
 function readBooleanEnv(name: string): boolean | undefined {

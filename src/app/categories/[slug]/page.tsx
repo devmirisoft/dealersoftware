@@ -158,7 +158,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
               {!loading && <p style={{ fontSize: 12, color: '#94a3b8', margin: '3px 0 0' }}>{filtered.length} product{filtered.length !== 1 ? 's' : ''}</p>}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#374151', cursor: 'pointer' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#334155', cursor: 'pointer' }}>
                 <input type="checkbox" checked={inStockOnly} onChange={() => { setInStockOnly(v => !v); setCurrentPage(1); }} style={{ accentColor: '#6A5ACD' }} />
                 In Stock Only
               </label>
@@ -231,9 +231,9 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               {otherCats.map(l => (
                 <Link key={l} href={`/categories/${slugify(l)}`}
-                  style={{ padding: '8px 16px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 20, fontSize: 13, fontWeight: 500, color: '#374151', textDecoration: 'none', transition: 'border-color .15s, color .15s' }}
+                  style={{ padding: '8px 16px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 20, fontSize: 13, fontWeight: 500, color: '#334155', textDecoration: 'none', transition: 'border-color .15s, color .15s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#6A5ACD'; (e.currentTarget as HTMLAnchorElement).style.color = '#6A5ACD'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLAnchorElement).style.color = '#374151'; }}>
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLAnchorElement).style.color = '#334155'; }}>
                   {l}
                 </Link>
               ))}

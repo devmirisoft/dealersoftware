@@ -61,7 +61,7 @@ export default function DealerTermsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f4f6fa] px-6 py-7 text-[#1f2937]">
+    <main className="min-h-screen bg-gray-100 px-6 py-7 text-[#1e293b]">
       <div className="mx-auto max-w-4xl">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold">Terms &amp; Conditions</h1>
@@ -84,7 +84,7 @@ export default function DealerTermsPage() {
               type="button"
               onClick={acceptUpdated}
               disabled={accepting || (mustSign && !signature)}
-              className="h-9 shrink-0 rounded bg-[#1f2937] px-4 text-sm font-medium text-white hover:bg-[#374151] disabled:opacity-50"
+              className="h-9 shrink-0 rounded bg-[#1e293b] px-4 text-sm font-medium text-white hover:bg-[#334155] disabled:opacity-50"
             >
               {accepting ? "Saving..." : mustSign ? "Sign and accept" : "I accept the updated terms"}
             </button>

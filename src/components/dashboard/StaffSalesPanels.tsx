@@ -28,8 +28,8 @@ const GRANULARITY_OPTIONS: Array<{ value: Granularity; label: string; adjective:
 // The admin dashboard's region colours.
 const LINE_COLORS = ["#4f8fcb", "#d97706", "#7c3aed", "#6fd08c", "#f97316", "#2563eb", "#f2cf5b", "#c084fc", "#0f766e"];
 
-const AXIS_TICK = { fontSize: 10.5, fill: "#8e8e93" };
-const TOOLTIP_STYLE = { backgroundColor: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: "14px", boxShadow: "0 10px 30px rgba(0,0,0,.10)", color: "#1d1d1f", fontSize: "11px" };
+const AXIS_TICK = { fontSize: 10.5, fill: "#94a3b8" };
+const TOOLTIP_STYLE = { backgroundColor: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: "14px", boxShadow: "0 10px 30px rgba(0,0,0,.10)", color: "#0f1f45", fontSize: "11px" };
 
 const rupee = (value: unknown) => `₹${Number(value ?? 0).toLocaleString("en-IN")}`;
 
@@ -48,14 +48,14 @@ export const STAFF_PANEL_CSS = `
   .target-head { display: flex; align-items: center; gap: 14px; }
   .target-icon { display: grid; place-items: center; flex-shrink: 0; width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #4f7cff, #7b4dff); color: #fff; }
   .target-title { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
-  .target-sub { margin-top: 2px; color: #6e6e73; font-size: 12.5px; }
+  .target-sub { margin-top: 2px; color: #64748b; font-size: 12.5px; }
   .target-pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .target-pair { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; border-radius: 16px; border: 1px solid; }
   .target-pair.blue { background: rgba(0, 122, 255, .045); border-color: rgba(0, 122, 255, .12); }
   .target-pair.green { background: rgba(52, 199, 89, .06); border-color: rgba(52, 199, 89, .16); }
   .target-pair-head { font-size: 14px; font-weight: 650; }
   .target-pair-value { font-size: 22px; font-weight: 750; letter-spacing: -.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
-  .target-pair-value span { color: #8e8e93; font-weight: 500; }
+  .target-pair-value span { color: #94a3b8; font-weight: 500; }
   .target-pair .stat-badge { margin-top: 0; }
   @container (max-width: 420px) { .target-pairs { grid-template-columns: 1fr; } }
 
@@ -77,8 +77,8 @@ export const STAFF_PANEL_CSS = `
   .region-tabs-wrap { overflow-x: auto; padding-bottom: 2px; margin-bottom: 15px; scrollbar-width: none; }
   .region-tabs-wrap::-webkit-scrollbar { display: none; }
   .region-tabs { display: inline-flex; gap: 3px; padding: 3px; min-width: max-content; border-radius: 12px; background: rgba(118, 118, 128, .12); }
-  .region-tab { border: 0; border-radius: 9px; background: transparent; color: #6e6e73; padding: 6px 10px; font-size: 10.5px; font-weight: 600; cursor: pointer; transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease; }
-  .region-tab.active { background: #fff; color: #1d1d1f; box-shadow: 0 1px 4px rgba(0,0,0,.10); }
+  .region-tab { border: 0; border-radius: 9px; background: transparent; color: #64748b; padding: 6px 10px; font-size: 10.5px; font-weight: 600; cursor: pointer; transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease; }
+  .region-tab.active { background: #fff; color: #0f1f45; box-shadow: 0 1px 4px rgba(0,0,0,.10); }
 
   .legend-group { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px 10px; max-width: 62%; }
   @media (max-width: 850px) { .legend-group { max-width: 100%; justify-content: flex-start; } }
@@ -86,25 +86,25 @@ export const STAFF_PANEL_CSS = `
   .ranking-list { display: flex; flex-direction: column; }
   .ranking-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid rgba(60, 60, 67, .11); }
   .ranking-row:first-child { border-top: 0; }
-  .rank-number { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; background: rgba(118,118,128,.10); color: #6e6e73; font-size: 10px; font-weight: 700; }
+  .rank-number { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; background: rgba(118,118,128,.10); color: #64748b; font-size: 10px; font-weight: 700; }
   .rank-number.top { background: rgba(0,122,255,.10); color: #006162; }
-  .ranking-name { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #1d1d1f; font-size: 12.5px; font-weight: 610; }
-  .ranking-value { color: #1d1d1f; font-size: 12px; font-weight: 680; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ranking-name { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #0f1f45; font-size: 12.5px; font-weight: 610; }
+  .ranking-value { color: #0f1f45; font-size: 12px; font-weight: 680; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
   .sale-panel { grid-column: span 6; display: flex; flex-direction: column; gap: 10px; }
   .sale-chart { flex: 1; min-height: 220px; }
   .sale-range, .sale-filters { display: flex; flex-wrap: wrap; gap: 10px; }
-  .sale-field { display: flex; align-items: center; gap: 8px; color: #6e6e73; font-size: 12px; font-weight: 600; }
-  .sale-field input { padding: 6px 10px; border: 1px solid rgba(60, 60, 67, .14); border-radius: 10px; background: rgba(255, 255, 255, .88); color: #1d1d1f; font: inherit; font-weight: 600; }
-  .sale-all-time { padding: 6px 12px; border: 1px solid rgba(60, 60, 67, .14); border-radius: 10px; background: rgba(255, 255, 255, .88); color: #6e6e73; font-size: 12px; font-weight: 650; cursor: pointer; }
-  .sale-all-time:hover:not(:disabled) { color: #1d1d1f; }
+  .sale-field { display: flex; align-items: center; gap: 8px; color: #64748b; font-size: 12px; font-weight: 600; }
+  .sale-field input { padding: 6px 10px; border: 1px solid rgba(60, 60, 67, .14); border-radius: 10px; background: rgba(255, 255, 255, .88); color: #0f1f45; font: inherit; font-weight: 600; }
+  .sale-all-time { padding: 6px 12px; border: 1px solid rgba(60, 60, 67, .14); border-radius: 10px; background: rgba(255, 255, 255, .88); color: #64748b; font-size: 12px; font-weight: 650; cursor: pointer; }
+  .sale-all-time:hover:not(:disabled) { color: #0f1f45; }
   .sale-all-time:disabled { opacity: .45; cursor: default; }
-  .sale-total-label { color: #6e6e73; font-size: 12px; font-weight: 600; }
+  .sale-total-label { color: #64748b; font-size: 12px; font-weight: 600; }
   .sale-total { font-size: 30px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-  .sale-total-meta { margin-top: -4px; color: #8e8e93; font-size: 11.5px; }
+  .sale-total-meta { margin-top: -4px; color: #94a3b8; font-size: 11.5px; }
 
   .role-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-  .role-pill { display: inline-flex; align-items: center; gap: 10px; padding: 5px 5px 5px 14px; border-radius: 999px; border: 1px solid rgba(60, 60, 67, .12); background: rgba(118, 118, 128, .06); color: #1d1d1f; font-size: 13px; font-weight: 600; }
+  .role-pill { display: inline-flex; align-items: center; gap: 10px; padding: 5px 5px 5px 14px; border-radius: 999px; border: 1px solid rgba(60, 60, 67, .12); background: rgba(118, 118, 128, .06); color: #0f1f45; font-size: 13px; font-weight: 600; }
   .role-count { display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 999px; background: #fff; font-size: 12px; font-variant-numeric: tabular-nums; }
 `;
 

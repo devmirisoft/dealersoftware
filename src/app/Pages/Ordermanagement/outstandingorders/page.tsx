@@ -40,7 +40,7 @@ function resolveViewer(): { role: Role; id: string } | null {
 function statusBadge(s: string) {
   if (s === "1") return { cls: "badge-approved", dot: "#10b981", label: "Approved" }
   if (s === "0") return { cls: "badge-pending",  dot: "#f59e0b", label: "Pending"  }
-  return               { cls: "badge-unknown",  dot: "#9ca3af", label: "Unknown"  }
+  return               { cls: "badge-unknown",  dot: "#94a3b8", label: "Unknown"  }
 }
 function acceptBadge(a: string) {
   return a === "1"
@@ -240,7 +240,7 @@ export default function PendingOrdersPage() {
         .clear-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 7px; border: 1px solid #fde68a; background: #fffbeb; color: #b45309; font-size: 11px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.12s; white-space: nowrap; }
         .clear-btn:hover { background: #fef3c7; }
         .stats-row { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
-        .stat-pill { display: flex; align-items: center; gap: 7px; padding: 8px 16px; background: #fff; border: 1px solid #e8eaf0; border-radius: 10px; font-size: 12.5px; color: #374151; font-weight: 500; }
+        .stat-pill { display: flex; align-items: center; gap: 7px; padding: 8px 16px; background: #fff; border: 1px solid #e8eaf0; border-radius: 10px; font-size: 12.5px; color: #334155; font-weight: 500; }
         .stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .stat-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px; color: #0f172a; }
         .err-banner { margin-bottom: 16px; padding: 12px 16px; background: #fff5f5; border: 1px solid #fecaca; border-radius: 10px; font-size: 13px; color: #dc2626; display: flex; align-items: center; gap: 8px; }
@@ -253,7 +253,7 @@ export default function PendingOrdersPage() {
         th:first-child { padding-left: 20px; } th:last-child { padding-right: 20px; }
         tbody tr { border-bottom: 1px solid #f1f3f9; transition: background 0.12s; }
         tbody tr:last-child { border-bottom: none; } tbody tr:hover { background: #fffbeb; }
-        td { padding: 13px 14px; vertical-align: middle; color: #374151; }
+        td { padding: 13px 14px; vertical-align: middle; color: #334155; }
         td:first-child { padding-left: 20px; } td:last-child { padding-right: 20px; }
         .shimmer { height: 14px; border-radius: 6px; background: linear-gradient(90deg, #f0f2f8 25%, #e4e8f2 50%, #f0f2f8 75%); background-size: 200% 100%; animation: sh 1.4s infinite; }
         @keyframes sh { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
@@ -267,15 +267,15 @@ export default function PendingOrdersPage() {
         .badge-dot          { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
         .badge-approved     { background: #ecfdf5; color: #065f46; }
         .badge-pending      { background: #fffbeb; color: #92400e; }
-        .badge-unknown      { background: #f3f4f6; color: #6b7280; }
+        .badge-unknown      { background: #f4f6fb; color: #64748b; }
         .badge-accepted     { background: #eff6ff; color: #1d4ed8; }
         .badge-not-accepted { background: #fff1f2; color: #be123c; }
-        .empty-row td { padding: 52px 20px; text-align: center; color: #9ca3af; font-size: 13px; }
+        .empty-row td { padding: 52px 20px; text-align: center; color: #94a3b8; font-size: 13px; }
         .pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid #f1f3f9; flex-wrap: wrap; gap: 12px; }
         .pagination-info { font-size: 12px; color: #94a3b8; }
-        .pagination-info strong { color: #374151; font-weight: 600; }
+        .pagination-info strong { color: #334155; font-weight: 600; }
         .pager { display: flex; align-items: center; gap: 4px; }
-        .page-btn { min-width: 32px; height: 32px; padding: 0 8px; border-radius: 8px; border: 1px solid #e2e6ef; background: #fff; font-size: 12.5px; font-family: 'Sora', sans-serif; font-weight: 500; color: #374151; cursor: pointer; transition: all 0.12s; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .page-btn { min-width: 32px; height: 32px; padding: 0 8px; border-radius: 8px; border: 1px solid #e2e6ef; background: #fff; font-size: 12.5px; font-family: 'Sora', sans-serif; font-weight: 500; color: #334155; cursor: pointer; transition: all 0.12s; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .page-btn:hover:not(:disabled):not(.active) { background: #fffbeb; border-color: #fde68a; }
         .page-btn.active { background: #b45309; border-color: #b45309; color: #fff; font-weight: 600; }
         .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -404,7 +404,7 @@ export default function PendingOrdersPage() {
                   {!isLoading && displayData.length === 0 && (
                     <tr className="empty-row">
                       <td colSpan={10}>
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" style={{ margin: '0 auto 10px', display: 'block' }}>
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.5" style={{ margin: '0 auto 10px', display: 'block' }}>
                           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                         </svg>
                         {activeFilters > 0 ? 'No orders match the current filters' : 'All caught up — no pending orders'}
@@ -436,7 +436,7 @@ export default function PendingOrdersPage() {
                             </div>
                           )}
                         </td>
-                        <td style={{ textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', color: '#374151', fontSize: '12.5px' }}>
+                        <td style={{ textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', color: '#334155', fontSize: '12.5px' }}>
                           {order.orderdata_item_quantity || '—'}
                         </td>
                         <td><span className={`badge ${sb.cls}`}><span className="badge-dot" style={{ background: sb.dot }} />{sb.label}</span></td>

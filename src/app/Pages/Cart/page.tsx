@@ -54,7 +54,7 @@ export default function CartPage() {
   const savedPaise = subtotalPaise - saleSubtotalPaise;
   const subtotalText = savedPaise > 0 ? (
     <>
-      <s style={{ fontSize: "0.7em", color: "#9ca3af", fontWeight: 400, marginRight: 6 }}>{fmt(subtotalPaise)}</s>
+      <s style={{ fontSize: "0.7em", color: "#94a3b8", fontWeight: 400, marginRight: 6 }}>{fmt(subtotalPaise)}</s>
       <span style={{ color: "#059669" }}>{fmt(saleSubtotalPaise)}</span>
     </>
   ) : fmt(subtotalPaise);
@@ -68,16 +68,16 @@ export default function CartPage() {
     <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
       
       {/* ── Breadcrumb bar ── */}
-      <div style={{ background: "#fff", borderBottom: "1px solid #e5e7eb", padding: "10px 24px", display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{ background: "#fff", borderBottom: "1px solid #e6ecf7", padding: "10px 24px", display: "flex", alignItems: "center", gap: 8 }}>
         <Link href="/Pages/products" style={{ fontSize: 13, color: "var(--color-brand-600)", textDecoration: "none", fontWeight: 500 }}>
           Products
         </Link>
 
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
 
-        <span style={{ fontSize: 13, color: "#374151", fontWeight: 500 }}>Shopping Cart</span>
+        <span style={{ fontSize: 13, color: "#334155", fontWeight: 500 }}>Shopping Cart</span>
         {cart.length > 0 && (
-          <span style={{ marginLeft: 4, fontSize: 12, color: "#6b7280" }}>
+          <span style={{ marginLeft: 4, fontSize: 12, color: "#64748b" }}>
             ({cart.length} item{cart.length !== 1 ? "s" : ""})
           </span>
         )}
@@ -95,15 +95,15 @@ export default function CartPage() {
 
 
         {/* ── Cart Items Panel ─────────────────────────────────────── */}
-        <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 20, overflow: "hidden" }}>
+        <div style={{ background: "#fff", border: "1px solid #e6ecf7", borderRadius: 20, overflow: "hidden" }}>
 
           {/* Panel header */}
-          <div style={{ padding: "20px 24px 16px", borderBottom: "1px solid #f3f4f6", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ padding: "20px 24px 16px", borderBottom: "1px solid #f4f6fb", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             
             <div>
-              <h1 style={{ fontSize: 20, fontWeight: 600, color: "#111827", margin: 0 }}>Shopping Cart</h1>
+              <h1 style={{ fontSize: 20, fontWeight: 600, color: "#0f1f45", margin: 0 }}>Shopping Cart</h1>
               {cart.length > 0 && (
-                <p style={{ fontSize: 12, color: "#9ca3af", marginTop: 3, marginBottom: 0 }}>
+                <p style={{ fontSize: 12, color: "#94a3b8", marginTop: 3, marginBottom: 0 }}>
                   {totalPacks} pack{totalPacks !== 1 ? "s" : ""} · {totalPcs} Pcs.
                 </p>
               )}
@@ -121,15 +121,15 @@ export default function CartPage() {
           {/* Empty state */}
           {cart.length === 0 && (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "72px 24px", gap: 16 }}>
-              <div style={{ width: 80, height: 80, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <div style={{ width: 80, height: 80, borderRadius: "50%", background: "#f4f6fb", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
                   <path d="M16 10a4 4 0 0 1-8 0"/>
                 </svg>
               </div>
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: 17, fontWeight: 600, color: "#374151", marginBottom: 6 }}>Your cart is empty</p>
-                <p style={{ fontSize: 13, color: "#9ca3af" }}>Browse products and add items to get started</p>
+                <p style={{ fontSize: 17, fontWeight: 600, color: "#334155", marginBottom: 6 }}>Your cart is empty</p>
+                <p style={{ fontSize: 13, color: "#94a3b8" }}>Browse products and add items to get started</p>
               </div>
               <Link
                 href="/Pages/products"
@@ -159,17 +159,17 @@ export default function CartPage() {
                   key={item.id}
                   style={{
                     display: "flex", gap: 16, padding: "20px 24px",
-                    borderBottom: idx < cart.length - 1 ? "1px solid #f9fafb" : "none",
+                    borderBottom: idx < cart.length - 1 ? "1px solid #f8fafd" : "none",
                     opacity: isRemoving ? 0 : 1, transform: isRemoving ? "translateX(20px)" : "none",
                     transition: "opacity .25s, transform .25s",
                   }}
                 >
                   {/* Image */}
-                  <div style={{ width: 88, height: 88, borderRadius: 12, border: "1px solid #f3f4f6", background: "#fafafa", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
+                  <div style={{ width: 88, height: 88, borderRadius: 12, border: "1px solid #f4f6fb", background: "#fafafa", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
                     {image ? (
                       <img src={image} alt={prodName} style={{ width: "100%", height: "100%", objectFit: "contain", padding: 6 }} />
                     ) : (
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.2">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.2">
                         <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
                         <path d="m21 15-5-5L5 21"/>
                       </svg>
@@ -178,7 +178,7 @@ export default function CartPage() {
 
                   {/* Details */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: 15, fontWeight: 600, color: "#111827", marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <p style={{ fontSize: 15, fontWeight: 600, color: "#0f1f45", marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {prodName}
                     </p>
 
@@ -210,11 +210,11 @@ export default function CartPage() {
 
                     {/* Quantity controls */}
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{ display: "flex", alignItems: "center", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 10, overflow: "hidden" }}>
+                      <div style={{ display: "flex", alignItems: "center", background: "#f8fafd", border: "1px solid #e6ecf7", borderRadius: 10, overflow: "hidden" }}>
                         <button
                           onClick={() => decrement(item.id)}
-                          style={{ width: 34, height: 34, border: "none", background: "transparent", cursor: "pointer", fontSize: 18, fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", justifyContent: "center", transition: "background .15s" }}
-                          onMouseEnter={e => (e.currentTarget.style.background = "#f3f4f6")}
+                          style={{ width: 34, height: 34, border: "none", background: "transparent", cursor: "pointer", fontSize: 18, fontWeight: 600, color: "#334155", display: "flex", alignItems: "center", justifyContent: "center", transition: "background .15s" }}
+                          onMouseEnter={e => (e.currentTarget.style.background = "#f4f6fb")}
                           onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                         >−</button>
                         <input
@@ -224,18 +224,18 @@ export default function CartPage() {
                             const val = parseInt(e.target.value);
                             if (!isNaN(val) && val > 0) setQty(item.id, val);
                           }}
-                          style={{ width: 48, minWidth: 38, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#111827", fontFamily: "monospace", border: "none", outline: "none", background: "transparent", MozAppearance: "textfield", WebkitAppearance: "none" }}
+                          style={{ width: 48, minWidth: 38, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#0f1f45", fontFamily: "monospace", border: "none", outline: "none", background: "transparent", MozAppearance: "textfield", WebkitAppearance: "none" }}
                           min={1}
                         />
                         <button
                           onClick={() => increment(item.id)}
-                          style={{ width: 34, height: 34, border: "none", background: "transparent", cursor: "pointer", fontSize: 18, fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", justifyContent: "center", transition: "background .15s" }}
-                          onMouseEnter={e => (e.currentTarget.style.background = "#f3f4f6")}
+                          style={{ width: 34, height: 34, border: "none", background: "transparent", cursor: "pointer", fontSize: 18, fontWeight: 600, color: "#334155", display: "flex", alignItems: "center", justifyContent: "center", transition: "background .15s" }}
+                          onMouseEnter={e => (e.currentTarget.style.background = "#f4f6fb")}
                           onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                         >+</button>
                       </div>
 
-                      <span style={{ color: "#e5e7eb" }}>|</span>
+                      <span style={{ color: "#e6ecf7" }}>|</span>
 
                       <button
                         onClick={() => handleRemove(item.id)}
@@ -249,9 +249,9 @@ export default function CartPage() {
                         title="Mark this product as priority"
                         style={{
                           fontSize: 12,
-                          color: item.isPriority ? "#b91c1c" : "#4b5563",
+                          color: item.isPriority ? "#b91c1c" : "#475569",
                           background: item.isPriority ? "#fee2e2" : "#fff",
-                          border: item.isPriority ? "1px solid #fecaca" : "1px solid #e5e7eb",
+                          border: item.isPriority ? "1px solid #fecaca" : "1px solid #e6ecf7",
                           borderRadius: 999,
                           cursor: "pointer",
                           fontWeight: 700,
@@ -263,7 +263,7 @@ export default function CartPage() {
                     </div>
 
                     {packSize > 1 && (
-                      <p style={{ fontSize: 11, color: "#9ca3af", marginTop: 8, fontFamily: "monospace" }}>
+                      <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 8, fontFamily: "monospace" }}>
                         {item.quantity} pack{item.quantity !== 1 ? "s" : ""} × {packSize} Pcs. = {pcsCount} Pcs. total
                       </p>
                     )}
@@ -271,14 +271,14 @@ export default function CartPage() {
 
                   {/* Price */}
                   <div style={{ textAlign: "right", flexShrink: 0, minWidth: 100 }}>
-                    <p style={{ fontSize: 16, fontWeight: 700, color: "#111827", marginBottom: 4 }}>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: "#0f1f45", marginBottom: 4 }}>
                       <SalePrice paise={lineTotal} percent={sale} />
                     </p>
                     {item.quantity > 1 && (
-                      <p style={{ fontSize: 11, color: "#9ca3af" }}>{fmt(salePaise(packPaise(item, packSize), sale))} / pack</p>
+                      <p style={{ fontSize: 11, color: "#94a3b8" }}>{fmt(salePaise(packPaise(item, packSize), sale))} / pack</p>
                     )}
                     {packSize > 1 && (
-                      <p style={{ fontSize: 11, color: "#9ca3af" }}>
+                      <p style={{ fontSize: 11, color: "#94a3b8" }}>
                         {fmt(salePaise(item.price, sale))} / Pc.
                       </p>
                     )}
@@ -290,11 +290,11 @@ export default function CartPage() {
 
           {/* Subtotal row */}
           {cart.length > 0 && (
-            <div style={{ padding: "16px 24px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "baseline", gap: 6, background: "#fafafa" }}>
-              <span style={{ fontSize: 14, color: "#6b7280" }}>
+            <div style={{ padding: "16px 24px", borderTop: "1px solid #f4f6fb", display: "flex", justifyContent: "flex-end", alignItems: "baseline", gap: 6, background: "#fafafa" }}>
+              <span style={{ fontSize: 14, color: "#64748b" }}>
                 Subtotal ({cart.length} item{cart.length !== 1 ? "s" : ""}):
               </span>
-              <span style={{ fontSize: 20, fontWeight: 700, color: "#111827", fontFamily: "monospace" }}>
+              <span style={{ fontSize: 20, fontWeight: 700, color: "#0f1f45", fontFamily: "monospace" }}>
                 {subtotalText}
               </span>
             </div>
@@ -303,24 +303,24 @@ export default function CartPage() {
 
         {/* ── Order Summary Sidebar ──────────────────────────────────── */}
         <div style={{ position: "sticky", top: 20 }}>
-          <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 20, padding: 24, marginBottom: 12 }}>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 20 }}>Order Summary</h2>
+          <div style={{ background: "#fff", border: "1px solid #e6ecf7", borderRadius: 20, padding: 24, marginBottom: 12 }}>
+            <h2 style={{ fontSize: 15, fontWeight: 700, color: "#0f1f45", marginBottom: 20 }}>Order Summary</h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#374151" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#334155" }}>
                 <span>Items</span>
                 <span style={{ fontWeight: 600 }}>{cart.length}</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#374151" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#334155" }}>
                 <span>Packs</span>
                 <span style={{ fontWeight: 600 }}>{totalPacks}</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#374151" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#334155" }}>
                 <span>Total Pcs.</span>
                 <span style={{ fontWeight: 600 }}>{totalPcs}</span>
               </div>
-              <div style={{ height: 1, background: "#f3f4f6", margin: "4px 0" }} />
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, color: "#111827" }}>
+              <div style={{ height: 1, background: "#f4f6fb", margin: "4px 0" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, color: "#0f1f45" }}>
                 <span style={{ fontWeight: 600 }}>Subtotal</span>
                 <span style={{ fontWeight: 700, fontFamily: "monospace" }}>{subtotalText}</span>
               </div>
@@ -338,8 +338,8 @@ export default function CartPage() {
               style={{
                 width: "100%", padding: "12px 0", borderRadius: 12, border: "none",
                 cursor: cart.length === 0 ? "not-allowed" : "pointer",
-                background: cart.length === 0 ? "#e5e7eb" : "var(--color-brand-600)",
-                color: cart.length === 0 ? "#9ca3af" : "#fff",
+                background: cart.length === 0 ? "#e6ecf7" : "var(--color-brand-600)",
+                color: cart.length === 0 ? "#94a3b8" : "#fff",
                 fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 transition: "opacity .15s",
               }}

@@ -35,7 +35,7 @@ export default function AddDealerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm p-8">
         <h1 className="text-xl font-semibold mb-6 text-black">Add Dealer</h1>
 

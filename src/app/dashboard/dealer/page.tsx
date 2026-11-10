@@ -417,14 +417,14 @@ function DealerDashboardInner() {
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: "rgba(255,255,255,.96)", titleColor: "#6e6e73", bodyColor: "#1d1d1f", borderColor: "rgba(60,60,67,.12)", borderWidth: 1,
+              backgroundColor: "rgba(255,255,255,.96)", titleColor: "#64748b", bodyColor: "#0f1f45", borderColor: "rgba(60,60,67,.12)", borderWidth: 1,
               padding: 10, cornerRadius: 14, displayColors: false,
               callbacks: { label: ctx => ` Orders: ${ctx.raw}` },
             },
           },
           scales: {
-            x: { grid: { display: false }, ticks: { color: "#8e8e93", font: { size: 10.5 } }, border: { display: false } },
-            y: { grid: { color: "rgba(60,60,67,0.08)" }, border: { display: false }, ticks: { color: "#8e8e93", font: { size: 10.5 } } },
+            x: { grid: { display: false }, ticks: { color: "#94a3b8", font: { size: 10.5 } }, border: { display: false } },
+            y: { grid: { color: "rgba(60,60,67,0.08)" }, border: { display: false }, ticks: { color: "#94a3b8", font: { size: 10.5 } } },
           },
         },
       });
@@ -479,10 +479,10 @@ function DealerDashboardInner() {
             },
           },
           scales: {
-            x: { grid: { display: false }, ticks: { color: "#8e8e93", font: { size: 10.5 } }, border: { display: false } },
+            x: { grid: { display: false }, ticks: { color: "#94a3b8", font: { size: 10.5 } }, border: { display: false } },
             y: {
               grid: { color: "rgba(60,60,67,0.08)" }, border: { display: false },
-              ticks: { color: "#8e8e93", font: { size: 10.5 }, callback: v => `₹${Number(v).toLocaleString("en-IN")}` },
+              ticks: { color: "#94a3b8", font: { size: 10.5 }, callback: v => `₹${Number(v).toLocaleString("en-IN")}` },
             },
           },
         },
@@ -569,8 +569,8 @@ function DealerDashboardInner() {
           min-height: 100vh;
           background:
             radial-gradient(circle at 12% -10%, rgba(0, 122, 255, .055), transparent 28%),
-            #f5f5f7;
-          color: #1d1d1f;
+            #f4f6fb;
+          color: #0f1f45;
           font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           text-rendering: optimizeLegibility;
@@ -606,8 +606,8 @@ function DealerDashboardInner() {
         .dashboard-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
         .eyebrow { display: inline-flex; align-items: center; gap: 7px; color: #006162; font-size: 12px; line-height: 1; font-weight: 650; margin-bottom: 10px; }
         .eyebrow-dot { width: 7px; height: 7px; border-radius: 999px; background: #006162; box-shadow: 0 0 0 4px rgba(0, 122, 255, .09); }
-        .page-heading, .page-title { margin: 0; font-size: clamp(32px, 4vw, 44px); line-height: 1.02; letter-spacing: -.045em; font-weight: 720; color: #1d1d1f; }
-        .page-subtitle { max-width: 620px; margin: 10px 0 0; color: #6e6e73; font-size: 15px; line-height: 1.45; letter-spacing: -.01em; text-wrap: pretty; }
+        .page-heading, .page-title { margin: 0; font-size: clamp(32px, 4vw, 44px); line-height: 1.02; letter-spacing: -.045em; font-weight: 720; color: #0f1f45; }
+        .page-subtitle { max-width: 620px; margin: 10px 0 0; color: #64748b; font-size: 15px; line-height: 1.45; letter-spacing: -.01em; text-wrap: pretty; }
         .profile-chip {
           display: flex; align-items: center; gap: 11px; flex-shrink: 0;
           padding: 7px 9px 7px 7px;
@@ -617,12 +617,12 @@ function DealerDashboardInner() {
           backdrop-filter: saturate(180%) blur(18px);
           border-radius: 999px;
         }
-        .profile-chip-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #1d1d1f, #52525a); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: -.02em; }
+        .profile-chip-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #0f1f45, #52525a); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: -.02em; }
         .profile-copy { min-width: 0; padding-right: 5px; }
-        .profile-chip-name { max-width: 190px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #1d1d1f; font-size: 12px; font-weight: 650; }
-        .profile-chip-role { color: #8e8e93; font-size: 10.5px; margin-top: 1px; font-variant-numeric: tabular-nums; }
+        .profile-chip-name { max-width: 190px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #0f1f45; font-size: 12px; font-weight: 650; }
+        .profile-chip-role { color: #94a3b8; font-size: 10.5px; margin-top: 1px; font-variant-numeric: tabular-nums; }
 
-        .section-label { margin: 0 0 12px 2px; color: #6e6e73; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
+        .section-label { margin: 0 0 12px 2px; color: #64748b; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
 
         /* ── Info cards ── */
         .info-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 30px; }
@@ -637,15 +637,15 @@ function DealerDashboardInner() {
         .icard:hover { transform: translateY(-1px); box-shadow: 0 1px 2px rgba(0,0,0,.02), 0 14px 38px rgba(0,0,0,.055); }
         .icard { position: relative; }
         .icard > .quick-action-btn::after { content: ""; position: absolute; inset: 0; }
-        .icard-lbl { color: #6e6e73; font-size: 12px; font-weight: 600; letter-spacing: -.005em; }
-        .icard-val { margin-top: 12px; color: #1d1d1f; font-size: clamp(28px, 3.2vw, 34px); line-height: 1; font-weight: 700; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-        .icard-sub { font-size: 11px; color: #8e8e93; margin-top: 8px; line-height: 1.4; }
+        .icard-lbl { color: #64748b; font-size: 12px; font-weight: 600; letter-spacing: -.005em; }
+        .icard-val { margin-top: 12px; color: #0f1f45; font-size: clamp(28px, 3.2vw, 34px); line-height: 1; font-weight: 700; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+        .icard-sub { font-size: 11px; color: #94a3b8; margin-top: 8px; line-height: 1.4; }
         .icard-badge {
           display: inline-flex; align-items: center; gap: 6px;
           margin-top: 15px; margin-right: 12px;
-          color: #6e6e73; font-size: 11.5px; line-height: 1.35; white-space: nowrap;
+          color: #64748b; font-size: 11.5px; line-height: 1.35; white-space: nowrap;
         }
-        .icard-badge::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #8e8e93; flex-shrink: 0; }
+        .icard-badge::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; flex-shrink: 0; }
         .badge-amber::before  { background: #ff9500; }
         .badge-green::before  { background: #34c759; }
         .badge-blue::before   { background: #006162; }
@@ -665,13 +665,13 @@ function DealerDashboardInner() {
           backdrop-filter: saturate(180%) blur(20px);
         }
         .panel-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 18px; }
-        .panel-title { color: #1d1d1f; font-size: 16px; line-height: 1.2; font-weight: 680; letter-spacing: -.022em; }
-        .panel-sub { margin-top: 4px; color: #6e6e73; font-size: 11.5px; line-height: 1.35; }
+        .panel-title { color: #0f1f45; font-size: 16px; line-height: 1.2; font-weight: 680; letter-spacing: -.022em; }
+        .panel-sub { margin-top: 4px; color: #64748b; font-size: 11.5px; line-height: 1.35; }
         .panel-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .chart-filter {
           height: 30px; padding: 0 11px; border-radius: 10px;
           border: 1px solid transparent; background: rgba(118, 118, 128, .12);
-          color: #1d1d1f; font-size: 11.5px; font-weight: 600;
+          color: #0f1f45; font-size: 11.5px; font-weight: 600;
           cursor: pointer; outline: none;
         }
         .chart-filter:focus { border-color: rgba(0,122,255,.4); box-shadow: 0 0 0 3px rgba(0,122,255,.10); }
@@ -680,28 +680,28 @@ function DealerDashboardInner() {
         .bottom-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
         @media (max-width: 900px) { .charts-row, .bottom-row { grid-template-columns: 1fr; } }
         .chart-wrap { width: 100%; height: 260px; }
-        .chart-empty { height: 260px; display: grid; place-items: center; color: #8e8e93; font-size: 12px; }
+        .chart-empty { height: 260px; display: grid; place-items: center; color: #94a3b8; font-size: 12px; }
         .legend { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .leg { display: inline-flex; align-items: center; gap: 5px; color: #6e6e73; font-size: 10.5px; white-space: nowrap; }
+        .leg { display: inline-flex; align-items: center; gap: 5px; color: #64748b; font-size: 10.5px; white-space: nowrap; }
         .leg-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
         /* ── Outstanding / wallet ── */
         .outstanding-block { min-width: 0; }
-        .outstanding-amount { font-size: clamp(34px, 3.6vw, 46px); line-height: 1; font-weight: 700; letter-spacing: -.045em; color: #1d1d1f; font-variant-numeric: tabular-nums; }
-        .outstanding-sub { margin-top: 8px; color: #6e6e73; font-size: 12px; }
+        .outstanding-amount { font-size: clamp(34px, 3.6vw, 46px); line-height: 1; font-weight: 700; letter-spacing: -.045em; color: #0f1f45; font-variant-numeric: tabular-nums; }
+        .outstanding-sub { margin-top: 8px; color: #64748b; font-size: 12px; }
         .progress-bar-wrap { margin-top: 22px; }
-        .progress-label { display: flex; align-items: center; justify-content: space-between; color: #6e6e73; font-size: 11.5px; margin-bottom: 8px; }
-        .progress-label span:last-child { color: #1d1d1f; font-weight: 650; font-variant-numeric: tabular-nums; }
+        .progress-label { display: flex; align-items: center; justify-content: space-between; color: #64748b; font-size: 11.5px; margin-bottom: 8px; }
+        .progress-label span:last-child { color: #0f1f45; font-weight: 650; font-variant-numeric: tabular-nums; }
         .progress-track { height: 8px; border-radius: 999px; background: rgba(118, 118, 128, .14); overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 999px; background: #006162; transition: width .3s ease; }
         .credit-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 20px; }
-        .credit-chip { display: inline-flex; align-items: center; gap: 6px; color: #6e6e73; font-size: 11.5px; white-space: nowrap; }
-        .credit-chip::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #8e8e93; flex-shrink: 0; }
+        .credit-chip { display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-size: 11.5px; white-space: nowrap; }
+        .credit-chip::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; flex-shrink: 0; }
         .aging-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
         @media (max-width: 620px) { .aging-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         .aging-cell { padding: 10px 11px; border-radius: 14px; background: rgba(118, 118, 128, .07); min-width: 0; }
-        .aging-lbl { color: #8e8e93; font-size: 10px; font-weight: 650; text-transform: uppercase; letter-spacing: .04em; }
-        .aging-val { margin-top: 5px; color: #8e8e93; font-size: 13px; font-weight: 680; font-variant-numeric: tabular-nums; letter-spacing: -.02em; overflow-wrap: anywhere; }
+        .aging-lbl { color: #94a3b8; font-size: 10px; font-weight: 650; text-transform: uppercase; letter-spacing: .04em; }
+        .aging-val { margin-top: 5px; color: #94a3b8; font-size: 13px; font-weight: 680; font-variant-numeric: tabular-nums; letter-spacing: -.02em; overflow-wrap: anywhere; }
         .aging-val.tone-green  { color: #248a3d; }
         .aging-val.tone-amber  { color: #b25000; }
         .aging-val.tone-orange { color: #c93400; }
@@ -715,8 +715,8 @@ function DealerDashboardInner() {
           background: rgba(118, 118, 128, .06);
         }
         .team-main { min-width: 0; }
-        .team-name { color: #1d1d1f; font-size: 13px; font-weight: 650; letter-spacing: -.01em; overflow-wrap: anywhere; }
-        .team-desig { margin-top: 2px; color: #8e8e93; font-size: 11px; overflow-wrap: anywhere; }
+        .team-name { color: #0f1f45; font-size: 13px; font-weight: 650; letter-spacing: -.01em; overflow-wrap: anywhere; }
+        .team-desig { margin-top: 2px; color: #94a3b8; font-size: 11px; overflow-wrap: anywhere; }
         .team-contact { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
         .team-link { color: #006162; font-size: 11.5px; text-decoration: none; overflow-wrap: anywhere; }
         .team-link:hover { text-decoration: underline; text-underline-offset: 2px; }
@@ -730,23 +730,23 @@ function DealerDashboardInner() {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px;
           }
         }
-        .team-empty { display: grid; place-items: center; padding: 28px 0; color: #8e8e93; font-size: 12px; }
+        .team-empty { display: grid; place-items: center; padding: 28px 0; color: #94a3b8; font-size: 12px; }
 
         /* ── Funnel ── */
         .funnel-body { display: flex; flex-direction: column; gap: 14px; }
         .funnel-row { display: grid; grid-template-columns: 92px minmax(0, 1fr) 92px; align-items: center; gap: 12px; }
-        .funnel-lbl { color: #6e6e73; font-size: 11.5px; }
+        .funnel-lbl { color: #64748b; font-size: 11.5px; }
         .funnel-bar-wrap { height: 26px; border-radius: 8px; background: rgba(118, 118, 128, .10); overflow: hidden; }
         .funnel-bar { height: 100%; border-radius: 8px; display: flex; align-items: center; padding-left: 10px; color: #fff; font-size: 11px; font-weight: 650; }
-        .funnel-val { text-align: right; font-size: 12px; font-weight: 680; color: #1d1d1f; font-variant-numeric: tabular-nums; }
+        .funnel-val { text-align: right; font-size: 12px; font-weight: 680; color: #0f1f45; font-variant-numeric: tabular-nums; }
         .annual-target { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(60, 60, 67, .11); }
-        .at-lbl { color: #6e6e73; font-size: 11.5px; }
-        .at-val { font-size: 15px; font-weight: 680; letter-spacing: -.02em; color: #1d1d1f; font-variant-numeric: tabular-nums; }
+        .at-lbl { color: #64748b; font-size: 11.5px; }
+        .at-val { font-size: 15px; font-weight: 680; letter-spacing: -.02em; color: #0f1f45; font-variant-numeric: tabular-nums; }
 
         /* ── Search ── */
         .search-wrap { position: relative; display: inline-flex; align-items: center; }
-        .search-wrap svg { position: absolute; left: 12px; color: #8e8e93; pointer-events: none; }
-        .search-input { height: 34px; padding: 0 12px 0 34px; border: 1px solid transparent; border-radius: 12px; font-size: 12px; width: 230px; outline: none; font-family: inherit; color: #1d1d1f; background: rgba(118, 118, 128, .10); }
+        .search-wrap svg { position: absolute; left: 12px; color: #94a3b8; pointer-events: none; }
+        .search-input { height: 34px; padding: 0 12px 0 34px; border: 1px solid transparent; border-radius: 12px; font-size: 12px; width: 230px; outline: none; font-family: inherit; color: #0f1f45; background: rgba(118, 118, 128, .10); }
         .search-input:focus { border-color: rgba(0,122,255,.4); box-shadow: 0 0 0 3px rgba(0,122,255,0.10); background: #fff; }
 
         .loading-pulse { background: linear-gradient(90deg, rgba(118,118,128,.08) 25%, rgba(118,118,128,.16) 50%, rgba(118,118,128,.08) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
@@ -1088,7 +1088,7 @@ function DealerDashboardInner() {
                       <div className="funnel-val">{fmtNum(stage.value)}</div>
                     </div>
                   )) : (
-                    <div style={{ color: "#8e8e93", textAlign: "center", padding: "20px", fontSize: 12 }}>
+                    <div style={{ color: "#94a3b8", textAlign: "center", padding: "20px", fontSize: 12 }}>
                       {loading ? "Loading funnel…" : "No funnel data"}
                     </div>
                   )}

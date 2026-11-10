@@ -98,7 +98,7 @@ function actorLine(log: AuditLog) {
 }
 
 const selectClass =
-  "h-9 w-full appearance-none rounded border border-[#d6dbe4] bg-white pl-3 pr-8 text-sm text-[#1f2937] outline-none focus:border-[#5d7df0] focus:ring-2 focus:ring-[#dfe6ff]";
+  "h-9 w-full appearance-none rounded border border-[#d6dbe4] bg-white pl-3 pr-8 text-sm text-[#1e293b] outline-none focus:border-[#5d7df0] focus:ring-2 focus:ring-[#dfe6ff]";
 const inputClass =
   "h-9 w-full rounded border border-[#d6dbe4] bg-white px-3 text-sm outline-none focus:border-[#5d7df0] focus:ring-2 focus:ring-[#dfe6ff]";
 
@@ -156,7 +156,7 @@ function DetailField({ label, children }: { label: string; children: React.React
   return (
     <div>
       <dt className="text-xs font-medium text-[#667085]">{label}</dt>
-      <dd className="mt-0.5 text-sm text-[#1f2937]">{children}</dd>
+      <dd className="mt-0.5 text-sm text-[#1e293b]">{children}</dd>
     </div>
   );
 }
@@ -185,7 +185,7 @@ function DetailDrawer({ log, onClose }: { log: AuditLog; onClose: () => void }) 
       >
         <header className="flex items-start justify-between border-b border-[#dfe3ec] px-5 py-4">
           <div>
-            <h2 className="text-base font-semibold text-[#1f2937]">Audit Detail</h2>
+            <h2 className="text-base font-semibold text-[#1e293b]">Audit Detail</h2>
             <p className="mt-0.5 text-xs text-[#667085]">{formatWhen(log.createdAt)}</p>
           </div>
           <button
@@ -193,7 +193,7 @@ function DetailDrawer({ log, onClose }: { log: AuditLog; onClose: () => void }) 
             onClick={onClose}
             aria-label="Close audit detail"
             autoFocus
-            className="rounded p-1 text-[#667085] transition-colors hover:bg-[#f4f6fa] hover:text-[#1f2937]"
+            className="rounded p-1 text-[#667085] transition-colors hover:bg-[#f4f6fa] hover:text-[#1e293b]"
           >
             <X size={18} />
           </button>
@@ -304,7 +304,7 @@ export default function AuditLogsPage() {
   const endIndex = Math.min(page * ITEMS_PER_PAGE, total);
 
   return (
-    <main className="min-h-screen bg-[#f4f6fa] px-6 py-7 text-[#1f2937]">
+    <main className="min-h-screen bg-gray-100 px-6 py-7 text-[#1e293b]">
       <div className="admin-page-shell">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold">Audit Logs</h1>
@@ -379,7 +379,7 @@ export default function AuditLogsPage() {
                   <td colSpan={4} className="px-4 py-8 text-center">
                     {forbidden ? (
                       <>
-                        <p className="font-medium text-[#1f2937]">Audit logs are restricted to Admin accounts.</p>
+                        <p className="font-medium text-[#1e293b]">Audit logs are restricted to Admin accounts.</p>
                         <p className="mt-1 text-sm text-[#667085]">Your account can use the rest of the admin portal, but not this report.</p>
                       </>
                     ) : (
@@ -413,7 +413,7 @@ export default function AuditLogsPage() {
                   className="cursor-pointer border-t border-[#eef1f6] transition-colors hover:bg-[#f7f9fc] focus:bg-[#f7f9fc] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#5d7df0]"
                 >
                   <td className="px-4 py-3">
-                    <div className="font-medium text-[#1f2937]">{actorLine(log)}</div>
+                    <div className="font-medium text-[#1e293b]">{actorLine(log)}</div>
                     <div className="text-xs text-[#667085]">{log.actorRole ? auditLabel(log.actorRole) : "—"}</div>
                   </td>
                   <td className="px-4 py-3">

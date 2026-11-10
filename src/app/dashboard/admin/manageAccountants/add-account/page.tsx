@@ -156,7 +156,7 @@ function AccountantModal({
             error={errors.name} placeholder="e.g. Priya Sharma" disabled={busy} />
 
           <Field id="email" label="Email" type="email" value={form.email} onChange={set("email")}
-            error={errors.email} placeholder="accountant@omsons.com" disabled={busy} />
+            error={errors.email} placeholder="accountant@example.com" disabled={busy} />
 
           <Field
             id="password"

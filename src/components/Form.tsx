@@ -503,7 +503,7 @@ export default function Form({
   const leadNo = submission?.leadNo || leadPreview || "OML-...";
 
   return (
-    <div className="min-h-screen w-full bg-slate-100 py-8">
+    <div className="min-h-screen w-full bg-gray-100 py-8">
       <form
         onSubmit={submit}
         className="mx-auto w-full max-w-[1840px] overflow-visible rounded-2xl border border-slate-200 bg-white px-8 py-8 shadow-xl shadow-slate-900/10"
@@ -511,13 +511,10 @@ export default function Form({
         <div className="flex flex-col gap-4 rounded-xl bg-[#12508C]/5 px-6 py-5 md:flex-row md:items-center">
           <div className="flex flex-col items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Omsons_Logo.png" alt="Omsons" className="h-20 w-20 rounded-full object-cover" />
+            <img src="/Omsons_Logo.png" alt="Logo" className="h-20 w-20 rounded-full object-cover" />
             <span className="mt-1 text-[10px] font-semibold tracking-[0.25em] text-slate-600">GERMANY</span>
           </div>
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-[22px] font-extrabold" style={{ color: BLUE }}>
-              OMSONS GLASSWARE PVT. LTD.
-            </h1>
             <p className="text-[13px] font-medium text-slate-600">Exploring the Science...</p>
             <p className="mt-1 text-[13px] font-bold uppercase tracking-[0.12em] text-slate-700">
               Filter Leads

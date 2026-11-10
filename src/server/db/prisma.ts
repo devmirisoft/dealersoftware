@@ -2,11 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const prismaGlobal = globalThis as typeof globalThis & {
-  __omsonsPrisma?: PrismaClient;
+  __prisma?: PrismaClient;
 };
 
 export const prisma =
-  prismaGlobal.__omsonsPrisma ??
+  prismaGlobal.__prisma ??
   new PrismaClient({
     adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
     // ponytail: dev talks to the Render DB at ~270ms/round trip, and discount approval
@@ -15,5 +15,5 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") {
-  prismaGlobal.__omsonsPrisma = prisma;
+  prismaGlobal.__prisma = prisma;
 }

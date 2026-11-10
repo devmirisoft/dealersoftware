@@ -254,7 +254,7 @@ function AddDealerPageContent() {
 
   if (loading && hasAccess) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100">
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-700 border-t-transparent" />
           <p className="text-sm text-gray-500">Loading dealer form...</p>
@@ -265,7 +265,7 @@ function AddDealerPageContent() {
 
   if (!hasAccess || !mode || !actor) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
         <div className="w-full max-w-lg rounded-xl border border-red-200 bg-white p-6 text-center shadow-sm">
           <h1 className="text-lg font-semibold text-gray-900">Dealer form is unavailable</h1>
           <p className="mt-2 text-sm text-gray-500">
@@ -318,7 +318,7 @@ export default function AddDealerPage() {
   return (
     <Suspense
       fallback={(
-        <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="flex min-h-screen items-center justify-center bg-gray-100">
           <div className="flex flex-col items-center gap-3">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-700 border-t-transparent" />
             <p className="text-sm text-gray-500">Loading dealer form...</p>
