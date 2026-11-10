@@ -653,7 +653,7 @@ function DealerDashboardInner() {
         .badge-red::before    { background: #ff3b30; }
         .pulse-amber::before { animation: pulseAmber 1.8s infinite; }
         @keyframes pulseAmber { 0%{box-shadow:0 0 0 0 rgba(255,149,0,0.55)} 70%{box-shadow:0 0 0 6px rgba(255,149,0,0)} 100%{box-shadow:0 0 0 0 rgba(255,149,0,0)} }
-        .quick-action-btn { display: inline-block; margin-top: 12px; color: #006162; font-size: 11.5px; font-weight: 620; text-decoration: none; white-space: nowrap; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; }
+        .quick-action-btn { display: inline-block; margin-top: 12px; color: var(--color-brand-600); font-size: 11.5px; font-weight: 620; text-decoration: none; white-space: nowrap; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; }
         .quick-action-btn:hover { text-decoration: underline; text-underline-offset: 2px; }
 
         /* ── Panels ── */

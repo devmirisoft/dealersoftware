@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   title: "Omsons",
   description: "Omsons Germany",
   icons: {
-    icon: "/Omsons_Logo.png",
-    shortcut: "/Omsons_Logo.png",
-    apple: "/Omsons_Logo.png",
+    icon: "/Mountain%20Code%20App%20Emblem.png",
+    shortcut: "/Mountain%20Code%20App%20Emblem.png",
+    apple: "/Mountain%20Code%20App%20Emblem.png",
   },
 };
 

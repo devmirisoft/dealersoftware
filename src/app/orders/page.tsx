@@ -1642,8 +1642,8 @@ export default function OrderHistoryPage() {
         .dispatch-original-note-label { display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748b; margin-bottom: 6px; }
         .dispatch-original-note p { font-size: 10.2px; color: #334155; line-height: 1.5; }
         .dispatch-select-btn, .dispatch-submit-btn { border: none; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.15s; }
-        .dispatch-select-btn { align-self: flex-start; padding: 9px 14px; border-radius: 12px; background: #E6F3F3; color: #02474C; }
-        .dispatch-select-btn:hover { background: #CCE7E8; color: #007C80; }
+        .dispatch-select-btn { align-self: flex-start; padding: 9px 14px; border-radius: 12px; background: var(--color-brand-50); color: var(--color-brand-600); }
+        .dispatch-select-btn:hover { background: var(--color-brand-100); color: var(--color-brand-500); }
         .dispatch-form-card, .dispatch-history-card { padding: 16px; }
         .dispatch-form-card { display: flex; flex-direction: column; gap: 14px; }
         .dispatch-form-row { display: flex; flex-direction: column; gap: 6px; }
@@ -1651,8 +1651,8 @@ export default function OrderHistoryPage() {
         .dispatch-form-row input, .dispatch-form-row select, .dispatch-form-row textarea { width: 100%; border-radius: 12px; border: 1px solid #dbe2ee; background: #fff; padding: 11px 12px; font-size: 11.05px; font-family: inherit; color: #0f172a; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
         .dispatch-form-row input:focus, .dispatch-form-row select:focus, .dispatch-form-row textarea:focus { border-color: #818cf8; box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.14); }
         .dispatch-form-row input[disabled], .dispatch-form-row select[disabled], .dispatch-form-row textarea[disabled] { background: #f8fafc; color: #64748b; cursor: not-allowed; }
-        .dispatch-submit-btn { padding: 11px 16px; border-radius: 12px; background: #02474C; color: #fff; }
-        .dispatch-submit-btn:hover:not(:disabled) { background: #007C80; }
+        .dispatch-submit-btn { padding: 11px 16px; border-radius: 12px; background: var(--color-brand-600); color: #fff; }
+        .dispatch-submit-btn:hover:not(:disabled) { background: var(--color-brand-500); }
         .dispatch-submit-btn:disabled { opacity: 0.55; cursor: wait; }
         .dispatch-history-card { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
         .dispatch-history-item { padding: 12px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0; }

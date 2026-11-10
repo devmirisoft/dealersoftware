@@ -6,7 +6,7 @@ import { formatPeriodLabel } from "@/lib/salesPeriods";
 import Link from "next/link";
 import { Users, Wallet, Calendar, CalendarCheck, CreditCard, IndianRupee, FileText, ArrowUp, ArrowDown, ArrowRight, ShoppingCart, UserRound, Percent, ChartColumn, Globe, LayoutGrid, MapPin, Trophy, TrendingUp, Download } from 'lucide-react';
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   QueryClient,
@@ -347,6 +347,22 @@ function AdminDashboardInner() {
   const [regionalSalesData, setRegionalSalesData] = useState<RegionalSalesPoint[]>([]);
   const [regionalTopDistributors, setRegionalTopDistributors] = useState<Record<SalesRegionKey, RegionalDistributor[]>>(createEmptyRegionalDistributorMap);
   const [selectedRegion, setSelectedRegion] = useState<SalesRegionKey>("NORTH_1");
+  // Slides the region pill under the active tab. Writes CSS vars straight to the
+  // rail (no state), and re-measures if the tab resizes, e.g. when the font loads.
+  const regionTabsRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const rail = regionTabsRef.current;
+    const tab = rail?.querySelector<HTMLElement>('[aria-pressed="true"]');
+    if (!rail || !tab) return;
+    const place = () => {
+      rail.style.setProperty("--pill-x", `${tab.offsetLeft}px`);
+      rail.style.setProperty("--pill-w", `${tab.offsetWidth}px`);
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(tab);
+    return () => observer.disconnect();
+  }, [selectedRegion]);
   const [regionalGranularity, setRegionalGranularity] = useState<SalesGranularity>(DEFAULT_GRANULARITY);
   const [regionalSalesLoading, setRegionalSalesLoading] = useState(false);
   const [adminData, setAdminData] = useState<AdminStats>({
@@ -659,7 +675,7 @@ function AdminDashboardInner() {
       label: "Pending Orders",
       icon: <ShoppingCart size={24} aria-hidden />,
       value: totalPendingOrders,
-      href: "/Pages/Ordermanagement/outstandingorders",
+      href: "/orders",
       action: "Review pending orders",
       meta: <span className="status-inline"><span className="status-dot orange" />{totalPendingOrders} awaiting review</span>,
     },
@@ -886,6 +902,23 @@ function AdminDashboardInner() {
         .pill-tab:hover:not(:disabled) { color: var(--db-text); }
         .pill-tab.active { background: var(--db-navy); color: #fff; }
         .pill-tab:disabled { cursor: default; opacity: .55; }
+
+        /* Region tabs: one pill in the region's chart colour slides under the active tab. */
+        .pill-tabs.sliding { position: relative; }
+        .pill-tabs.sliding::before {
+          content: ""; position: absolute; top: 4px; bottom: 4px; left: 0;
+          width: var(--pill-w, 0); transform: translateX(var(--pill-x, 0));
+          border-radius: 9px; background: var(--pill-color);
+          transition: transform .32s cubic-bezier(.32,.72,0,1), width .32s cubic-bezier(.32,.72,0,1), background-color .32s ease;
+        }
+        .pill-tabs.sliding .pill-tab { position: relative; z-index: 1; }
+        .pill-tabs.sliding .pill-tab.active { background: transparent; color: #fff; }
+        .tab-dot {
+          display: inline-block; width: 7px; height: 7px; margin-right: 6px; vertical-align: 1px;
+          border-radius: 999px; background: var(--tab-color); transition: background .16s;
+        }
+        .pill-tab.active .tab-dot { background: currentColor; }
+        @media (prefers-reduced-motion: reduce) { .pill-tabs.sliding::before { transition: none; } }
 
         .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; }
         .leg { display: inline-flex; align-items: center; gap: 5px; color: var(--db-secondary); font-size: 11.5px; white-space: nowrap; }
@@ -1143,7 +1176,13 @@ function AdminDashboardInner() {
                 </div>
               </header>
 
-              <div className="pill-tabs" role="group" aria-label="Region">
+              <div
+                ref={regionTabsRef}
+                className="pill-tabs sliding"
+                role="group"
+                aria-label="Region"
+                style={{ "--pill-color": REGION_META[selectedRegion].color } as React.CSSProperties}
+              >
                 {SALES_REGIONS.map((region) => (
                   <button
                     key={region}
@@ -1151,7 +1190,9 @@ function AdminDashboardInner() {
                     className={`pill-tab${selectedRegion === region ? " active" : ""}`}
                     aria-pressed={selectedRegion === region}
                     onClick={() => setSelectedRegion(region)}
+                    style={{ "--tab-color": REGION_META[region].color } as React.CSSProperties}
                   >
+                    <span className="tab-dot" aria-hidden="true" />
                     {formatRegionLabel(region)}
                   </button>
                 ))}

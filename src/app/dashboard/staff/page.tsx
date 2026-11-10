@@ -348,7 +348,7 @@ function ExecutiveDashboard() {
   // The same four slots as the admin's tiles: approvals, dealers, people, discounts.
   // Sales Managers and Staff have no team, so Dealer Requests takes the people slot.
   const GLANCE_STATS: Stat[] = [
-    { label: "Order Approvals", value: counts.pendingOrders ?? 0, sub: "Orders waiting to be accepted", badge: attention(counts.pendingOrders ?? 0), badgeLabel: `${counts.pendingOrders ?? 0} awaiting`, href: "/Pages/Ordermanagement/outstandingorders", loading: countsQ.isLoading },
+    { label: "Order Approvals", value: counts.pendingOrders ?? 0, sub: "Orders waiting to be accepted", badge: attention(counts.pendingOrders ?? 0), badgeLabel: `${counts.pendingOrders ?? 0} awaiting`, href: "/orders", loading: countsQ.isLoading },
     { label: hasTeam ? "Team Dealers" : "My Dealers", value: dashboard?.dealers.total ?? 0, sub: hasTeam ? "Dealers assigned to you and your team" : "Dealers mapped to your staff ID", badge: "badge-green", badgeLabel: `${dashboard?.dealers.active ?? 0} active, ${dashboard?.dealers.inactive ?? 0} inactive`, href: "/dashboard/staff/dealerlist", loading: dashboardQ.isLoading },
     hasTeam
       ? { label: "My Team", value: dashboard?.team?.count ?? 0, sub: user.staff_roletype === "RSM" ? "ASMs, sales managers and linked staff" : "Sales managers reporting to you", badge: "badge-purple", badgeLabel: `${dashboard?.team?.count ?? 0} active`, loading: dashboardQ.isLoading }
@@ -530,7 +530,7 @@ function ExecutiveDashboard() {
         .badge-red::before    { background: #ff3b30; }
         .pulse-amber::before { animation: pulseAmber 1.8s infinite; }
         @keyframes pulseAmber { 0%{box-shadow:0 0 0 0 rgba(255,149,0,0.55)} 70%{box-shadow:0 0 0 6px rgba(255,149,0,0)} 100%{box-shadow:0 0 0 0 rgba(255,149,0,0)} }
-        .quick-action-btn { display: inline-block; margin-top: 12px; color: #006162; font-size: 11.5px; font-weight: 620; text-decoration: none; white-space: nowrap; }
+        .quick-action-btn { display: inline-block; margin-top: 12px; color: var(--color-brand-600); font-size: 11.5px; font-weight: 620; text-decoration: none; white-space: nowrap; }
         .quick-action-btn:hover { text-decoration: underline; text-underline-offset: 2px; }
 
         /* ── Panels / Charts ── */
@@ -576,7 +576,7 @@ function ExecutiveDashboard() {
         .st-active::before, .st-inactive::before { content: ""; width: 7px; height: 7px; border-radius: 999px; flex-shrink: 0; }
         .st-active::before   { background: #34c759; }
         .st-inactive::before { background: #ff3b30; }
-        .view-btn { display: inline-flex; align-items: center; gap: 4px; color: #006162; font-size: 11.5px; font-weight: 620; background: none; border: none; cursor: pointer; text-decoration: none; }
+        .view-btn { display: inline-flex; align-items: center; gap: 4px; color: var(--color-brand-600); font-size: 11.5px; font-weight: 620; background: none; border: none; cursor: pointer; text-decoration: none; }
         .view-btn:hover { text-decoration: underline; text-underline-offset: 2px; }
 
         /* ── Error banner ── */
@@ -587,7 +587,7 @@ function ExecutiveDashboard() {
           background: rgba(255,255,255,.8);
           border-radius: 16px; color: #b42318; font-size: 13px;
         }
-        .retry-btn { margin-left: auto; border: 0; background: transparent; color: #006162; cursor: pointer; font-weight: 650; padding: 4px 7px; }
+        .retry-btn { margin-left: auto; border: 0; background: transparent; color: var(--color-brand-600); cursor: pointer; font-weight: 650; padding: 4px 7px; }
 
         /* ── Search ── */
         .search-wrap { position: relative; display: inline-flex; align-items: center; }
@@ -931,7 +931,7 @@ function ExecutiveDashboard() {
                             <button
                               key={item}
                               onClick={() => setDealerPage(item as number)}
-                              style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid", borderColor: dealerPage === item ? "#006162" : "rgba(60,60,67,.11)", background: dealerPage === item ? "#006162" : "transparent", color: dealerPage === item ? "#fff" : "#1d1d1f", fontWeight: dealerPage === item ? 700 : 400, cursor: "pointer" }}
+                              style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid", borderColor: dealerPage === item ? "var(--color-brand-600)" : "rgba(60,60,67,.11)", background: dealerPage === item ? "var(--color-brand-600)" : "transparent", color: dealerPage === item ? "#fff" : "#1d1d1f", fontWeight: dealerPage === item ? 700 : 400, cursor: "pointer" }}
                             >{item}</button>
                           )
                         )}
