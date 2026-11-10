@@ -743,7 +743,7 @@ function AdminDashboardInner() {
           padding: 22px;
           background: var(--db-surface);
           border: 1px solid var(--db-line);
-          border-radius: 18px;
+          border-radius: 12px;
           box-shadow: var(--db-shadow);
         }
 
@@ -764,7 +764,7 @@ function AdminDashboardInner() {
         .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
         .kpi { position: relative; display: flex; align-items: flex-start; gap: 16px; transition: transform .18s ease, box-shadow .18s ease; }
         .kpi:hover { transform: translateY(-1px); box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 12px 28px rgba(15,23,42,.08); }
-        .icon-tile { display: grid; place-items: center; flex-shrink: 0; width: 54px; height: 54px; border-radius: 14px; background: var(--db-brand-soft); color: var(--db-brand); }
+        .icon-tile { display: grid; place-items: center; flex-shrink: 0; width: 54px; height: 54px; border-radius: 10px; background: var(--db-brand-soft); color: var(--db-brand); }
         .kpi-body { flex: 1; min-width: 0; }
         .kpi-label { color: var(--db-secondary); font-size: 14px; font-weight: 600; }
         .kpi-value { margin-top: 6px; font-size: 34px; line-height: 1.1; font-weight: 750; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }

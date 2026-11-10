@@ -8,7 +8,7 @@ import {
   ShieldCheck, Gift, Receipt, TrendingUp, BookOpen, FileText,
   Wallet, MapPinned, ChevronRight, Truck, ScrollText,
   Handshake, Box, FilePen, ChartColumn, Calculator, Settings,
-  SquareChevronLeft, SquareChevronRight, Percent,
+  ChevronLeft, UserRound, Percent,
 } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { type AppRole, type StoredUser } from "@/lib/roleAccess";
@@ -276,16 +276,18 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         .sb-overlay.show { opacity: 1; pointer-events: all; }
 
         .sb-panel {
-          position: fixed; top: 0; left: 0; bottom: 0;
+          position: fixed; top: 12px; left: 12px; bottom: 12px;
           width: 264px; z-index: 40;
-          background: #0f1f45;
+          background: #fff; color: #0f1f45;
+          border-radius: 16px;
           display: flex; flex-direction: column;
-          transform: translateX(-100%);
+          transform: translateX(calc(-100% - 12px));
           overflow: hidden;
           transition: transform .3s cubic-bezier(0.4,0,0.2,1), width .3s cubic-bezier(0.4,0,0.2,1), box-shadow .3s ease;
           will-change: transform, width;
         }
-        .sb-panel.open { transform: translateX(0); }
+        /* Shadow only once on screen: the hidden drawer would cast it into the viewport edge. */
+        .sb-panel.open { transform: translateX(0); box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 6px 20px rgba(15,23,42,.05); }
 
         /* The page shell each layout wraps around its topbar + main. */
         .dl-shell { transition: margin-left .3s cubic-bezier(0.4,0,0.2,1); }
@@ -296,75 +298,82 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           transition: gap .3s cubic-bezier(.32,.72,0,1), padding .3s cubic-bezier(.32,.72,0,1);
           height: 72px; box-sizing: border-box; padding: 0 18px; /* lines up with the 72px header */
         }
+        .sb-logo { width: 36px; height: 36px; flex: 0 0 auto; }
         .sb-headtext { min-width: 0; }
-        .sb-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: -.2px; }
+        /* Sizes here are ~20% under the visual target: the layout sets
+           html { font-size-adjust: 0.62 }, which scales every glyph up. */
+        .sb-title { font-size: 15px; font-weight: 700; color: #0f1f45; letter-spacing: -.2px; line-height: 1.2; }
         .sb-chip {
-          display: block; margin-top: 3px;
-          color: rgba(255,255,255,0.85); font-size: 7.65px; font-weight: 500;
-          letter-spacing: .16em; 
+          display: block; margin-top: 2px;
+          color: #64748b; font-size: 10px; font-weight: 500;
           overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         /* User card */
         .sb-user {
-          margin: 10px 14px 0; padding: 12px;
-          border: 1px solid transparent; /* kept so the collapsed rail spacing doesn't shift */
-          display: flex; align-items: center; gap: 10px;
-          transition: gap .3s cubic-bezier(.32,.72,0,1), margin .3s cubic-bezier(.32,.72,0,1), padding .3s cubic-bezier(.32,.72,0,1);
+          margin: 6px 14px 0; padding: 12px;
+          border-radius: 16px; background: #f1f5fd;
+          display: flex; align-items: center; gap: 12px;
+          transition: gap .3s cubic-bezier(.32,.72,0,1), margin .3s cubic-bezier(.32,.72,0,1), padding .3s cubic-bezier(.32,.72,0,1), background .3s;
         }
         .sb-avatar {
           width: 38px; height: 38px; flex: 0 0 auto;
-          border-radius: 50%;
-          background: #3d8bfd;
+          border-radius: 10px;
+          background: #2563eb; color: #fff;
           display: grid; place-items: center;
-          font-size: 11.05px; font-weight: 700; color: #fff;
           overflow: hidden;
         }
+        .sb-avatar svg { width: 20px; height: 20px; }
         .sb-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .sb-usertext { min-width: 0; }
-        .sb-uname { font-size: 10.2px; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .sb-meta  { font-size: 8.5px; color: rgba(255,255,255,0.9); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .sb-role  { margin-top: 5px; display: inline-block; font-size: 8.08px; background: rgba(255,255,255,0.2); color: #fff; padding: 1px 10px; border-radius: 999px; }
+        .sb-usertext { min-width: 0; flex: 1; }
+        .sb-uname { font-size: 11.5px; font-weight: 600; color: #0f1f45; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sb-meta  { font-size: 9.5px; color: #64748b; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sb-role  {
+          margin-top: 6px; display: inline-flex; align-items: center; gap: 6px;
+          font-size: 9px; font-weight: 500; color: #2563eb;
+          background: #dce7fd; padding: 2px 10px; border-radius: 999px;
+        }
+        .sb-role::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-        .sb-divider { height: 1px; flex: 0 0 auto; margin: 14px 18px; background: rgba(255,255,255,0.18); }
+        .sb-divider { height: 1px; flex: 0 0 auto; margin: 16px 18px; background: #e6ecf7; }
 
         /* Nav */
-        .sb-nav { flex: 1; padding: 0 14px; overflow-y: auto; overflow-x: hidden; }
+        .sb-nav { flex: 1; padding: 0 16px; overflow-y: auto; overflow-x: hidden; }
         .sb-nav::-webkit-scrollbar { width: 4px; }
-        .sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 3px; }
+        .sb-nav::-webkit-scrollbar-thumb { background: #d5ddec; border-radius: 3px; }
 
         /* The first group (Overview / Home) is a fixed label with its links always shown. */
         .sb-lead-label {
           padding: 2px 4px 10px;
-          font-size: 8.08px; font-weight: 600;
-          letter-spacing: .16em; 
-          
-                    color: rgba(255,255,255,0.8);
+          font-size: 9px; font-weight: 600;
+          letter-spacing: .16em; text-transform: uppercase;
+          color: #64748b;
           white-space: nowrap; overflow: hidden;
         }
-        .sb-group.lead { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.18); }
+        .sb-group.lead { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #e6ecf7; }
+        /* Always open, so it can let the active bar hang into the gutter. */
+        .sb-group.lead > .sb-group-items { overflow: visible; }
 
         /* Every other group is a collapsible row with its own icon. */
         .sb-section {
           position: relative;
-          width: 100%; height: 39px;
+          width: 100%; height: 40px;
           display: flex; align-items: center;
           padding: 0; margin-bottom: 2px;
           border: 0; border-radius: 12px;
           background: transparent;
-          color: #fff;
+          color: #0f1f45;
           cursor: pointer;
-          font-family: ; font-size: 13.18px; ;
-          letter-spacing: .14em; ;
+          font-family: inherit; font-size: 11.5px; font-weight: 500;
           text-align: left;
           user-select: none;
           transition: background .16s;
         }
-        .sb-section:hover { background: rgba(255,255,255,0.08); }
-        .sb-group.open .sb-section { background: rgba(255,255,255,0.06); }
+        .sb-section:hover { background: #f3f6fd; }
+        .sb-group.open .sb-section { background: #eef3fd; }
         .sb-section-icon {
-          width: 14px !important; height: 14px !important; padding: 0 !important;
+          width: 15px !important; height: 15px !important; padding: 0 !important;
           margin-left: auto; margin-right: 14px; flex-shrink: 0;
-          opacity: .85;
+          color: #64748b;
           transition: transform .3s cubic-bezier(.32,.72,0,1);
         }
         .sb-group.open .sb-section-icon { transform: rotate(90deg); }
@@ -380,8 +389,10 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         /* The rows animate the box; the content fades and slides with it, so the
            links don't appear pre-drawn behind a sliding edge. Closing runs the
            fade first (no delay), opening waits for the box to be underway. */
+        /* min-width: 0 stops the grid column growing to the nowrap label width,
+           which pushed every link past the rail's edge. */
         .sb-group-inner {
-          min-height: 0;
+          min-height: 0; min-width: 0;
           opacity: 0; transform: translateY(-4px);
           transition: opacity .16s ease, transform .16s ease;
         }
@@ -395,26 +406,32 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         .sb-link {
           position: relative;
           display: flex; align-items: center; gap: 0;
-          height: 39px; padding: 0; border-radius: 10px;
-          font-size: 10.2px; font-weight: 500;
-          color: #fff; text-decoration: none;
+          height: 40px; padding: 0; border-radius: 12px;
+          font-size: 11.5px; font-weight: 500;
+          color: #0f1f45; text-decoration: none;
           margin-bottom: 2px;
           transition: background .16s, color .16s;
         }
-        /* content-box padding makes the 17px glyph occupy a fixed 44px slot (keeps it centred on the rail) */
-        .sb-link svg, .sb-section svg { width: 17px; height: 17px; flex: 0 0 auto; box-sizing: content-box; padding: 0 13.5px; }
+        /* content-box padding makes the 19px glyph occupy a fixed 40px slot: centred on the
+           72px rail (16px nav padding + 20px), and the 40px-tall row becomes a square there. */
+        .sb-link svg, .sb-section svg { width: 19px; height: 19px; flex: 0 0 auto; box-sizing: content-box; padding: 0 10.5px; stroke-width: 1.75; }
         /* Links inside an opened section sit a step in and a size down. */
-        .sb-group:not(.lead) .sb-link { height: 34px; font-size: 9.35px; color: rgba(255,255,255,0.9); }
-        .sb-group:not(.lead) .sb-link svg { width: 14px; height: 14px; padding: 0 15px; }
+        .sb-group:not(.lead) .sb-link { height: 34px; font-size: 10.5px; color: #475569; }
+        .sb-group:not(.lead) .sb-link svg { width: 15px; height: 15px; padding: 0 12.5px; }
         .sb-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .sb-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sb-link:hover { background: #f3f6fd; color: #0f1f45; }
         .sb-link.active,
         .sb-group:not(.lead) .sb-link.active {
-          background: #1e3a8a;
-          color: #fff;
+          background: #e3ecfd;
+          color: #2563eb;
           font-weight: 600;
         }
-        .sb-link-dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; margin-left: auto; margin-right: 14px; flex-shrink: 0; opacity: 0; transition: opacity .15s; }
+        /* Accent bar in the nav gutter; section links keep the dot instead. */
+        .sb-group.lead .sb-link.active::before {
+          content: ""; position: absolute; left: -10px; top: 6px; bottom: 6px;
+          width: 3px; border-radius: 3px; background: #2563eb;
+        }
+        .sb-link-dot { width: 6px; height: 6px; border-radius: 50%; background: #2563eb; margin-left: auto; margin-right: 14px; flex-shrink: 0; opacity: 0; transition: opacity .15s; }
         .sb-group:not(.lead) .sb-link.active .sb-link-dot { opacity: 1; }
 
         /* Pending-approval count. Replaces the active dot when non-zero, so it
@@ -438,33 +455,40 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         /* Footer */
         .sb-foot { padding: 14px; display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
         .sb-logout {
-          width: 100%; height: 41px; padding: 0; border-radius: 12px;
-          background: transparent; border: 1px solid rgba(255,255,255,0.28);
-          font-size: 10.63px; font-weight: 500; color: #fff;
+          width: 100%; height: 44px; padding: 0; border-radius: 12px;
+          background: transparent; border: 1px solid #cfd9ee;
+          font-size: 11.5px; font-weight: 500; color: #1e3a8a;
           cursor: pointer; font-family: inherit;
           display: flex; align-items: center; justify-content: flex-start; gap: 0;
           transition: background .16s, color .16s, border-color .16s;
         }
-        .sb-logout svg { width: 17px; height: 17px; flex: 0 0 auto; box-sizing: content-box; padding: 0 12.5px; }
-        .sb-logout:hover { background: rgba(239,68,68,0.14); border-color: rgba(254,202,202,0.6); color: #fee2e2; }
+        .sb-logout svg { width: 19px; height: 19px; flex: 0 0 auto; box-sizing: content-box; padding: 0 11.5px; stroke-width: 1.75; }
+        .sb-logout:hover { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
 
         @media (min-width: 1024px) {
           .sb-overlay { display: none; }
 
           /* Rail is permanent; only the toggle button opens it, and the page shifts with it. */
-          .sb-panel { transform: none; width: 72px; }
+          /* Square top-right corner: the header joins on here (see .dl-topbar). */
+          .sb-panel {
+            transform: none; width: 72px; border-top-right-radius: 0;
+            box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 6px 20px rgba(15,23,42,.05);
+            /* Clip the shadow off the right edge where the header joins (72px band
+               + 16px corner curve), so the frame shows no seam. */
+            clip-path: polygon(-48px -48px, 100% -48px, 100% 88px, calc(100% + 48px) 88px, calc(100% + 48px) calc(100% + 48px), -48px calc(100% + 48px));
+          }
           .sb-panel.pinned { width: 264px; }
           /* Hover-expanded: floats over the page, which keeps its 72px margin. */
-          .sb-panel.peek { box-shadow: 8px 0 24px rgba(0,0,0,0.25); }
+          .sb-panel.peek { box-shadow: 8px 0 32px rgba(15,31,69,0.12); }
 
-          .dl-shell { margin-left: 72px; }
-          html[data-sb-pinned="1"] .dl-shell { margin-left: 264px; }
+          /* Panel width plus its 12px inset on both sides. */
+          .dl-shell { margin-left: 96px; }
+          html[data-sb-pinned="1"] .dl-shell { margin-left: 288px; }
 
           /* Hover and the edge strip replace it here; it stays for the mobile drawer. */
           .dl-hamburger { display: none; }
 
           .sb-user .sb-toggle { display: grid; } /* beats the base display:none declared further down */
-          .sb-avatar { display: none; }
 
           /* ── Collapsed rail: icons only, each centred on the 72px rail ── */
           .sb-panel:not(.pinned) .sb-head { gap: 0; }
@@ -477,12 +501,14 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
             margin: 0; transform: translateX(2px);
             min-width: 16px; height: 16px; padding: 0 4px;
             font-size: 8.5px; line-height: 16px;
-            box-shadow: 0 0 0 2px #0f1f45;
+            box-shadow: 0 0 0 2px #fff;
           }
 
           .sb-panel:not(.pinned) .sb-user {
-            margin: 10px 17px 0; padding: 0; gap: 0;
+            margin: 6px 17px 0; padding: 0; gap: 0; background: transparent;
           }
+          /* Hovering expands the rail, which brings the toggle back. */
+          .sb-panel:not(.pinned) .sb-toggle { opacity: 0; pointer-events: none; }
 
           .sb-panel:not(.pinned) .sb-nav::-webkit-scrollbar { width: 0; }
           .sb-panel:not(.pinned) .sb-logout { border-color: transparent; }
@@ -495,8 +521,9 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         .sb-panel .sb-usertext,
         .sb-panel .sb-label,
         .sb-panel .sb-lead-label,
-        .sb-panel .sb-link-dot {
-          transition: opacity .22s ease .13s, transform .3s cubic-bezier(.32,.72,0,1) .13s;
+        .sb-panel .sb-link-dot,
+        .sb-panel .sb-toggle {
+          transition: opacity .22s ease .13s, transform .3s cubic-bezier(.32,.72,0,1) .13s, background .16s;
         }
         @media (min-width: 1024px) {
           .sb-panel:not(.pinned) .sb-headtext,
@@ -512,16 +539,16 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         }
 
         /* ── Rail toggle (desktop only; mobile keeps the avatar and uses the header hamburger) ── */
-        /* Sits in the avatar's slot on desktop, so it stays centred on the rail. */
+        /* Sits at the user card's trailing edge. */
         .sb-toggle {
           display: none; place-items: center;
-          width: 38px; height: 38px; flex: 0 0 auto; padding: 0; border: 0; border-radius: 10px;
-          background: transparent; color: #fff;
+          width: 28px; height: 28px; flex: 0 0 auto; padding: 0; border: 0; border-radius: 8px;
+          background: transparent; color: #0f1f45;
           cursor: pointer;
           transition: background .16s;
         }
-        .sb-toggle svg { width: 26px; height: 26px; }
-        .sb-toggle:hover { background: rgba(255,255,255,0.08); }
+        .sb-toggle svg { width: 18px; height: 18px; }
+        .sb-toggle:hover { background: rgba(15,31,69,0.06); }
 
         @media (prefers-reduced-motion: reduce) {
           .sb-panel, .sb-head, .sb-user, .sb-nav, .sb-link, .sb-logout,
@@ -566,6 +593,10 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
 
         {/* Head */}
         <div className="sb-head">
+          <svg className="sb-logo" viewBox="0 0 36 36" aria-hidden="true">
+            <path d="M6 4h12a14 14 0 0 1 0 28H6z" fill="#2563eb" />
+            <path d="M13 11h5a7 7 0 0 1 0 14h-5z" fill="#fff" />
+          </svg>
           <div className="sb-headtext">
             <div className="sb-title">Workspace</div>
             <span className="sb-chip">{portal}</span>
@@ -574,19 +605,11 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
 
         {/* User card */}
         <div className="sb-user">
-          <button
-            type="button"
-            className="sb-toggle"
-            onClick={togglePin}
-            aria-label={pinned ? "Close sidebar" : "Open sidebar"}
-            aria-expanded={pinned}
-            title={pinned ? "Close sidebar" : "Open sidebar"}
-          >
-            {pinned ? <SquareChevronLeft /> : <SquareChevronRight />}
-          </button>
           <div className="sb-avatar">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {!mounted ? "…" : <img src={user?.ADMIN_IMAGE || "/image.png"} alt="" />}
+            {mounted && user?.ADMIN_IMAGE
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img src={user.ADMIN_IMAGE} alt="" />
+              : <UserRound />}
           </div>
           <div className="sb-usertext">
             <div className="sb-uname">
@@ -599,6 +622,16 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
               <span className="sb-role">{badge}</span>
             )}
           </div>
+          <button
+            type="button"
+            className="sb-toggle"
+            onClick={togglePin}
+            aria-label={pinned ? "Close sidebar" : "Open sidebar"}
+            aria-expanded={pinned}
+            title={pinned ? "Close sidebar" : "Keep sidebar open"}
+          >
+            {pinned ? <ChevronLeft /> : <ChevronRight />}
+          </button>
         </div>
 
         <div className="sb-divider" />

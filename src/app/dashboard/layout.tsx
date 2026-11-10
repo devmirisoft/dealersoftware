@@ -123,45 +123,64 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <style>{`
         /* Glyphs 20% larger without changing layout: font-size-adjust sets x-height = 0.62 x font-size (Arial native is ~0.519; 0.519 x 1.2 = 0.62). */
         html { font-size-adjust: 0.62; }
+        /* Floating card, same as the sidebar: 12px inset, 16px radius. */
         .dl-topbar {
           position: sticky;
-          top: 0;
+          top: 12px;
           z-index: 25; /* above page sticky headers (z-20), below sidebar overlay (30) */
           height: 72px;
-          padding: 0 22px;
+          margin: 12px 12px 0;
+          padding: 0 20px;
           background: #fff;
-          border-bottom: 1px solid #e8ecf4;
-          box-shadow: none;
+          border-radius: 16px;
+          /* Soft shadow (same as the dashboard cards), then the page colour painted
+             into the gaps around the card so content scrolling under it doesn't show. */
+          box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 6px 20px rgba(15,23,42,.05), 0 -12px 0 12px #f4f6fb;
           display: flex;
           align-items: center;
           gap: 12px;
-          color: #0f172a;
+          color: #0f1f45;
+        }
+        /* Desktop: reach back over the shell's 12px gap and join the sidebar into
+           one L-shaped frame; ::after curves the inner corner below the seam. */
+        @media (min-width: 1024px) {
+          .dl-topbar { margin-left: -12px; border-radius: 0 16px 16px 0; }
+          .dl-topbar::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 100% 100%, transparent 15.5px, #fff 16px);
+            pointer-events: none;
+          }
         }
         .dl-hamburger {
           flex-shrink: 0;
-          width: 34px;
-          height: 34px;
-          border-radius: 50%;
-          border: 1px solid #e2e8f0;
-          background: #f8fafc;
+          width: 36px;
+          height: 36px;
+          border-radius: 12px;
+          border: 1px solid #e6ecf7;
+          background: #f1f5fd;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          color: #0f172a;
+          color: #0f1f45;
           transition: background 0.15s;
         }
-        .dl-hamburger:hover { background: #f1f5f9; }
+        .dl-hamburger:hover { background: #e3ecfd; }
         .dl-divider {
           width: 1px;
           height: 31px;
           flex-shrink: 0;
-          background: #e2e8f0;
+          background: #e6ecf7;
         }
         .dl-title {
           font-size: 16px;
           font-weight: 700;
-          color: #0f172a;
+          color: #0f1f45;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -190,10 +209,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         .dl-search-area > div { max-width: none; }
         .dl-search-area form,
         .dl-search-area .ss-input-row {
-          height: 37px;
-          border-radius: 999px;
-          background: #f4f6fb;
-          border: 1px solid #e8ecf4;
+          height: 40px;
+          border-radius: 12px;
+          background: #f1f5fd;
+          border: 1px solid #e6ecf7;
           box-shadow: none;
           padding-right: 12px;
         }
@@ -202,9 +221,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         .dl-search-area form:focus-within,
         .dl-search-area .ss-input-row.focused {
           background: #fff;
-          border-color: #c7d2fe;
+          border-color: #2563eb;
         }
-        .dl-search-area input { font-size: 12px; color: #0f172a; }
+        .dl-search-area input { font-size: 12px; color: #0f1f45; }
         .dl-search-area input::placeholder { color: #94a3b8; }
         .dl-search-area form > div:first-child,
         .dl-search-area .ss-icon,
@@ -220,18 +239,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           width: 36px;
           height: 36px;
           flex-shrink: 0;
-          border-radius: 50%;
+          border-radius: 12px;
           background: transparent;
           border: 1px solid transparent;
-          color: #475569;
+          color: #0f1f45;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           transition: background .16s;
         }
-        .dl-icon-btn:hover { background: #f1f5f9; }
-        .dl-icon-btn svg { width: 15px; height: 15px; }
+        .dl-icon-btn:hover { background: #f3f6fd; }
+        .dl-icon-btn svg { width: 17px; height: 17px; stroke-width: 1.75; }
         .dl-help svg { width: 12px; height: 12px; }
         .dl-help span { display: none; }
         .dl-bell-dot {
@@ -252,20 +271,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           padding: 0 4px 0 0;
           background: transparent;
           border: 0;
-          color: #0f172a;
+          color: #0f1f45;
           cursor: pointer;
           font-family: inherit;
         }
+        .dl-user > svg { color: #64748b; }
         .dl-avatar {
           width: 36px;
           height: 36px;
           flex-shrink: 0;
-          border-radius: 50%;
+          border-radius: 10px;
           border: 0;
-          background: #0f1f45;
+          background: #2563eb;
           color: #fff;
-          font-size: 14px;
-          font-weight: 700;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -285,11 +303,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           right: 0;
           z-index: 50;
           width: 240px;
-          border-radius: 14px;
-          border: 1px solid #e2e8f0;
+          border-radius: 16px;
+          border: 1px solid #e6ecf7;
           background: #fff;
-          color: #0f172a;
-          box-shadow: 0 18px 40px rgba(15,23,42,0.18);
+          color: #0f1f45;
+          box-shadow: 0 18px 40px rgba(15,31,69,0.14);
           overflow: hidden;
         }
         .dl-menu-head {
@@ -297,7 +315,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           align-items: center;
           justify-content: space-between;
           padding: 12px 14px;
-          border-bottom: 1px solid #f1f5f9;
+          border-bottom: 1px solid #e6ecf7;
           font-size: 13.5px;
           font-weight: 700;
         }
@@ -305,8 +323,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           font-size: 11px;
           padding: 1px 8px;
           border-radius: 999px;
-          background: #e8f0fd;
-          color: #075ED6;
+          background: #dce7fd;
+          color: #2563eb;
         }
         .dl-menu-sub { font-size: 12px; font-weight: 400; color: #64748b; margin-top: 2px; }
         .dl-menu-item {
@@ -316,14 +334,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           gap: 10px;
           padding: 10px 14px;
           font-size: 13.5px;
-          color: #0f172a;
+          color: #0f1f45;
           background: none;
           border: 0;
           cursor: pointer;
           font-family: inherit;
           text-decoration: none;
         }
-        .dl-menu-item:hover { background: #f1f5f9; }
+        .dl-menu-item:hover { background: #f3f6fd; }
         .dl-menu-item.danger { color: #dc2626; }
         .dl-menu-item.danger:hover { background: #fef2f2; }
         .dl-notif-menu { width: 340px; }
@@ -342,13 +360,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         .dl-notif-time { display: block; font-size: 11px; color: #94a3b8; margin-top: 3px; }
         .dl-notif-empty { padding: 24px 14px; text-align: center; font-size: 13px; color: #64748b; }
         /* ponytail: pages use hardcoded colors, so dark mode inverts the page and flips back
-           the already-dark sidebar and media. Replace with real dark: styles if needed. */
+           media. Replace with real dark: styles if needed. */
         html.dl-dark {
           filter: invert(1) hue-rotate(180deg);
           background: #fff;
         }
         html.dl-dark .dl-topbar img,
-        html.dl-dark .sb-panel,
+        html.dl-dark .sb-panel img,
         html.dl-dark main :is(img, video, canvas, iframe) {
           filter: invert(1) hue-rotate(180deg);
         }
@@ -366,7 +384,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }
       `}</style>
 
-      <div style={{ minHeight: "100vh", background: "#F0F0F0", fontFamily: "Arial, Helvetica, sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "#f4f6fb", fontFamily: "Arial, Helvetica, sans-serif" }}>
         <Sidebar open={open} onClose={() => setOpen(false)} />
 
         <div className={`dl-shell${open ? " sb-expanded" : ""}`} style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -451,7 +469,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     // eslint-disable-next-line @next/next/no-img-element
                     <img className="dl-avatar" src={String(user.ADMIN_IMAGE)} alt="" />
                   ) : (
-                    <span className="dl-avatar" aria-hidden="true">{String(displayName).charAt(0).toUpperCase()}</span>
+                    <span className="dl-avatar" aria-hidden="true"><UserRound size={19} strokeWidth={1.75} /></span>
                   )}
                   <span className="dl-user-name">{displayName}</span>
                   <ChevronDown size={14} />
