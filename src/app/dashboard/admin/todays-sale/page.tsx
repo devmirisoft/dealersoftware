@@ -321,7 +321,7 @@ export default function AdminTodaysSalePage() {
       {/* ── Main layout ── */}
       <div className="min-h-screen bg-[#f8fafc]" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 lg:px-8 py-4 sticky top-[72px] z-20">
+        <div className="bg-white border-b border-gray-200 px-6 lg:px-8 py-4 sticky top-[84px] z-20">
           <div className="admin-page-shell flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button onClick={() => router.back()}
@@ -449,7 +449,7 @@ export default function AdminTodaysSalePage() {
 
             {/* ── Live preview ── */}
             <div className="w-full lg:w-[280px] flex-shrink-0">
-              <div className="sticky top-[72px]">
+              <div className="sticky top-[84px]">
                 <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3">Live preview</p>
                 <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-4">
                   <p className="text-[13px] font-bold text-gray-800 mb-3">Today&apos;s Sale</p>

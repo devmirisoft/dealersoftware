@@ -1905,7 +1905,7 @@ export default function ViewOrderDealerPage() {
       <div className="min-h-screen bg-gray-50" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
 
         {/* Top bar */}
-        <div className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-[72px] z-20">
+        <div className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-[84px] z-20">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-[12.5px] font-medium text-gray-600 hover:bg-gray-100 transition-all">
