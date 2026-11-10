@@ -419,7 +419,7 @@ function AccountantDashboardInner() {
         .pulse-amber::before { animation: pulseAmber 1.8s infinite; }
         @keyframes pulseAmber { 0%{box-shadow:0 0 0 0 rgba(255,149,0,0.55)} 70%{box-shadow:0 0 0 6px rgba(255,149,0,0)} 100%{box-shadow:0 0 0 0 rgba(255,149,0,0)} }
         .stat-icon { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; margin-bottom: 14px; }
-        .quick-action-btn { display: inline-block; margin-top: 12px; color: #006162; font-size: 11.5px; font-weight: 620; text-decoration: none; white-space: nowrap; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; }
+        .quick-action-btn { display: inline-block; margin-top: 12px; color: var(--color-brand-600); font-size: 11.5px; font-weight: 620; text-decoration: none; white-space: nowrap; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; }
         .quick-action-btn:hover { text-decoration: underline; text-underline-offset: 2px; }
 
         /* ── Panels ── */
@@ -459,7 +459,7 @@ function AccountantDashboardInner() {
         .accent-btn {
           display: inline-flex; align-items: center; gap: 7px;
           height: 32px; padding: 0 13px; border-radius: 10px;
-          background: #006162; border: 0; color: #fff;
+          background: var(--color-brand-600); border: 0; color: #fff;
           font-size: 11.5px; font-weight: 620;
           white-space: nowrap; cursor: pointer; font-family: inherit;
           transition: background .15s;
@@ -571,7 +571,7 @@ function AccountantDashboardInner() {
           <div className="icard-val">{summaryLoading ? <span className="shimmer" style={{ display: "inline-block", width: 60, height: 26 }} /> : pendingVerification}</div>
           <div className="icard-sub">Orders waiting for verification</div>
           <div className={`icard-badge badge-amber${pendingVerification > 0 ? " pulse-amber" : ""}`}>{pendingVerification} pending</div>
-          <Link href="/Pages/Ordermanagement/outstandingorders" className="quick-action-btn">+ Review orders</Link>
+          <Link href="/orders" className="quick-action-btn">+ Review orders</Link>
         </div>
         <div className="icard">
           <div className="icard-lbl">Outstanding Value</div>
@@ -725,7 +725,7 @@ function AccountantDashboardInner() {
             <span className="status-inline"><span className="status-dot sd-red"/>Not accepted <strong className="strong-num" style={{ color: "#1d1d1f" }}>{pendingOrders.filter(o => o.accept_order==="0").length}</strong></span>
             <span className="status-inline"><span className="status-dot sd-amber"/>Exposure <strong className="strong-num" style={{ color: "#1d1d1f" }}>₹{pendingPayment.toLocaleString("en-IN")}</strong></span>
           </div>
-          <Link href="/Pages/Ordermanagement/outstandingorders" className="quick-action-btn" style={{ marginTop: 0 }}>View all pending →</Link>
+          <Link href="/orders" className="quick-action-btn" style={{ marginTop: 0 }}>View all pending →</Link>
         </div>
       </div> */}
 

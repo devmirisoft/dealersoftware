@@ -69,7 +69,7 @@ export default function CartPage() {
       
       {/* ── Breadcrumb bar ── */}
       <div style={{ background: "#fff", borderBottom: "1px solid #e5e7eb", padding: "10px 24px", display: "flex", alignItems: "center", gap: 8 }}>
-        <Link href="/Pages/products" style={{ fontSize: 13, color: "#02474C", textDecoration: "none", fontWeight: 500 }}>
+        <Link href="/Pages/products" style={{ fontSize: 13, color: "var(--color-brand-600)", textDecoration: "none", fontWeight: 500 }}>
           Products
         </Link>
 
@@ -133,7 +133,7 @@ export default function CartPage() {
               </div>
               <Link
                 href="/Pages/products"
-                style={{ marginTop: 4, padding: "10px 24px", background: "#02474C", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none" }}
+                style={{ marginTop: 4, padding: "10px 24px", background: "var(--color-brand-600)", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: "none" }}
               >
                 Browse Products
               </Link>
@@ -338,7 +338,7 @@ export default function CartPage() {
               style={{
                 width: "100%", padding: "12px 0", borderRadius: 12, border: "none",
                 cursor: cart.length === 0 ? "not-allowed" : "pointer",
-                background: cart.length === 0 ? "#e5e7eb" : "#02474C",
+                background: cart.length === 0 ? "#e5e7eb" : "var(--color-brand-600)",
                 color: cart.length === 0 ? "#9ca3af" : "#fff",
                 fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 transition: "opacity .15s",
@@ -353,7 +353,7 @@ export default function CartPage() {
             </button>
             <Link
               href="/Pages/products"
-              style={{ display: "block", textAlign: "center", marginTop: 12, fontSize: 13, color: "#02474C", textDecoration: "none", fontWeight: 500 }}
+              style={{ display: "block", textAlign: "center", marginTop: 12, fontSize: 13, color: "var(--color-brand-600)", textDecoration: "none", fontWeight: 500 }}
             >
               ← Continue Shopping
             </Link>

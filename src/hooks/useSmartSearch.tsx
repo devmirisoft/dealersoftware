@@ -30,7 +30,7 @@ const roleRouteMap: Record<Role, Record<string, string>> = {
     "add staff": "/dashboard/admin/staff/addstaff",
     "staff detail": "/dashboard/admin/staff/[id]",
     orders: "/orders",
-    "outstanding orders": "/Pages/Ordermanagement/outstandingorders",
+    "outstanding orders": "/orders",
     products: "/Pages/products",
     "add product": "/Pages/products/addproducts",
     cart: "/Pages/Cart",

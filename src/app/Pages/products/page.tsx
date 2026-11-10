@@ -930,7 +930,7 @@ function ProductListContent() {
                           onClick={() => product.admin_product_id
                             ? router.push(`/Pages/products/addproducts?id=${encodeURIComponent(product.admin_product_id)}`)
                             : showToast("error", 'Only PostgreSQL products can be edited here')}
-                          className={`${PRESS} inline-flex items-center gap-1 px-[11px] py-1.5 rounded-full text-[12px] font-medium bg-[#fafafc] text-[#3a3a3c] border border-black/[0.06] cursor-pointer hover:bg-[#eef6ff] hover:text-[#00494B]`}
+                          className={`${PRESS} inline-flex items-center gap-1 px-[11px] py-1.5 rounded-full text-[12px] font-medium bg-[#fafafc] text-[#3a3a3c] border border-black/[0.06] cursor-pointer hover:bg-[#eef6ff] hover:text-brand-600`}
                         >
                           <Pencil size={12} />
                           Edit

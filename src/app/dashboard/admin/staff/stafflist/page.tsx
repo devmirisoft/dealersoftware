@@ -72,6 +72,11 @@ function roleBadge(staff: Pick<StaffData, "role" | "staff_roletype" | "sales_reg
   }
 }
 
+// Umbrella role filter: matches every RSM badge ("RSM", "North 1 RSM", ...).
+// Its own sentinel value, since a region-less RSM's label is plain "RSM".
+const ALL_RSM = "__ALL_RSM__"
+const isRsmLabel = (label: string) => label === "RSM" || label.endsWith(" RSM")
+
 type StaffStatus = "ACTIVE" | "INACTIVE" | "SUSPENDED"
 
 function normalizeStaffStatus(value: unknown): StaffStatus {
@@ -616,7 +621,7 @@ export default function StaffListPage() {
   const roleFilteredData = useMemo(() => {
     const email = emailFilter.trim().toLowerCase()
     return data.filter(s => {
-      if (roleFilter && roleBadge(s).label !== roleFilter) return false
+      if (roleFilter === ALL_RSM ? !isRsmLabel(roleBadge(s).label) : roleFilter && roleBadge(s).label !== roleFilter) return false
       if (statusFilter && normalizeStaffStatus(s.status) !== statusFilter) return false
       if (email && !String(s.staff_email ?? "").toLowerCase().includes(email)) return false
       return true
@@ -991,6 +996,7 @@ export default function StaffListPage() {
                         className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 pl-4 pr-8 py-2.5 text-xs font-semibold uppercase tracking-wide text-gray-600 outline-none transition cursor-pointer focus:border-brand-400 focus:ring-2 focus:ring-brand-500/20"
                       >
                         <option value="">Role</option>
+                        {roleOptions.some(isRsmLabel) && <option value={ALL_RSM}>All RSMs</option>}
                         {roleOptions.map((opt) => (
                           <option key={opt} value={opt}>{opt}</option>
                         ))}

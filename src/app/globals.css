@@ -4,18 +4,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Brand accent: buttons/links use brand-600, hover brand-500. */
+/* Brand accent (molten orange #FF5800): buttons/links use brand-600, hover brand-500. */
 @theme {
-  --color-brand-50: #e6f3f3;
-  --color-brand-100: #cce7e8;
-  --color-brand-200: #99cfd1;
-  --color-brand-300: #66b7ba;
-  --color-brand-400: #33969a;
-  --color-brand-500: #007c80;
-  --color-brand-600: #02474c;
-  --color-brand-700: #023b3f;
-  --color-brand-800: #022f33;
-  --color-brand-900: #012326;
+  --color-brand-50: #fff2eb;
+  --color-brand-100: #ffe2d1;
+  --color-brand-200: #ffc5a3;
+  --color-brand-300: #ffa475;
+  --color-brand-400: #ff8040;
+  --color-brand-500: #ff6a1a;
+  --color-brand-600: #ff5800;
+  --color-brand-700: #d64a00;
+  --color-brand-800: #a83a00;
+  --color-brand-900: #7a2a00;
 }
 
 :root {
