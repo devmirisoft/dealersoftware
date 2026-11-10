@@ -202,7 +202,7 @@ export default function AdminTodaysSalePage() {
             <div className="px-6 pt-6 pb-4 border-b border-gray-100 flex items-center justify-between">
               <h3 className="text-[15px] font-bold text-gray-900">{editId ? "Edit Sale Item" : "Add Sale Item"}</h3>
               <button onClick={closeForm} aria-label="Close" className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2.5" strokeLinecap="round">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round">
                   <path d="M18 6 6 18M6 6l12 12" />
                 </svg>
               </button>
@@ -319,7 +319,7 @@ export default function AdminTodaysSalePage() {
       )}
 
       {/* ── Main layout ── */}
-      <div className="min-h-screen bg-[#f8fafc]" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
+      <div className="min-h-screen bg-gray-100" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-6 lg:px-8 py-4 sticky top-[84px] z-20">
           <div className="admin-page-shell flex flex-wrap items-center justify-between gap-4">

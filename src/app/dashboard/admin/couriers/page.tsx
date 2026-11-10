@@ -111,7 +111,7 @@ export default function CouriersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f6fa] px-4 py-7 text-[#344155]">
+    <div className="min-h-screen bg-gray-100 px-4 py-7 text-[#344155]">
       <div className="mx-auto w-full max-w-3xl">
         <h1 className="text-lg font-semibold text-gray-900">Courier Services</h1>
         <p className="mt-1 text-sm text-gray-500">

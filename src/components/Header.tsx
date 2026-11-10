@@ -116,7 +116,7 @@ export default function Header() {
     <header className="relative z-50">
       <div className="flex h-16 w-full items-center gap-3 border-b border-white/10 bg-[#333333] px-4 text-white">
         <Link href="/home" className="shrink-0 px-2">
-          <img src={logoImage} alt="Omsons Logo" className="h-12" />
+          <img src={logoImage} alt="Logo" className="h-12" />
         </Link>
 
         <div className="flex items-start gap-1 border border-transparent hover:border-white rounded px-2 py-1 cursor-pointer min-w-[120px]">

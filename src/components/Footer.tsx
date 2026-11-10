@@ -37,7 +37,7 @@ function Footer() {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-6 text-center text-xs text-gray-500">
-            <p>&copy; {new Date().getFullYear()} Omson. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
           </div>
         </div>
       </footer>

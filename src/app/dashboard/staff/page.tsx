@@ -397,8 +397,8 @@ function ExecutiveDashboard() {
     if (!active || !payload?.length) return null
     return (
       <div style={{ background: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: 14, boxShadow: "0 10px 30px rgba(0,0,0,.10)", padding: "9px 13px" }}>
-        <div style={{ color: "#6e6e73", fontSize: 11, marginBottom: 4 }}>{label}</div>
-        <div style={{ color: "#1d1d1f", fontWeight: 680, fontSize: 12.5, fontVariantNumeric: "tabular-nums" }}>₹{Number(payload[0].value).toLocaleString("en-IN")}</div>
+        <div style={{ color: "#64748b", fontSize: 11, marginBottom: 4 }}>{label}</div>
+        <div style={{ color: "#0f1f45", fontWeight: 680, fontSize: 12.5, fontVariantNumeric: "tabular-nums" }}>₹{Number(payload[0].value).toLocaleString("en-IN")}</div>
       </div>
     )
   }
@@ -406,8 +406,8 @@ function ExecutiveDashboard() {
     if (!active || !payload?.length) return null
     return (
       <div style={{ background: "rgba(255,255,255,.96)", border: "1px solid rgba(60,60,67,.12)", borderRadius: 14, boxShadow: "0 10px 30px rgba(0,0,0,.10)", padding: "9px 13px" }}>
-        <div style={{ color: "#6e6e73", fontSize: 11, marginBottom: 4 }}>{label}</div>
-        <div style={{ color: "#1d1d1f", fontWeight: 680, fontSize: 12.5, fontVariantNumeric: "tabular-nums" }}>{Number(payload[0].value).toLocaleString("en-IN")} orders</div>
+        <div style={{ color: "#64748b", fontSize: 11, marginBottom: 4 }}>{label}</div>
+        <div style={{ color: "#0f1f45", fontWeight: 680, fontSize: 12.5, fontVariantNumeric: "tabular-nums" }}>{Number(payload[0].value).toLocaleString("en-IN")} orders</div>
       </div>
     )
   }
@@ -442,8 +442,8 @@ function ExecutiveDashboard() {
           min-height: 100vh;
           background:
             radial-gradient(circle at 12% -10%, rgba(0, 122, 255, .055), transparent 28%),
-            #f5f5f7;
-          color: #1d1d1f;
+            #f4f6fb;
+          color: #0f1f45;
           font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           text-rendering: optimizeLegibility;
@@ -492,13 +492,13 @@ function ExecutiveDashboard() {
           backdrop-filter: saturate(180%) blur(18px);
           border-radius: 999px;
         }
-        .profile-chip-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #1d1d1f, #52525a); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: -.02em; }
+        .profile-chip-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #0f1f45, #52525a); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: -.02em; }
         .profile-copy { min-width: 0; padding-right: 5px; }
-        .profile-chip-name { max-width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #1d1d1f; font-size: 12px; font-weight: 650; }
-        .profile-chip-role { color: #8e8e93; font-size: 10.5px; margin-top: 1px; }
+        .profile-chip-name { max-width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #0f1f45; font-size: 12px; font-weight: 650; }
+        .profile-chip-role { color: #94a3b8; font-size: 10.5px; margin-top: 1px; }
 
         /* ── Section labels ── */
-        .section-label { margin: 0 0 12px 2px; color: #6e6e73; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
+        .section-label { margin: 0 0 12px 2px; color: #64748b; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
 
         /* ── Stat cards ── */
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 30px; }
@@ -514,15 +514,15 @@ function ExecutiveDashboard() {
         .stat-link-card { display: block; text-decoration: none; color: inherit; }
         .stat-card { position: relative; container-type: inline-size; }
         .stat-card > .quick-action-btn::after { content: ""; position: absolute; inset: 0; }
-        .stat-lbl { color: #6e6e73; font-size: 12px; font-weight: 600; letter-spacing: -.005em; }
-        .stat-val { margin-top: 12px; color: #1d1d1f; font-size: clamp(20px, 12cqi, 34px); line-height: 1; font-weight: 700; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-        .stat-sub { font-size: 11px; color: #8e8e93; margin-top: 8px; line-height: 1.4; }
+        .stat-lbl { color: #64748b; font-size: 12px; font-weight: 600; letter-spacing: -.005em; }
+        .stat-val { margin-top: 12px; color: #0f1f45; font-size: clamp(20px, 12cqi, 34px); line-height: 1; font-weight: 700; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+        .stat-sub { font-size: 11px; color: #94a3b8; margin-top: 8px; line-height: 1.4; }
         .stat-badge {
           display: inline-flex; align-items: center; gap: 6px;
           margin-top: 15px; margin-right: 12px;
-          color: #6e6e73; font-size: 11.5px; line-height: 1.35; white-space: nowrap;
+          color: #64748b; font-size: 11.5px; line-height: 1.35; white-space: nowrap;
         }
-        .stat-badge::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #8e8e93; flex-shrink: 0; }
+        .stat-badge::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; flex-shrink: 0; }
         .badge-amber::before  { background: #ff9500; }
         .badge-green::before  { background: #34c759; }
         .badge-blue::before   { background: #006162; }
@@ -544,35 +544,35 @@ function ExecutiveDashboard() {
           backdrop-filter: saturate(180%) blur(20px);
         }
         .panel-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 18px; }
-        .panel-title { color: #1d1d1f; font-size: 16px; line-height: 1.2; font-weight: 680; letter-spacing: -.022em; }
-        .panel-sub   { margin-top: 4px; color: #6e6e73; font-size: 11.5px; line-height: 1.35; }
+        .panel-title { color: #0f1f45; font-size: 16px; line-height: 1.2; font-weight: 680; letter-spacing: -.022em; }
+        .panel-sub   { margin-top: 4px; color: #64748b; font-size: 11.5px; line-height: 1.35; }
         .chart-canvas { height: 260px; width: 100%; }
-        .chart-empty  { height: 260px; display: grid; place-items: center; color: #8e8e93; font-size: 12px; }
-        .legend { display: inline-flex; align-items: center; gap: 5px; color: #6e6e73; font-size: 10.5px; white-space: nowrap; }
+        .chart-empty  { height: 260px; display: grid; place-items: center; color: #94a3b8; font-size: 12px; }
+        .legend { display: inline-flex; align-items: center; gap: 5px; color: #64748b; font-size: 10.5px; white-space: nowrap; }
         .leg-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
         /* ── Reports ── */
         .reports-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
         @media (max-width: 640px) { .reports-row { grid-template-columns: 1fr; } }
-        .rpt-head { margin-bottom: 5px; color: #6e6e73; font-size: 11px; font-weight: 650; }
+        .rpt-head { margin-bottom: 5px; color: #64748b; font-size: 11px; font-weight: 650; }
         .report-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 39px; border-top: 1px solid rgba(60, 60, 67, .11); font-size: 12px; }
         .report-item:first-of-type { border-top: 0; }
-        .report-name  { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6e6e73; }
-        .report-value { color: #1d1d1f; font-weight: 650; font-variant-numeric: tabular-nums; }
-        .report-empty { padding: 22px 0; color: #8e8e93; font-size: 12px; }
+        .report-name  { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748b; }
+        .report-value { color: #0f1f45; font-weight: 650; font-variant-numeric: tabular-nums; }
+        .report-empty { padding: 22px 0; color: #94a3b8; font-size: 12px; }
 
         /* ── Dealer table ── */
         .dealer-table-wrap { overflow-x: auto; }
         .dealer-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-        .dealer-table th { padding: 0 12px 10px; text-align: left; font-size: 11px; font-weight: 650; color: #6e6e73; white-space: nowrap; cursor: pointer; user-select: none; }
-        .dealer-table th:hover { color: #1d1d1f; }
+        .dealer-table th { padding: 0 12px 10px; text-align: left; font-size: 11px; font-weight: 650; color: #64748b; white-space: nowrap; cursor: pointer; user-select: none; }
+        .dealer-table th:hover { color: #0f1f45; }
         .dealer-table td { padding: 12px; border-top: 1px solid rgba(60, 60, 67, .11); vertical-align: middle; }
         .dealer-table tr:hover td { background: rgba(118, 118, 128, .05); }
-        .dt-name { font-weight: 620; color: #1d1d1f; font-size: 12.5px; }
-        .dt-sub  { font-size: 10.5px; color: #8e8e93; margin-top: 2px; }
-        .dt-code { font-size: 10.5px; color: #8e8e93; font-variant-numeric: tabular-nums; }
-        .dt-mono { font-size: 12.5px; color: #6e6e73; font-variant-numeric: tabular-nums; }
-        .st-active, .st-inactive { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #6e6e73; white-space: nowrap; }
+        .dt-name { font-weight: 620; color: #0f1f45; font-size: 12.5px; }
+        .dt-sub  { font-size: 10.5px; color: #94a3b8; margin-top: 2px; }
+        .dt-code { font-size: 10.5px; color: #94a3b8; font-variant-numeric: tabular-nums; }
+        .dt-mono { font-size: 12.5px; color: #64748b; font-variant-numeric: tabular-nums; }
+        .st-active, .st-inactive { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #64748b; white-space: nowrap; }
         .st-active::before, .st-inactive::before { content: ""; width: 7px; height: 7px; border-radius: 999px; flex-shrink: 0; }
         .st-active::before   { background: #34c759; }
         .st-inactive::before { background: #ff3b30; }
@@ -591,9 +591,9 @@ function ExecutiveDashboard() {
 
         /* ── Search ── */
         .search-wrap { position: relative; display: inline-flex; align-items: center; }
-        .search-wrap svg { position: absolute; left: 12px; color: #8e8e93; pointer-events: none; }
-        .search-input { height: 34px; padding: 0 12px 0 34px; border: 1px solid transparent; border-radius: 12px; font-size: 12px; width: 230px; outline: none; font-family: inherit; color: #1d1d1f; background: rgba(118, 118, 128, .10); transition: border-color .15s, box-shadow .15s, background .15s; }
-        .search-input::placeholder { color: #8e8e93; }
+        .search-wrap svg { position: absolute; left: 12px; color: #94a3b8; pointer-events: none; }
+        .search-input { height: 34px; padding: 0 12px 0 34px; border: 1px solid transparent; border-radius: 12px; font-size: 12px; width: 230px; outline: none; font-family: inherit; color: #0f1f45; background: rgba(118, 118, 128, .10); transition: border-color .15s, box-shadow .15s, background .15s; }
+        .search-input::placeholder { color: #94a3b8; }
         .search-input:focus { border-color: rgba(0,122,255,.4); box-shadow: 0 0 0 3px rgba(0,122,255,0.10); background: #fff; }
 
         /* ── Shimmer ── */
@@ -838,7 +838,7 @@ function ExecutiveDashboard() {
                   ))}
                 </div>
               ) : filteredDealers.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "#8e8e93", fontSize: 13 }}>
+                <div style={{ textAlign: "center", padding: "40px 0", color: "#94a3b8", fontSize: 13 }}>
                   {dealers.length === 0 ? "No dealers assigned." : "No dealers match your search."}
                 </div>
               ) : (
@@ -914,24 +914,24 @@ function ExecutiveDashboard() {
                   {/* Pagination */}
                   {totalDealerPages > 1 && (
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 18, flexWrap: "wrap", gap: 10 }}>
-                      <span style={{ fontSize: 11.5, color: "#8e8e93", fontVariantNumeric: "tabular-nums" }}>
+                      <span style={{ fontSize: 11.5, color: "#94a3b8", fontVariantNumeric: "tabular-nums" }}>
                         Showing {pageStart + 1}–{Math.min(pageStart + DEALER_PAGE_SIZE, filteredDealers.length)} of {filteredDealers.length}
                       </span>
                       <div style={{ display: "flex", gap: 4 }}>
                         <button
                           onClick={() => setDealerPage(p => p - 1)}
                           disabled={dealerPage === 1}
-                          style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid rgba(60,60,67,.11)", background: "transparent", color: dealerPage === 1 ? "#c4c4c8" : "#1d1d1f", cursor: dealerPage === 1 ? "default" : "pointer", opacity: dealerPage === 1 ? 0.4 : 1 }}
+                          style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid rgba(60,60,67,.11)", background: "transparent", color: dealerPage === 1 ? "#c4c4c8" : "#0f1f45", cursor: dealerPage === 1 ? "default" : "pointer", opacity: dealerPage === 1 ? 0.4 : 1 }}
                         >‹</button>
 
                         {pageRange().map((item, idx) =>
                           item === "..." ? (
-                            <span key={`e${idx}`} style={{ width: 36, height: 34, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#8e8e93", fontSize: 13 }}>…</span>
+                            <span key={`e${idx}`} style={{ width: 36, height: 34, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#94a3b8", fontSize: 13 }}>…</span>
                           ) : (
                             <button
                               key={item}
                               onClick={() => setDealerPage(item as number)}
-                              style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid", borderColor: dealerPage === item ? "var(--color-brand-600)" : "rgba(60,60,67,.11)", background: dealerPage === item ? "var(--color-brand-600)" : "transparent", color: dealerPage === item ? "#fff" : "#1d1d1f", fontWeight: dealerPage === item ? 700 : 400, cursor: "pointer" }}
+                              style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid", borderColor: dealerPage === item ? "var(--color-brand-600)" : "rgba(60,60,67,.11)", background: dealerPage === item ? "var(--color-brand-600)" : "transparent", color: dealerPage === item ? "#fff" : "#0f1f45", fontWeight: dealerPage === item ? 700 : 400, cursor: "pointer" }}
                             >{item}</button>
                           )
                         )}
@@ -939,7 +939,7 @@ function ExecutiveDashboard() {
                         <button
                           onClick={() => setDealerPage(p => p + 1)}
                           disabled={dealerPage === totalDealerPages}
-                          style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid rgba(60,60,67,.11)", background: "transparent", color: dealerPage === totalDealerPages ? "#c4c4c8" : "#1d1d1f", cursor: dealerPage === totalDealerPages ? "default" : "pointer", opacity: dealerPage === totalDealerPages ? 0.4 : 1 }}
+                          style={{ minWidth: 36, height: 34, padding: "0 10px", fontSize: 13, borderRadius: 7, border: "1px solid rgba(60,60,67,.11)", background: "transparent", color: dealerPage === totalDealerPages ? "#c4c4c8" : "#0f1f45", cursor: dealerPage === totalDealerPages ? "default" : "pointer", opacity: dealerPage === totalDealerPages ? 0.4 : 1 }}
                         >›</button>
                       </div>
                     </div>
@@ -1027,8 +1027,8 @@ function ChartPanel({
           <ResponsiveContainer width="100%" height={260} minWidth={0}>
             <BarChart data={data} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
               <CartesianGrid stroke="rgba(60,60,67,.08)" vertical={false} />
-              <XAxis dataKey="name" tick={{ fontSize: 10.5, fill: "#8e8e93" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10.5, fill: "#8e8e93" }} axisLine={false} tickLine={false} width={52} tickFormatter={compactAxisLabel} />
+              <XAxis dataKey="name" tick={{ fontSize: 10.5, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 10.5, fill: "#94a3b8" }} axisLine={false} tickLine={false} width={52} tickFormatter={compactAxisLabel} />
               <Tooltip content={<TooltipComp />} />
               <Bar dataKey="value" fill={barFill} radius={[8, 8, 2, 2]} maxBarSize={38} />
             </BarChart>

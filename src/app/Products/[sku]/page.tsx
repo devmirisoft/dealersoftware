@@ -668,17 +668,13 @@ export default function ProductDetailsPage() {
                   <p style={{ fontSize: 11, fontWeight: 700, color: "#64748b", letterSpacing: ".07em", textTransform: "uppercase", margin: "0 0 10px" }}>About this item</p>
                   <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                     {product.features.map((f, i) => (
-                      <li key={i} style={{ display: "flex", gap: 10, fontSize: 13.5, color: "#374151", lineHeight: 1.5 }}>
+                      <li key={i} style={{ display: "flex", gap: 10, fontSize: 13.5, color: "#334155", lineHeight: 1.5 }}>
                         <span style={{ color: "#f59e0b", fontWeight: 700, marginTop: 2, flexShrink: 0 }}>▸</span>
                         <span>{f}</span>
                       </li>
                     ))}
                   </ul>
                    <div style={{ display: "flex", flexDirection: "column", gap: 7, fontSize: 13, color: "#475569", borderTop: "1px solid #f1f5f9", paddingTop: 14 }}>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <span style={{ fontWeight: 600, color: "#0f172a", minWidth: 110 }}>Supplier:</span>
-                  <span>Omson Scientific Labs</span>
-                </div>
                 <div style={{ display: "flex", gap: 8 }}>
                   <span style={{ fontWeight: 600, color: "#0f172a", minWidth: 110 }}>Certification:</span>
                   <span>NABL Certified, ISO 9001:2015</span>
@@ -714,7 +710,7 @@ export default function ProductDetailsPage() {
                           style={{ position: "relative", padding: "6px 12px", fontSize: 12, borderRadius: 6,
                             border: `2px solid ${isSel ? "#6A5ACD" : inCart ? "#22c55e" : "#e2e8f0"}`,
                             background: isSel ? "#6A5ACD" : inCart ? "#f0fdf4" : "#fff",
-                            color: isSel ? "#fff" : inCart ? "#15803d" : "#374151",
+                            color: isSel ? "#fff" : inCart ? "#15803d" : "#334155",
                             fontWeight: isSel ? 700 : 500, cursor: "pointer", transition: "all .15s" }}>
                           {label}
                           {inCart && !isSel && (
@@ -768,10 +764,6 @@ export default function ProductDetailsPage() {
 
               {/* Meta */}
               {/* <div style={{ display: "flex", flexDirection: "column", gap: 7, fontSize: 13, color: "#475569", borderTop: "1px solid #f1f5f9", paddingTop: 14 }}>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <span style={{ fontWeight: 600, color: "#0f172a", minWidth: 110 }}>Supplier:</span>
-                  <span>Omson Scientific Labs</span>
-                </div>
                 <div style={{ display: "flex", gap: 8 }}>
                   <span style={{ fontWeight: 600, color: "#0f172a", minWidth: 110 }}>Certification:</span>
                   <span>NABL Certified, ISO 9001:2015</span>
@@ -847,7 +839,7 @@ export default function ProductDetailsPage() {
                   {selectedPackSize > 1 ? "Packs:" : "Quantity:"}
                 </p>
                 <div style={{ display: "flex", alignItems: "center", border: "1px solid #e2e8f0", borderRadius: 8, width: "fit-content" }}>
-                  <button onClick={() => updateSelectedQuantity(current => Math.max(0, current - 1))} style={{ padding: "8px 16px", border: "none", background: "transparent", cursor: "pointer", fontSize: 18, color: "#374151" }}>−</button>
+                  <button onClick={() => updateSelectedQuantity(current => Math.max(0, current - 1))} style={{ padding: "8px 16px", border: "none", background: "transparent", cursor: "pointer", fontSize: 18, color: "#334155" }}>−</button>
                    <input 
                     type="number" 
                     value={selectedQuantityValue} 
@@ -859,7 +851,7 @@ export default function ProductDetailsPage() {
                     style={{ padding: "1px 1px", fontSize: 15, fontWeight: 700, borderLeft: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", width:60, textAlign: "center" }} 
                     min={0}
                   />
-                  <button onClick={() => updateSelectedQuantity(current => current + 1)} style={{ padding: "8px 16px", border: "none", background: "transparent", cursor: "pointer", fontSize: 18, color: "#374151" }}>+</button>
+                  <button onClick={() => updateSelectedQuantity(current => current + 1)} style={{ padding: "8px 16px", border: "none", background: "transparent", cursor: "pointer", fontSize: 18, color: "#334155" }}>+</button>
                 </div>
               </div>
 
@@ -997,14 +989,14 @@ export default function ProductDetailsPage() {
                 <table style={{ width: "100%", fontSize: 13, textAlign: "center", borderCollapse: "collapse" }}>
                   <thead>
                     <tr style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
-                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#374151", whiteSpace: "nowrap" }}>CAT NO</th>
+                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#334155", whiteSpace: "nowrap" }}>CAT NO</th>
                       {specKeys.map(k => (
-                        <th key={k} style={{ padding: "12px 16px", fontWeight: 700, color: "#374151", whiteSpace: "nowrap" }}>{k}</th>
+                        <th key={k} style={{ padding: "12px 16px", fontWeight: 700, color: "#334155", whiteSpace: "nowrap" }}>{k}</th>
                       ))}
-                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#374151" }}>Qty</th>
-                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#374151" ,  display:"none"}}>Price</th>
-                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#374151" }}>Price</th>
-                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#374151" }}>Total</th>
+                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#334155" }}>Qty</th>
+                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#334155" ,  display:"none"}}>Price</th>
+                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#334155" }}>Price</th>
+                      <th style={{ padding: "12px 16px", fontWeight: 700, color: "#334155" }}>Total</th>
                       <th style={{ padding: "12px 16px" }} />
                     </tr>
                   </thead>
@@ -1034,7 +1026,7 @@ export default function ProductDetailsPage() {
 
                           {/* Spec columns */}
                           {specKeys.map(k => (
-                            <td key={k} style={{ padding: "11px 16px", color: "#374151" }}>
+                            <td key={k} style={{ padding: "11px 16px", color: "#334155" }}>
                               {v.specs?.[k] ?? "—"}
                             </td>
                           ))}
@@ -1044,7 +1036,7 @@ export default function ProductDetailsPage() {
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
                               <div style={{ display: "flex", alignItems: "center", border: "1px solid #e2e8f0", borderRadius: 6, overflow: "hidden" }}>
                                 <button onClick={() => setPacks(v.sku, Math.max(0, numPacks - 1))}
-                                  style={{ padding: "4px 8px", border: "none", background: "#f8fafc", cursor: "pointer", fontSize: 14, color: "#374151" }}>−</button>
+                                  style={{ padding: "4px 8px", border: "none", background: "#f8fafc", cursor: "pointer", fontSize: 14, color: "#334155" }}>−</button>
                                 <input
                                   type="number"
                                   value={quantityValue}
@@ -1055,7 +1047,7 @@ export default function ProductDetailsPage() {
                                   min={0}
                                 />
                                 <button onClick={() => setPacks(v.sku, numPacks + 1)}
-                                  style={{ padding: "4px 8px", border: "none", background: "#f8fafc", cursor: "pointer", fontSize: 14, color: "#374151" }}>+</button>
+                                  style={{ padding: "4px 8px", border: "none", background: "#f8fafc", cursor: "pointer", fontSize: 14, color: "#334155" }}>+</button>
                               </div>
                               {(cartItem?.quantity ?? 0) > 0 && (
                                 <span style={{ fontSize: 10, fontWeight: 700, color: "#15803d", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 4, padding: "2px 6px", whiteSpace: "nowrap" }}>
@@ -1068,7 +1060,7 @@ export default function ProductDetailsPage() {
                             </span>
                           </td>
 
-                          <td style={{ padding: "11px 16px", color: "#374151", fontWeight: 600 , display:"none" }}>
+                          <td style={{ padding: "11px 16px", color: "#334155", fontWeight: 600 , display:"none" }}>
                             {packPaise ? fmt(packPaise) : "—"}
                           </td>
 

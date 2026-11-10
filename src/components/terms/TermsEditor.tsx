@@ -60,7 +60,7 @@ export default function TermsEditor({ url = "/api/terms/content" }: { url?: stri
           type="button"
           onClick={save}
           disabled={saving}
-          className="h-9 rounded bg-[#1f2937] px-4 text-sm font-medium text-white hover:bg-[#374151] disabled:opacity-50"
+          className="h-9 rounded bg-[#1e293b] px-4 text-sm font-medium text-white hover:bg-[#334155] disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save"}
         </button>

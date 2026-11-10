@@ -459,7 +459,7 @@ export default function Page() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 text-black">
+    <div className="w-full min-h-screen bg-gray-100 text-black">
 
       {/* ── Hero Slider ── */}
       <div className="relative w-full bg-gradient-to-b from-slate-800 to-gray-50">
@@ -512,7 +512,7 @@ export default function Page() {
 
         {ordersError && (
           <div className="flex flex-col items-center justify-center py-16 gap-3 bg-white rounded-lg border border-gray-100">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round">
               <circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" />
             </svg>
             <p className="text-sm text-gray-500">Could not load orders. Please try again later.</p>
@@ -521,7 +521,7 @@ export default function Page() {
 
         {!ordersLoading && !ordersError && recentOrders.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-3 bg-white rounded-lg border border-gray-100">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.2" strokeLinecap="round">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.2" strokeLinecap="round">
               <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
               <rect x="9" y="3" width="6" height="4" rx="1" />
             </svg>

@@ -29,7 +29,7 @@ export default function StaffFundRequestsPage() {
 
   if (!stage) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 text-sm text-gray-500">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 text-sm text-gray-500">
         Loading fund requests...
       </div>
     );

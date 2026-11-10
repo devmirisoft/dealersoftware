@@ -60,7 +60,7 @@ export default function PendingOrdersPreview({
     <div
       style={{
         background: "#fff",
-        border: "1px solid #e5e7eb",
+        border: "1px solid #e6ecf7",
         borderRadius: 20,
         padding: 22,
         marginBottom: 20,
@@ -77,8 +77,8 @@ export default function PendingOrdersPreview({
         }}
       >
         <div>
-          <div style={{ fontSize: 13.5, fontWeight: 600, color: "#111827" }}>{title}</div>
-          <div style={{ fontSize: 11.5, color: "#6b7280", marginTop: 2 }}>{subtitle}</div>
+          <div style={{ fontSize: 13.5, fontWeight: 600, color: "#0f1f45" }}>{title}</div>
+          <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 2 }}>{subtitle}</div>
         </div>
         <Link
           href={moreHref}
@@ -88,8 +88,8 @@ export default function PendingOrdersPreview({
             justifyContent: "center",
             padding: "7px 12px",
             borderRadius: 10,
-            background: "#f9fafb",
-            border: "1px solid #e5e7eb",
+            background: "#f8fafd",
+            border: "1px solid #e6ecf7",
             color: "#4f46e5",
             fontSize: 12,
             fontWeight: 700,
@@ -107,15 +107,15 @@ export default function PendingOrdersPreview({
               <div
                 key={index}
                 style={{
-                  border: "1px solid #e5e7eb",
+                  border: "1px solid #e6ecf7",
                   borderRadius: 14,
                   padding: "14px 16px",
                   display: "grid",
                   gap: 8,
                 }}
               >
-                <div style={{ width: 120, height: 14, borderRadius: 999, background: "#e5e7eb" }} />
-                <div style={{ width: "55%", height: 12, borderRadius: 999, background: "#f3f4f6" }} />
+                <div style={{ width: 120, height: 14, borderRadius: 999, background: "#e6ecf7" }} />
+                <div style={{ width: "55%", height: 12, borderRadius: 999, background: "#f4f6fb" }} />
               </div>
             ))
           : items.length > 0
@@ -126,7 +126,7 @@ export default function PendingOrdersPreview({
                   <div
                     key={item.id}
                     style={{
-                      border: "1px solid #e5e7eb",
+                      border: "1px solid #e6ecf7",
                       borderRadius: 14,
                       padding: "14px 16px",
                       display: "flex",
@@ -137,14 +137,14 @@ export default function PendingOrdersPreview({
                     }}
                   >
                     <div style={{ minWidth: 0, flex: "1 1 260px" }}>
-                      <div style={{ fontSize: 12.5, fontWeight: 700, color: "#1f2937" }}>
+                      <div style={{ fontSize: 12.5, fontWeight: 700, color: "#1e293b" }}>
                         {formatDisplayOrderNumber(item.id)}
                       </div>
                       {item.title && (
                         <div
                           style={{
                             fontSize: 12.5,
-                            color: "#111827",
+                            color: "#0f1f45",
                             marginTop: 3,
                             whiteSpace: "nowrap",
                             overflow: "hidden",
@@ -155,7 +155,7 @@ export default function PendingOrdersPreview({
                         </div>
                       )}
                       {item.subtitle && (
-                        <div style={{ fontSize: 11.5, color: "#6b7280", marginTop: 3 }}>{item.subtitle}</div>
+                        <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 3 }}>{item.subtitle}</div>
                       )}
                     </div>
 
@@ -197,7 +197,7 @@ export default function PendingOrdersPreview({
                         </span>
                       )}
                       {amountLabel && (
-                        <div style={{ fontSize: 12.5, fontWeight: 700, color: "#111827", fontFamily: "'DM Mono', monospace" }}>
+                        <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0f1f45", fontFamily: "'DM Mono', monospace" }}>
                           {amountLabel}
                         </div>
                       )}
@@ -208,12 +208,12 @@ export default function PendingOrdersPreview({
             : (
               <div
                 style={{
-                  border: "1px dashed #d1d5db",
+                  border: "1px dashed #d5ddec",
                   borderRadius: 14,
                   padding: "20px 16px",
                   textAlign: "center",
                   fontSize: 12.5,
-                  color: "#6b7280",
+                  color: "#64748b",
                 }}
               >
                 {emptyText}

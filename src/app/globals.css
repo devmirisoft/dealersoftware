@@ -16,6 +16,36 @@
   --color-brand-700: #d64a00;
   --color-brand-800: #a83a00;
   --color-brand-900: #7a2a00;
+
+  /* Neutrals = the sidebar/header palette, so every page's gray-* and slate-*
+     classes match the frame: 100 is the page background, 200 the hairline,
+     500 muted text, 900 the navy used for text. Both scales map to the same
+     values so pages built on either look alike. */
+  --color-gray-50: #f8fafd;
+  --color-gray-100: #f4f6fb;
+  --color-gray-200: #e6ecf7;
+  --color-gray-300: #d5ddec;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f1f45;
+  --color-gray-950: #0a1530;
+  --color-slate-50: #f8fafd;
+  --color-slate-100: #f4f6fb;
+  --color-slate-200: #e6ecf7;
+  --color-slate-300: #d5ddec;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f1f45;
+  --color-slate-950: #0a1530;
+
+  /* Cards use shadow-sm: same soft shadow as the sidebar and header. */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .04), 0 6px 20px rgba(15, 23, 42, .05);
 }
 
 :root {
@@ -105,8 +135,9 @@
   margin-right: auto;
 }
 
+/* Corner radii follow the sidebar/header: 12px surfaces, 10px controls. */
 .admin-page-shell :is(.rounded-lg, .rounded-xl, .rounded-2xl) {
-  border-radius: 6px !important;
+  border-radius: 12px !important;
 }
 
 .admin-page-shell :is(.rounded-full) {
@@ -114,7 +145,7 @@
 }
 
 .admin-page-shell :is(button, input, select, textarea, a) {
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 @keyframes auth-card-enter {

@@ -438,7 +438,7 @@
 //         .stock-out { color: #dc2626; }
 //         .variant-section { margin-top: 24px; }
 //         .section-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 12px; }
-//         .variant-btn { border: 2px solid #e2e8f0; background: #fff; color: #374151; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; }
+//         .variant-btn { border: 2px solid #e2e8f0; background: #fff; color: #334155; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; }
 //         .variant-btn:active { transform: scale(0.96); }
 //         .variant-btn.active { border-color: #6A5ACD; background: #6A5ACD; color: #fff; }
 //         .table-wrap { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
@@ -1172,7 +1172,7 @@ export default function AddProductPage() {
         .stock-out { color: #dc2626; }
         .variant-section { margin-top: 24px; }
         .section-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 12px; }
-        .variant-btn { border: 2px solid #e2e8f0; background: #fff; color: #374151; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; }
+        .variant-btn { border: 2px solid #e2e8f0; background: #fff; color: #334155; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; }
         .variant-btn:active { transform: scale(0.96); }
         .variant-btn.active { border-color: #6A5ACD; background: #6A5ACD; color: #fff; }
         .table-wrap { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }

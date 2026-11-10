@@ -65,13 +65,13 @@ export default function AccountantLogin() {
                 <div className="mb-3 flex items-center gap-3">
                   <img
                     src="https://omsonslabs.com/wp-content/uploads/elementor/thumbs/Logo-White-rjr8rdx3pqxz9p6ypfegb07hgtpvj3g22mnujlpa0w.png"
-                    alt="Omsons Logo"
+                    alt="Logo"
                     width={34}
                     height={34}
                     className="rounded-full bg-[#1d4ed8] p-1"
                   />
                   <div>
-                    <p className="text-sm font-semibold text-slate-950">Omsons finance</p>
+                    <p className="text-sm font-semibold text-slate-950">Finance</p>
                     <p className="text-xs text-slate-400">Accountant portal</p>
                   </div>
                 </div>
@@ -171,7 +171,7 @@ export default function AccountantLogin() {
 
               {/* Footer */}
               <p className="mt-4 text-center text-[11px] text-slate-300">
-                ©2026 Omsons. All rights reserved.
+                ©2026 All rights reserved.
               </p>
             </div>
           </form>
@@ -180,7 +180,7 @@ export default function AccountantLogin() {
           <div className="relative hidden bg-[#1177e9] lg:block">
             <img
               src="/login2.png"
-              alt="Omsons laboratory glassware"
+              alt="Laboratory glassware"
               className="absolute inset-0 h-full w-full object-cover object-left"
             />
           </div>

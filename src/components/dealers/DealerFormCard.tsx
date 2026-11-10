@@ -381,7 +381,7 @@ export default function DealerFormCard({
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f6fa] px-4 py-7 text-[#344155]">
+    <div className="min-h-screen bg-gray-100 px-4 py-7 text-[#344155]">
       <div className="mx-auto w-full max-w-[1840px] min-w-0">
         <form onSubmit={handleSubmit} className="border border-[#dfe3ec] bg-white shadow-sm">
           <div className="flex items-end border-b-2 border-[#1d4ed8] px-5 pt-4">
@@ -423,7 +423,7 @@ export default function DealerFormCard({
 
             <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-[210px_1fr]">
               <div className="pt-1 text-[36px] font-semibold text-[#405064]"></div>
-              <div className="border-t border-[#e5e7eb] pt-7">
+              <div className="border-t border-[#e6ecf7] pt-7">
                 <div className="grid grid-cols-1 gap-5 xl:grid-cols-[112px_1.2fr_1.8fr_1.8fr] xl:items-end">
                   <PriorityRadio number={1} value="primary" selected={formData.priorityPerson} onChange={handleInputChange} />
                   <Field label="Person Name" required>

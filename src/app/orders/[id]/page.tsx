@@ -1902,7 +1902,7 @@ export default function ViewOrderDealerPage() {
         tr:hover .track-btn { opacity: 1; }
       `}</style>
 
-      <div className="min-h-screen bg-gray-50" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
+      <div className="min-h-screen bg-gray-100" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
 
         {/* Top bar */}
         <div className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-[84px] z-20">
@@ -2325,7 +2325,7 @@ export default function ViewOrderDealerPage() {
                           <td className="px-4 py-3.5 font-mono font-bold text-amber-700">{dash(`${pricing.packs} × ${pricing.packSize}`)}</td>
                           <td className="px-4 py-3.5 font-mono font-bold text-gray-900">{dash(pricing.pieces)}</td>
                           <td className="px-4 py-3.5 font-mono font-semibold text-emerald-600">{dash(pricing.ready * pricing.packSize)}</td>
-                          <td className="px-4 py-3.5 font-mono font-bold" style={{ color: left > 0 ? "#dc2626" : "#9ca3af" }}>{dash(left * pricing.packSize)}</td>
+                          <td className="px-4 py-3.5 font-mono font-bold" style={{ color: left > 0 ? "#dc2626" : "#94a3b8" }}>{dash(left * pricing.packSize)}</td>
                           <td className="px-4 py-3.5 text-[12px] text-gray-600">{o.product_unit || "—"}</td>
                           <td className="px-4 py-3.5 font-mono text-gray-900 font-semibold">₹{pricing.unitPrice.toLocaleString("en-IN")}</td>
                           <td className="px-4 py-3.5 font-mono text-gray-900">

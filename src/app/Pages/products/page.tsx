@@ -537,7 +537,7 @@ function ProductListContent() {
 
   return (
     <div
-      className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] antialiased"
+      className="min-h-screen bg-gray-100 text-[#0f1f45] antialiased"
       style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif" }}
     >
       <style>{`
@@ -573,14 +573,14 @@ function ProductListContent() {
             <div className="w-11 h-11 rounded-full bg-[#fff1f1] flex items-center justify-center mb-4">
               <AlertTriangle size={20} color="#ff3b30" />
             </div>
-            <div className="text-[17px] font-semibold text-[#1d1d1f] mb-1.5 tracking-[-0.01em]">Delete product?</div>
-            <div className="text-[13px] text-[#6e6e73] leading-relaxed mb-6">
+            <div className="text-[17px] font-semibold text-[#0f1f45] mb-1.5 tracking-[-0.01em]">Delete product?</div>
+            <div className="text-[13px] text-[#64748b] leading-relaxed mb-6">
               This cant be undone — the product and all of its data will be removed permanently.
             </div>
             <div className="flex gap-2.5 justify-end">
               <button
                 onClick={closeSheet}
-                className={`${PRESS} px-[18px] py-[9px] rounded-full border border-[#e5e5ea] bg-white text-[13px] font-medium text-[#1d1d1f] cursor-pointer hover:bg-[#f5f5f7]`}
+                className={`${PRESS} px-[18px] py-[9px] rounded-full border border-[#e6ecf7] bg-white text-[13px] font-medium text-[#0f1f45] cursor-pointer hover:bg-[#f4f6fb]`}
               >
                 Cancel
               </button>
@@ -614,14 +614,14 @@ function ProductListContent() {
             <div className="w-11 h-11 rounded-full bg-[#fff8e6] flex items-center justify-center mb-4">
               <AlertTriangle size={20} color="#ff9f0a" />
             </div>
-            <div className="text-[17px] font-semibold text-[#1d1d1f] mb-1.5 tracking-[-0.01em]">
+            <div className="text-[17px] font-semibold text-[#0f1f45] mb-1.5 tracking-[-0.01em]">
               Disable {disableTarget.catalogue_number || 'this product'}?
             </div>
-            <div className="text-[13px] text-[#6e6e73] leading-relaxed mb-4">
+            <div className="text-[13px] text-[#64748b] leading-relaxed mb-4">
               Dealers stop seeing it. On open orders, lines not yet dispatched stay on the order at ₹0, faded with this note, and can&apos;t be dispatched, edited or removed. Lines already dispatched are not touched.
             </div>
-            <label htmlFor="disable-note" className="block text-[12px] font-semibold text-[#3a3a3c] mb-1.5">
-              Note <span className="font-normal text-[#86868b]">(shown on the affected orders)</span>
+            <label htmlFor="disable-note" className="block text-[12px] font-semibold text-[#334155] mb-1.5">
+              Note <span className="font-normal text-[#64748b]">(shown on the affected orders)</span>
             </label>
             <textarea
               id="disable-note"
@@ -632,14 +632,14 @@ function ProductListContent() {
               value={disableNote}
               onChange={e => setDisableNote(e.target.value)}
               placeholder="e.g. Discontinued by the manufacturer"
-              className="w-full resize-none rounded-[12px] border border-[#e5e5ea] bg-white px-3 py-2.5 text-[16px] sm:text-[13px] text-[#1d1d1f] outline-none focus:border-brand-600 focus:shadow-[0_0_0_3px_rgba(0,113,227,0.12)]"
+              className="w-full resize-none rounded-[12px] border border-[#e6ecf7] bg-white px-3 py-2.5 text-[16px] sm:text-[13px] text-[#0f1f45] outline-none focus:border-brand-600 focus:shadow-[0_0_0_3px_rgba(0,113,227,0.12)]"
             />
             <div className="flex gap-2.5 justify-end mt-5">
               <button
                 type="button"
                 onClick={closeSheet}
                 disabled={!!togglingId}
-                className={`${PRESS} px-[18px] py-[9px] rounded-full border border-[#e5e5ea] bg-white text-[13px] font-medium text-[#1d1d1f] cursor-pointer hover:bg-[#f5f5f7] disabled:opacity-40`}
+                className={`${PRESS} px-[18px] py-[9px] rounded-full border border-[#e6ecf7] bg-white text-[13px] font-medium text-[#0f1f45] cursor-pointer hover:bg-[#f4f6fb] disabled:opacity-40`}
               >
                 Cancel
               </button>
@@ -663,7 +663,7 @@ function ProductListContent() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
-            className={`${PRESS} inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#e5e5ea] bg-white/70 text-[12.5px] font-medium text-[#1d1d1f] cursor-pointer hover:bg-white`}
+            className={`${PRESS} inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#e6ecf7] bg-white/70 text-[12.5px] font-medium text-[#0f1f45] cursor-pointer hover:bg-white`}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
@@ -672,9 +672,9 @@ function ProductListContent() {
           </button>
           <div className="w-px h-6 bg-black/[0.08]" />
           <div>
-            <div className="text-[15px] font-semibold text-[#1d1d1f] tracking-[-0.01em]">Product Catalogue</div>
+            <div className="text-[15px] font-semibold text-[#0f1f45] tracking-[-0.01em]">Product Catalogue</div>
             {!isLoading && total > 0 && (
-              <div className="text-[11.5px] text-[#86868b] mt-px">{total.toLocaleString()} products</div>
+              <div className="text-[11.5px] text-[#64748b] mt-px">{total.toLocaleString()} products</div>
             )}
           </div>
         </div>
@@ -696,7 +696,7 @@ function ProductListContent() {
               placeholder="Search product code, catalogue no. or name…"
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
-              className="pl-[42px] pr-[16px] py-[12px] border border-[#e5e5ea] rounded-full text-[16px] font-semibold bg-white text-[#1d1d1f] w-full outline-none transition-shadow duration-150 placeholder:text-[#98989d] placeholder:font-normal focus:border-brand-600 focus:shadow-[0_0_0_4px_rgba(0,113,227,0.12)]"
+              className="pl-[42px] pr-[16px] py-[12px] border border-[#e6ecf7] rounded-full text-[16px] font-semibold bg-white text-[#0f1f45] w-full outline-none transition-shadow duration-150 placeholder:text-[#98989d] placeholder:font-normal focus:border-brand-600 focus:shadow-[0_0_0_4px_rgba(0,113,227,0.12)]"
               style={{ fontFamily: "inherit", letterSpacing: '-0.01em' }}
             /> 
           </div>
@@ -711,7 +711,7 @@ function ProductListContent() {
           <button
             onClick={handleDownloadExcel}
             disabled={!filteredData.length}
-            className={`${PRESS} inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[#e5e5ea] bg-white/70 text-[12.5px] font-medium text-[#1d1d1f] cursor-pointer whitespace-nowrap hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100`}
+            className={`${PRESS} inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[#e6ecf7] bg-white/70 text-[12.5px] font-medium text-[#0f1f45] cursor-pointer whitespace-nowrap hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100`}
           >
             <Download size={14} />
             Export CSV
@@ -762,10 +762,10 @@ function ProductListContent() {
               { dot: "#34c759", label: "This Page",      value: visibleData.length },
               { dot: "#ff9f0a", label: "Page",           value: `${page} / ${totalPages}` },
             ].map(s => (
-              <div key={s.label} className="flex items-center gap-2 px-4 py-[9px] bg-white border border-black/[0.05] rounded-full text-[12.5px] text-[#3a3a3c] font-medium" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+              <div key={s.label} className="flex items-center gap-2 px-4 py-[9px] bg-white border border-black/[0.05] rounded-full text-[12.5px] text-[#334155] font-medium" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: s.dot }} />
                 {s.label}
-                <span className="font-semibold text-[13px] text-[#1d1d1f]" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>{s.value}</span>
+                <span className="font-semibold text-[13px] text-[#0f1f45]" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>{s.value}</span>
               </div>
             ))}
           </div>
@@ -783,11 +783,11 @@ function ProductListContent() {
         <div className="bg-white border border-black/[0.05] rounded-[22px] overflow-hidden" style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.04)' }}>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-[13px]">
-              <thead className="bg-[#fafafc] border-b border-black/[0.05]">
+              <thead className="bg-[#f8fafd] border-b border-black/[0.05]">
                 <tr>
-                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#86868b] whitespace-nowrap pl-[22px]" style={{ letterSpacing: '0.06em' }}>#</th>
-                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#86868b] whitespace-nowrap" style={{ letterSpacing: '0.06em' }}>Enabled</th>
-                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#86868b] whitespace-nowrap" style={{ letterSpacing: '0.06em' }}>Image</th>
+                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#64748b] whitespace-nowrap pl-[22px]" style={{ letterSpacing: '0.06em' }}>#</th>
+                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#64748b] whitespace-nowrap" style={{ letterSpacing: '0.06em' }}>Enabled</th>
+                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#64748b] whitespace-nowrap" style={{ letterSpacing: '0.06em' }}>Image</th>
                   {[
                     { key: 'catalogueNo', label: 'Catalogue No.' },
                     { key: 'name', label: 'Name' },
@@ -802,12 +802,12 @@ function ProductListContent() {
                         placeholder={col.label}
                         value={(columnFilters as Record<string, string>)[col.key]}
                         onChange={(e) => setColumnFilters((f) => ({ ...f, [col.key]: e.target.value }))}
-                        className="w-full bg-white border border-[#e5e5ea] rounded-[8px] px-2.5 py-[6px] text-[11px] font-medium text-[#3a3a3c] outline-none transition-colors placeholder:text-[#98989d] placeholder:font-semibold placeholder:uppercase placeholder:text-[10.5px] focus:border-brand-600 focus:shadow-[0_0_0_3px_rgba(0,113,227,0.12)]"
+                        className="w-full bg-white border border-[#e6ecf7] rounded-[8px] px-2.5 py-[6px] text-[11px] font-medium text-[#334155] outline-none transition-colors placeholder:text-[#98989d] placeholder:font-semibold placeholder:uppercase placeholder:text-[10.5px] focus:border-brand-600 focus:shadow-[0_0_0_3px_rgba(0,113,227,0.12)]"
                         style={{ letterSpacing: '0.02em' }}
                       />
                     </th>
                   ))}
-                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#86868b] whitespace-nowrap pr-[22px]" style={{ letterSpacing: '0.06em' }}>Actions</th>
+                  <th className="px-4 py-[13px] text-left text-[10.5px] font-semibold uppercase text-[#64748b] whitespace-nowrap pr-[22px]" style={{ letterSpacing: '0.06em' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -821,7 +821,7 @@ function ProductListContent() {
                           className="h-[14px] rounded-full"
                           style={{
                             width: w,
-                            background: 'linear-gradient(90deg,#f0f0f3 25%,#e5e5ea 50%,#f0f0f3 75%)',
+                            background: 'linear-gradient(90deg,#f0f0f3 25%,#e6ecf7 50%,#f0f0f3 75%)',
                             backgroundSize: '200% 100%',
                             animation: 'shimmer 1.5s infinite',
                           }}
@@ -849,7 +849,7 @@ function ProductListContent() {
                   <tr
                     key={product.product_id}
                     // A disabled row fades everything but its switch and actions.
-                    className={`border-b border-black/[0.04] last:border-b-0 transition-colors duration-150 hover:bg-[#fafafc] align-top ${product.active ? '' : 'bg-[#fafafc] [&>td:not(:nth-child(2)):not(:last-child)]:opacity-50'}`}
+                    className={`border-b border-black/[0.04] last:border-b-0 transition-colors duration-150 hover:bg-[#f8fafd] align-top ${product.active ? '' : 'bg-[#f8fafd] [&>td:not(:nth-child(2)):not(:last-child)]:opacity-50'}`}
                   >
 
                     <td className="pl-[22px] pr-4 py-[14px]">
@@ -878,7 +878,7 @@ function ProductListContent() {
                     </td>
 
                     <td className="px-4 py-[12px]">
-                      <div className="w-10 h-10 flex-shrink-0 rounded-[10px] border border-black/[0.06] bg-[#fafafc] overflow-hidden flex items-center justify-center">
+                      <div className="w-10 h-10 flex-shrink-0 rounded-[10px] border border-black/[0.06] bg-[#f8fafd] overflow-hidden flex items-center justify-center">
                         {product.product_image ? (
                           <img src={product.product_image} alt={product.product_name} className="w-full h-full object-contain bg-white" />
                         ) : (
@@ -888,20 +888,20 @@ function ProductListContent() {
                     </td>
 
                     <td className="px-4 py-[14px]">
-                      <span className="text-[11px] font-medium bg-[#f5f5f7] text-[#3a3a3c] px-[9px] py-[3px] rounded-full border border-black/[0.06] whitespace-nowrap" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>
+                      <span className="text-[11px] font-medium bg-[#f4f6fb] text-[#334155] px-[9px] py-[3px] rounded-full border border-black/[0.06] whitespace-nowrap" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>
                         {product.catalogue_number || '—'}
                       </span>
                     </td>
 
                     <td className="px-4 py-[12px] min-w-[200px]">
-                      <div className="text-[13px] font-semibold text-[#1d1d1f] leading-snug">{product.product_name || '—'}</div>
+                      <div className="text-[13px] font-semibold text-[#0f1f45] leading-snug">{product.product_name || '—'}</div>
                       {!product.active && product.disabled_note && (
                         <div className="mt-1 text-[11.5px] font-medium text-[#c02b3a] leading-snug">Disabled: {product.disabled_note}</div>
                       )}
                     </td>
 
                     <td className="px-4 py-[12px] min-w-[260px]">
-                      <div className="text-[11.5px] text-[#6e6e73] leading-relaxed line-clamp-2 max-w-[360px]">
+                      <div className="text-[11.5px] text-[#64748b] leading-relaxed line-clamp-2 max-w-[360px]">
                         {product.product_description || '—'}
                       </div>
                     </td>
@@ -913,13 +913,13 @@ function ProductListContent() {
                     </td>
 
                     <td className="px-4 py-[14px]">
-                      <span className="text-[12px] font-semibold text-[#1d1d1f] whitespace-nowrap" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>
+                      <span className="text-[12px] font-semibold text-[#0f1f45] whitespace-nowrap" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>
                         {money(product.unit_price)}
                       </span>
                     </td>
 
                     <td className="px-4 py-[14px]">
-                      <span className="text-[12px] font-semibold text-[#3a3a3c] whitespace-nowrap" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>
+                      <span className="text-[12px] font-semibold text-[#334155] whitespace-nowrap" style={{ fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace" }}>
                         {product.pack_size ? `${product.pack_size} pcs` : '—'}
                       </span>
                     </td>
@@ -930,7 +930,7 @@ function ProductListContent() {
                           onClick={() => product.admin_product_id
                             ? router.push(`/Pages/products/addproducts?id=${encodeURIComponent(product.admin_product_id)}`)
                             : showToast("error", 'Only PostgreSQL products can be edited here')}
-                          className={`${PRESS} inline-flex items-center gap-1 px-[11px] py-1.5 rounded-full text-[12px] font-medium bg-[#fafafc] text-[#3a3a3c] border border-black/[0.06] cursor-pointer hover:bg-[#eef6ff] hover:text-brand-600`}
+                          className={`${PRESS} inline-flex items-center gap-1 px-[11px] py-1.5 rounded-full text-[12px] font-medium bg-[#f8fafd] text-[#334155] border border-black/[0.06] cursor-pointer hover:bg-[#eef6ff] hover:text-brand-600`}
                         >
                           <Pencil size={12} />
                           Edit
@@ -939,7 +939,7 @@ function ProductListContent() {
                           onClick={() => product.admin_product_id
                             ? setDeleteConfirm(product.admin_product_id)
                             : showToast("error", 'Only PostgreSQL products can be deleted here')}
-                          className={`${PRESS} inline-flex items-center gap-1 px-[11px] py-1.5 rounded-full text-[12px] font-medium bg-white text-[#6e6e73] border border-black/[0.06] cursor-pointer hover:bg-[#fff1f1] hover:text-[#c02b3a]`}
+                          className={`${PRESS} inline-flex items-center gap-1 px-[11px] py-1.5 rounded-full text-[12px] font-medium bg-white text-[#64748b] border border-black/[0.06] cursor-pointer hover:bg-[#fff1f1] hover:text-[#c02b3a]`}
                         >
                           <Trash2 size={12} />
                           Delete
@@ -958,14 +958,14 @@ function ProductListContent() {
           <div className="flex items-center justify-between px-[22px] py-[14px] border-t border-black/[0.05] flex-wrap gap-3">
             <div className="text-[12px] text-[#98989d]">
               {visibleData.length > 0 ? (
-                <>Showing <strong className="text-[#3a3a3c] font-semibold">{startIndex}–{endIndex}</strong> of <strong className="text-[#3a3a3c] font-semibold">{total.toLocaleString()}</strong> products</>
+                <>Showing <strong className="text-[#334155] font-semibold">{startIndex}–{endIndex}</strong> of <strong className="text-[#334155] font-semibold">{total.toLocaleString()}</strong> products</>
               ) : "No results"}
             </div>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                className={`${PRESS} min-w-[34px] h-[34px] px-2 rounded-full border border-[#e5e5ea] bg-white text-[13px] font-medium text-[#3a3a3c] cursor-pointer inline-flex items-center justify-center gap-1 hover:bg-[#fafafc] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100`}
+                className={`${PRESS} min-w-[34px] h-[34px] px-2 rounded-full border border-[#e6ecf7] bg-white text-[13px] font-medium text-[#334155] cursor-pointer inline-flex items-center justify-center gap-1 hover:bg-[#f8fafd] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100`}
               >
                 <ChevronLeft size={14} /> Prev
               </button>
@@ -979,7 +979,7 @@ function ProductListContent() {
                       className={`${PRESS} min-w-[34px] h-[34px] px-2 rounded-full border text-[13px] font-medium inline-flex items-center justify-center cursor-pointer ${
                         p === page
                           ? "bg-brand-600 border-brand-600 text-white font-semibold"
-                          : "bg-white border-[#e5e5ea] text-[#3a3a3c] hover:bg-[#fafafc]"
+                          : "bg-white border-[#e6ecf7] text-[#334155] hover:bg-[#f8fafd]"
                       }`}
                     >
                       {p}
@@ -989,7 +989,7 @@ function ProductListContent() {
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
-                className={`${PRESS} min-w-[34px] h-[34px] px-2 rounded-full border border-[#e5e5ea] bg-white text-[13px] font-medium text-[#3a3a3c] cursor-pointer inline-flex items-center justify-center gap-1 hover:bg-[#fafafc] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100`}
+                className={`${PRESS} min-w-[34px] h-[34px] px-2 rounded-full border border-[#e6ecf7] bg-white text-[13px] font-medium text-[#334155] cursor-pointer inline-flex items-center justify-center gap-1 hover:bg-[#f8fafd] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100`}
               >
                 Next <ChevronRight size={14} />
               </button>
@@ -1004,7 +1004,7 @@ function ProductListContent() {
 
 export default function ProductListPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#f5f5f7]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-gray-100" />}>
       <ProductListContent />
     </Suspense>
   )

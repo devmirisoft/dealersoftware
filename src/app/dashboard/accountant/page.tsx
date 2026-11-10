@@ -373,8 +373,8 @@ function AccountantDashboardInner() {
           min-height: 100vh;
           background:
             radial-gradient(circle at 12% -10%, rgba(0, 122, 255, .055), transparent 28%),
-            #f5f5f7;
-          color: #1d1d1f;
+            #f4f6fb;
+          color: #0f1f45;
           font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           text-rendering: optimizeLegibility;
@@ -385,9 +385,9 @@ function AccountantDashboardInner() {
         .dashboard-header { margin-bottom: 30px; }
         .eyebrow { display: inline-flex; align-items: center; gap: 7px; color: #006162; font-size: 12px; line-height: 1; font-weight: 650; margin-bottom: 10px; }
         .eyebrow-dot { width: 7px; height: 7px; border-radius: 999px; background: #006162; box-shadow: 0 0 0 4px rgba(0, 122, 255, .09); }
-        .page-title { margin: 0; font-size: clamp(32px, 4vw, 44px); line-height: 1.02; letter-spacing: -.045em; font-weight: 720; color: #1d1d1f; }
-        .page-subtitle { max-width: 620px; margin: 10px 0 0; color: #6e6e73; font-size: 15px; line-height: 1.45; letter-spacing: -.01em; text-wrap: pretty; }
-        .section-label { margin: 0 0 12px 2px; color: #6e6e73; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
+        .page-title { margin: 0; font-size: clamp(32px, 4vw, 44px); line-height: 1.02; letter-spacing: -.045em; font-weight: 720; color: #0f1f45; }
+        .page-subtitle { max-width: 620px; margin: 10px 0 0; color: #64748b; font-size: 15px; line-height: 1.45; letter-spacing: -.01em; text-wrap: pretty; }
+        .section-label { margin: 0 0 12px 2px; color: #64748b; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
 
         /* ── Cards ── */
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 30px; }
@@ -402,15 +402,15 @@ function AccountantDashboardInner() {
         .icard:hover, .stat-card:hover { transform: translateY(-1px); box-shadow: 0 1px 2px rgba(0,0,0,.02), 0 14px 38px rgba(0,0,0,.055); }
         .icard, .stat-card { position: relative; container-type: inline-size; }
         .icard > .quick-action-btn::after, .stat-card > .quick-action-btn::after { content: ""; position: absolute; inset: 0; }
-        .icard-lbl, .stat-lbl { color: #6e6e73; font-size: 12px; font-weight: 600; letter-spacing: -.005em; }
-        .icard-val, .stat-val { margin-top: 12px; color: #1d1d1f; font-size: clamp(20px, 12cqi, 34px); line-height: 1; font-weight: 700; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-        .icard-sub { font-size: 11px; color: #8e8e93; margin-top: 8px; line-height: 1.4; }
+        .icard-lbl, .stat-lbl { color: #64748b; font-size: 12px; font-weight: 600; letter-spacing: -.005em; }
+        .icard-val, .stat-val { margin-top: 12px; color: #0f1f45; font-size: clamp(20px, 12cqi, 34px); line-height: 1; font-weight: 700; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+        .icard-sub { font-size: 11px; color: #94a3b8; margin-top: 8px; line-height: 1.4; }
         .icard-badge {
           display: inline-flex; align-items: center; gap: 6px;
           margin-top: 15px; margin-right: 12px;
-          color: #6e6e73; font-size: 11.5px; line-height: 1.35; white-space: nowrap;
+          color: #64748b; font-size: 11.5px; line-height: 1.35; white-space: nowrap;
         }
-        .icard-badge::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #8e8e93; flex-shrink: 0; }
+        .icard-badge::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; flex-shrink: 0; }
         .badge-amber::before  { background: #ff9500; }
         .badge-green::before  { background: #34c759; }
         .badge-blue::before   { background: #006162; }
@@ -431,15 +431,15 @@ function AccountantDashboardInner() {
           backdrop-filter: saturate(180%) blur(20px);
         }
         .panel-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 18px; }
-        .panel-title { display: flex; align-items: center; gap: 9px; color: #1d1d1f; font-size: 16px; line-height: 1.2; font-weight: 680; letter-spacing: -.022em; }
-        .panel-sub { margin-top: 4px; color: #6e6e73; font-size: 11.5px; line-height: 1.35; }
-        .panel-foot { display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(60, 60, 67, .11); font-size: 11.5px; color: #6e6e73; }
+        .panel-title { display: flex; align-items: center; gap: 9px; color: #0f1f45; font-size: 16px; line-height: 1.2; font-weight: 680; letter-spacing: -.022em; }
+        .panel-sub { margin-top: 4px; color: #64748b; font-size: 11.5px; line-height: 1.35; }
+        .panel-foot { display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(60, 60, 67, .11); font-size: 11.5px; color: #64748b; }
         .charts-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; }
         .charts-2 .panel { margin-bottom: 0; }
         @media (max-width: 900px) { .charts-2 { grid-template-columns: 1fr; } }
         .chart-canvas { width: 100%; height: 260px; }
-        .chart-empty { height: 260px; display: grid; place-items: center; color: #8e8e93; font-size: 12px; }
-        .leg { display: inline-flex; align-items: center; gap: 5px; color: #6e6e73; font-size: 10.5px; white-space: nowrap; }
+        .chart-empty { height: 260px; display: grid; place-items: center; color: #94a3b8; font-size: 12px; }
+        .leg { display: inline-flex; align-items: center; gap: 5px; color: #64748b; font-size: 10.5px; white-space: nowrap; }
         .leg-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
         .pill { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 650; white-space: nowrap; }
@@ -450,7 +450,7 @@ function AccountantDashboardInner() {
           display: inline-flex; align-items: center; gap: 7px;
           height: 32px; padding: 0 12px; border-radius: 10px;
           background: rgba(118, 118, 128, .12); border: 0;
-          color: #1d1d1f; font-size: 11.5px; font-weight: 620;
+          color: #0f1f45; font-size: 11.5px; font-weight: 620;
           white-space: nowrap; cursor: pointer; font-family: inherit;
           transition: background .15s;
         }
@@ -474,11 +474,11 @@ function AccountantDashboardInner() {
           box-shadow: 0 10px 34px rgba(0,0,0,.14);
           overflow: hidden;
         }
-        .menu-label { padding: 12px 14px 4px; color: #8e8e93; font-size: 10.5px; font-weight: 650; }
+        .menu-label { padding: 12px 14px 4px; color: #94a3b8; font-size: 10.5px; font-weight: 650; }
         .menu-item {
           width: 100%; display: flex; align-items: center; gap: 10px;
           padding: 10px 14px; border: 0; background: none;
-          color: #1d1d1f; font-size: 12.5px; text-align: left;
+          color: #0f1f45; font-size: 12.5px; text-align: left;
           cursor: pointer; font-family: inherit;
           transition: background .15s;
         }
@@ -486,15 +486,15 @@ function AccountantDashboardInner() {
 
         /* ── Tables ── */
         .data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-        .data-table th { padding: 0 12px 10px; text-align: left; font-size: 11px; font-weight: 650; color: #6e6e73; white-space: nowrap; }
-        .data-table td { padding: 12px; border-top: 1px solid rgba(60, 60, 67, .11); vertical-align: middle; color: #1d1d1f; }
+        .data-table th { padding: 0 12px 10px; text-align: left; font-size: 11px; font-weight: 650; color: #64748b; white-space: nowrap; }
+        .data-table td { padding: 12px; border-top: 1px solid rgba(60, 60, 67, .11); vertical-align: middle; color: #0f1f45; }
         .data-table tr:hover td { background: rgba(118, 118, 128, .05); }
         .num { text-align: right; font-variant-numeric: tabular-nums; }
-        .muted { color: #6e6e73; }
-        .faint { color: #8e8e93; font-size: 10.5px; }
+        .muted { color: #64748b; }
+        .faint { color: #94a3b8; font-size: 10.5px; }
         .strong-num { font-weight: 650; font-variant-numeric: tabular-nums; }
-        .status-inline { display: inline-flex; align-items: center; gap: 6px; color: #6e6e73; font-size: 11px; white-space: nowrap; }
-        .status-dot { width: 7px; height: 7px; border-radius: 999px; background: #8e8e93; flex-shrink: 0; }
+        .status-inline { display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-size: 11px; white-space: nowrap; }
+        .status-dot { width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; flex-shrink: 0; }
         .sd-green  { background: #34c759; }
         .sd-amber  { background: #ff9500; }
         .sd-red    { background: #ff3b30; }
@@ -503,12 +503,12 @@ function AccountantDashboardInner() {
         /* ── Reports ── */
         .reports-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
         @media (max-width: 640px) { .reports-grid { grid-template-columns: 1fr; } }
-        .rpt-head { margin-bottom: 5px; color: #6e6e73; font-size: 11px; font-weight: 650; }
+        .rpt-head { margin-bottom: 5px; color: #64748b; font-size: 11px; font-weight: 650; }
         .report-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 39px; border-top: 1px solid rgba(60, 60, 67, .11); font-size: 12px; }
         .report-item:first-of-type { border-top: 0; }
-        .report-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6e6e73; }
-        .report-value { color: #1d1d1f; font-weight: 650; font-variant-numeric: tabular-nums; }
-        .report-empty { padding: 22px 0; color: #8e8e93; font-size: 12px; }
+        .report-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748b; }
+        .report-value { color: #0f1f45; font-weight: 650; font-variant-numeric: tabular-nums; }
+        .report-empty { padding: 22px 0; color: #94a3b8; font-size: 12px; }
 
         .err-banner {
           display: flex; align-items: center; gap: 12px;
@@ -521,7 +521,7 @@ function AccountantDashboardInner() {
         .shimmer { background: linear-gradient(90deg, rgba(118,118,128,.08) 25%, rgba(118,118,128,.16) 50%, rgba(118,118,128,.08) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
         @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-        .acc-foot { margin-top: 26px; text-align: center; color: #8e8e93; font-size: 11px; }
+        .acc-foot { margin-top: 26px; text-align: center; color: #94a3b8; font-size: 11px; }
 
         @media (max-width: 850px) { .acc-shell { padding: 28px 20px 36px; } }
         @media (max-width: 560px) {
@@ -616,7 +616,7 @@ function AccountantDashboardInner() {
               {loading
                 ? <Skeleton cols={9}/>
                 : pricedRecentOrders.length === 0
-                  ? <tr><td colSpan={9} style={{ padding: "44px 0", textAlign: "center", fontSize: 12, color: "#8e8e93" }}>No orders found</td></tr>
+                  ? <tr><td colSpan={9} style={{ padding: "44px 0", textAlign: "center", fontSize: 12, color: "#94a3b8" }}>No orders found</td></tr>
                   : pricedRecentOrders.map((order, idx) => {
                     const net     = Number(order.order_amount) - Number(order.order_discount);
                     const deleted = !!order.reason;
@@ -646,7 +646,7 @@ function AccountantDashboardInner() {
           </table>
         </div>
         <div className="panel-foot">
-          <span style={{ color: "#8e8e93" }}>Showing up to 10 recent orders</span>
+          <span style={{ color: "#94a3b8" }}>Showing up to 10 recent orders</span>
           <Link href="/orders" className="quick-action-btn" style={{ marginTop: 0 }}>View all →</Link>
         </div>
       </div> */}
@@ -678,7 +678,7 @@ function AccountantDashboardInner() {
               {loading
                 ? <Skeleton cols={10}/>
                 : pricedPendingOrders.length === 0
-                  ? <tr><td colSpan={10} style={{ padding: "44px 0", textAlign: "center", fontSize: 12, color: "#8e8e93" }}>All caught up</td></tr>
+                  ? <tr><td colSpan={10} style={{ padding: "44px 0", textAlign: "center", fontSize: 12, color: "#94a3b8" }}>All caught up</td></tr>
                   : pricedPendingOrders.map((order, idx) => {
                     const net      = Number(order.order_amount) - Number(order.order_discount);
                     const approved = order.order_status === "1";
@@ -722,8 +722,8 @@ function AccountantDashboardInner() {
         </div>
         <div className="panel-foot">
           <div style={{ display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap" }}>
-            <span className="status-inline"><span className="status-dot sd-red"/>Not accepted <strong className="strong-num" style={{ color: "#1d1d1f" }}>{pendingOrders.filter(o => o.accept_order==="0").length}</strong></span>
-            <span className="status-inline"><span className="status-dot sd-amber"/>Exposure <strong className="strong-num" style={{ color: "#1d1d1f" }}>₹{pendingPayment.toLocaleString("en-IN")}</strong></span>
+            <span className="status-inline"><span className="status-dot sd-red"/>Not accepted <strong className="strong-num" style={{ color: "#0f1f45" }}>{pendingOrders.filter(o => o.accept_order==="0").length}</strong></span>
+            <span className="status-inline"><span className="status-dot sd-amber"/>Exposure <strong className="strong-num" style={{ color: "#0f1f45" }}>₹{pendingPayment.toLocaleString("en-IN")}</strong></span>
           </div>
           <Link href="/orders" className="quick-action-btn" style={{ marginTop: 0 }}>View all pending →</Link>
         </div>
@@ -750,12 +750,12 @@ function AccountantDashboardInner() {
                   ? <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={chart.data} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
                         <CartesianGrid stroke="rgba(60,60,67,.08)" vertical={false}/>
-                        <XAxis dataKey="name" tick={{fontSize:10.5, fill:"#8e8e93"}} axisLine={false} tickLine={false}/>
-                        <YAxis tick={{fontSize:10.5, fill:"#8e8e93"}} axisLine={false} tickLine={false} width={52}/>
+                        <XAxis dataKey="name" tick={{fontSize:10.5, fill:"#94a3b8"}} axisLine={false} tickLine={false}/>
+                        <YAxis tick={{fontSize:10.5, fill:"#94a3b8"}} axisLine={false} tickLine={false} width={52}/>
                         <Tooltip
                           cursor={{fill:"rgba(0,122,255,.035)"}}
                           contentStyle={{backgroundColor:"rgba(255,255,255,.96)",border:"1px solid rgba(60,60,67,.12)",borderRadius:"14px",boxShadow:"0 10px 30px rgba(0,0,0,.10)",fontSize:11}}
-                          labelStyle={{color:"#6e6e73",marginBottom:5}}
+                          labelStyle={{color:"#64748b",marginBottom:5}}
                           formatter={(v: any) => `₹${Number(v).toLocaleString("en-IN")}`}
                         />
                         <Bar dataKey="value" fill={chart.fill} radius={[8,8,2,2]} maxBarSize={38}/>
@@ -809,7 +809,7 @@ function AccountantDashboardInner() {
       </div>
 
       <div className="acc-foot">
-        © {YEAR} Omsons · Accountant Dashboard
+        © {YEAR} Accountant Dashboard
       </div>
     </div>
     </div>

@@ -190,7 +190,7 @@ function SalesReportPageInner() {
       <style>{`
         *, *::before, *::after { box-sizing: border-box; }
         body { margin: 0; }
-        .sales-root { min-height: 100vh; background: linear-gradient(180deg, #f7f8fc 0%, #eef2ff 100%); color: #111827; font-family: 'DM Sans', sans-serif; }
+        .sales-root { min-height: 100vh; background: linear-gradient(180deg, #f7f8fc 0%, #eef2ff 100%); color: #0f1f45; font-family: 'DM Sans', sans-serif; }
         .sales-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
         .sales-topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; margin-bottom: 18px; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; color: #334155; text-decoration: none; font-size: 13px; font-weight: 600; }
@@ -202,18 +202,18 @@ function SalesReportPageInner() {
         .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
         .meta-chip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.16); font-size: 12px; font-weight: 600; }
         .toolbar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
-        .tool-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 14px; box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04); }
+        .tool-card { background: #fff; border: 1px solid #e6ecf7; border-radius: 18px; padding: 14px; box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04); }
         .tool-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
         .tool-input { width: 100%; border: 1px solid #dbe4f0; background: #f8fafc; border-radius: 12px; padding: 11px 12px; font: inherit; color: #0f172a; }
         .tool-input:focus { outline: none; border-color: #818cf8; box-shadow: 0 0 0 3px rgba(129, 140, 248, .18); background: #fff; }
         .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
-        .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 18px; box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04); }
+        .card { background: #fff; border: 1px solid #e6ecf7; border-radius: 18px; padding: 18px; box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04); }
         .card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #94a3b8; margin-bottom: 10px; }
-        .card-value { font-size: 28px; line-height: 1; font-weight: 700; letter-spacing: -.04em; font-family: 'DM Mono', monospace; color: #111827; }
+        .card-value { font-size: 28px; line-height: 1; font-weight: 700; letter-spacing: -.04em; font-family: 'DM Mono', monospace; color: #0f1f45; }
         .card-sub { margin-top: 8px; font-size: 11.5px; color: #64748b; }
-        .table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 22px; overflow: hidden; box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04); }
+        .table-wrap { background: #fff; border: 1px solid #e6ecf7; border-radius: 22px; overflow: hidden; box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04); }
         .table-head { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid #eef2f7; }
-        .table-title { font-size: 16px; font-weight: 700; color: #111827; }
+        .table-title { font-size: 16px; font-weight: 700; color: #0f1f45; }
         .table-sub { font-size: 12px; color: #64748b; margin-top: 3px; }
         .table-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
         .icon-btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #dbe4f0; background: #fff; color: #334155; padding: 9px 12px; border-radius: 12px; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
@@ -228,7 +228,7 @@ function SalesReportPageInner() {
         .mono { font-family: 'DM Mono', monospace; }
         .right { text-align: right; }
         .empty { padding: 48px 16px; text-align: center; color: #94a3b8; font-size: 13px; }
-        tfoot td { padding: 15px 16px; font-weight: 700; border-top: 1px solid #e5e7eb; background: #f8fafc; }
+        tfoot td { padding: 15px 16px; font-weight: 700; border-top: 1px solid #e6ecf7; background: #f8fafc; }
         .footer-note { margin-top: 12px; font-size: 11.5px; color: #64748b; text-align: right; }
         @media (max-width: 1100px) {
           .toolbar, .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

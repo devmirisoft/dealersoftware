@@ -152,8 +152,8 @@ export default function PendingProductsPreview({ role, moreHref }: PendingProduc
     <section style={{ background: "rgba(255,255,255,0.88)", border: "1px solid rgba(60,60,67,.075)", boxShadow: "0 1px 2px rgba(0,0,0,.02), 0 10px 34px rgba(0,0,0,.045)", backdropFilter: "saturate(180%) blur(20px)", borderRadius: 24, padding: 22, marginBottom: 16 }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 18, marginBottom: 18, flexWrap: "wrap" }}>
         <div>
-          <div style={{ fontSize: 16, lineHeight: 1.2, fontWeight: 680, letterSpacing: "-.022em", color: "#1d1d1f" }}>Pending Products</div>
-          <div style={{ fontSize: 11.5, lineHeight: 1.35, color: "#6e6e73", marginTop: 4 }}>Product-wise delivery quantities from eligible orders</div>
+          <div style={{ fontSize: 16, lineHeight: 1.2, fontWeight: 680, letterSpacing: "-.022em", color: "#0f1f45" }}>Pending Products</div>
+          <div style={{ fontSize: 11.5, lineHeight: 1.35, color: "#64748b", marginTop: 4 }}>Product-wise delivery quantities from eligible orders</div>
         </div>
         <Link href={moreHref} style={{ color: "#006162", fontSize: 11.5, fontWeight: 620, textDecoration: "none", whiteSpace: "nowrap" }}>
           View report &rarr;
@@ -161,11 +161,11 @@ export default function PendingProductsPreview({ role, moreHref }: PendingProduc
       </div>
 
       {loading ? (
-        <div style={{ color: "#8e8e93", fontSize: 12, padding: "22px 0" }}>Loading pending product data...</div>
+        <div style={{ color: "#94a3b8", fontSize: 12, padding: "22px 0" }}>Loading pending product data...</div>
       ) : error ? (
         <div style={{ color: "#b42318", background: "rgba(255,255,255,.8)", border: "1px solid rgba(255,59,48,.16)", borderRadius: 16, padding: "12px 14px", fontSize: 13 }}>{error}</div>
       ) : !payload || payload.items.length === 0 ? (
-        <div style={{ border: "1px dashed rgba(60,60,67,.18)", borderRadius: 16, padding: "24px 16px", textAlign: "center", fontSize: 12, color: "#8e8e93" }}>
+        <div style={{ border: "1px dashed rgba(60,60,67,.18)", borderRadius: 16, padding: "24px 16px", textAlign: "center", fontSize: 12, color: "#94a3b8" }}>
           {emptyText(role)}
         </div>
       ) : (
@@ -173,8 +173,8 @@ export default function PendingProductsPreview({ role, moreHref }: PendingProduc
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(170px,1fr))", gap: 14, marginBottom: 16 }}>
             {cards.map(([label, value]) => (
               <div key={label} style={{ border: "1px solid rgba(60,60,67,.11)", borderRadius: 16, padding: "14px 16px" }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: "#6e6e73", letterSpacing: "-.005em" }}>{label}</div>
-                <div style={{ marginTop: 10, fontSize: 26, lineHeight: 1, fontWeight: 700, letterSpacing: "-.045em", color: "#1d1d1f", fontVariantNumeric: "tabular-nums" }}>{value}</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#64748b", letterSpacing: "-.005em" }}>{label}</div>
+                <div style={{ marginTop: 10, fontSize: 26, lineHeight: 1, fontWeight: 700, letterSpacing: "-.045em", color: "#0f1f45", fontVariantNumeric: "tabular-nums" }}>{value}</div>
               </div>
             ))}
           </div>
@@ -183,18 +183,18 @@ export default function PendingProductsPreview({ role, moreHref }: PendingProduc
             {payload.items.map((item) => (
               <div key={item.productKey} style={{ border: "1px solid rgba(60,60,67,.11)", borderRadius: 16, padding: "14px 16px", display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
                 <div style={{ minWidth: 0, flex: "1 1 260px" }}>
-                  <div style={{ fontSize: 12.5, fontWeight: 620, letterSpacing: "-.01em", color: "#1d1d1f" }}>{item.productName}</div>
-                  <div style={{ fontSize: 10.5, color: "#8e8e93", marginTop: 4 }}>
+                  <div style={{ fontSize: 12.5, fontWeight: 620, letterSpacing: "-.01em", color: "#0f1f45" }}>{item.productName}</div>
+                  <div style={{ fontSize: 10.5, color: "#94a3b8", marginTop: 4 }}>
                     {item.catalogueNumber || "No catalogue"} &middot; {item.category || "Uncategorized"}
                   </div>
-                  <div style={{ fontSize: 11, color: "#6e6e73", marginTop: 6 }}>
+                  <div style={{ fontSize: 11, color: "#64748b", marginTop: 6 }}>
                     {formatNumber(item.dispatchedQuantity)} of {formatNumber(item.orderedQuantity)} dispatched | {formatNumber(item.pendingOrders)} orders
                     {role !== "dealer" ? ` | ${formatNumber(item.dealersAffected)} dealers` : ""}
                   </div>
                 </div>
                 <div style={{ textAlign: "right", minWidth: 120 }}>
                   <div style={{ fontSize: 24, fontWeight: 700, letterSpacing: "-.045em", color: "#ff3b30", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{formatNumber(item.pendingQuantity)}</div>
-                  <div style={{ fontSize: 11, color: "#8e8e93", marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{Math.min(100, Math.max(0, item.fulfillmentPercent))}% fulfilled</div>
+                  <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{Math.min(100, Math.max(0, item.fulfillmentPercent))}% fulfilled</div>
                 </div>
               </div>
             ))}

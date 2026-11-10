@@ -12,8 +12,8 @@ import AgentWidget from "@/components/agent/AgentWidget";
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
-  title: "Omsons",
-  description: "Omsons Germany",
+  title: "Dealer Management Software",
+  description: "Dealer order management",
   icons: {
     icon: "/Mountain%20Code%20App%20Emblem.png",
     shortcut: "/Mountain%20Code%20App%20Emblem.png",

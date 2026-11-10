@@ -193,7 +193,7 @@ export default function Login() {
     }
   }
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f6f9fd] text-slate-900">
+    <main className="relative min-h-screen overflow-hidden bg-gray-100 text-slate-900">
       {/* Soft corner blobs */}
       <div aria-hidden className="pointer-events-none absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-blue-100/60" />
       <div aria-hidden className="pointer-events-none absolute -bottom-48 -right-32 h-[420px] w-[420px] rounded-full bg-blue-100/60" />

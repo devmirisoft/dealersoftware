@@ -82,7 +82,7 @@ export default function StaffViewPage() {
   }, [id])
 
   if (isLoading) return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
         <p className="text-sm text-slate-500">Loading staff...</p>
@@ -91,14 +91,14 @@ export default function StaffViewPage() {
   )
 
   if (!staff) return (
-    <div className="min-h-screen bg-slate-50 p-6">No staff member found</div>
+    <div className="min-h-screen bg-gray-100 p-6">No staff member found</div>
   )
 
   const status = String(staff.status || "").toUpperCase()
   const rsms: NonNullable<Relation>[] = Array.isArray(staff.rsms) ? staff.rsms : []
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div className="min-h-screen bg-gray-100 p-6">
       <div className="admin-page-shell">
         <Link href={STAFF_LIST_ROUTE} className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-900 hover:text-indigo-600">
           <ArrowLeft className="h-4 w-4" /> Back to Staff List

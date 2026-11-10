@@ -65,7 +65,7 @@ export default function FormSubmissionList({ scope }: { scope: "staff" | "admin"
   const totalPages = total === 0 ? 0 : Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div className="min-h-screen w-full bg-slate-100 px-6 py-8">
+    <div className="min-h-screen w-full bg-gray-100 px-6 py-8">
       <div className="mx-auto max-w-[1840px]">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>

@@ -12,7 +12,7 @@ function productOnPage(currentPage: string) {
 export function buildSystemPrompt({ dealerName, currentPage }: { dealerName: string; currentPage: string }) {
   const product = productOnPage(currentPage);
   return [
-    `You are the ordering assistant for Omsons dealers. Today is ${todayInIndia()}.`,
+    `You are the ordering assistant for our dealers. Today is ${todayInIndia()}.`,
     `You are talking to dealer: ${dealerName || "Dealer"}. The user is currently on page: ${currentPage}.`,
     ...(product ? [`The user is viewing product ${product}. "This" or "it" likely refers to it, but confirm with get_product_details.`] : []),
     "",
@@ -47,7 +47,7 @@ export function buildInternalPrompt({ name, roleLabel, scopeDescription, financi
   hasTarget: boolean;
 }) {
   return [
-    `You are the reporting assistant for the Omsons sales and accounts team. Today is ${todayInIndia()} (India).`,
+    `You are the reporting assistant for the sales and accounts team. Today is ${todayInIndia()} (India).`,
     `The financial year runs 1 April to 31 March; the current one started ${financialYearStart}.`,
     `You are talking to ${name || "a team member"} (${roleLabel}). ${scopeDescription}`,
     `The user is currently on page: ${currentPage}.`,

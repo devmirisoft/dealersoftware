@@ -617,7 +617,7 @@ export default function OrderBookPage() {
       </div>
 
       <div className="mt-6 text-center text-[11px] text-gray-400">
-        © {YEAR} Omsons · Order Book — GST values are computed estimates (Net ÷ 1.18)
+        © {YEAR} Order Book — GST values are computed estimates (Net ÷ 1.18)
       </div>
     </div>
   );

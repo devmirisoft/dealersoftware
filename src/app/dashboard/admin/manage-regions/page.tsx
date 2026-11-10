@@ -148,7 +148,7 @@ export default function ManageRegionsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f4f6fa] px-6 py-7 text-[#1f2937]">
+    <main className="min-h-screen bg-gray-100 px-6 py-7 text-[#1e293b]">
       <div className="admin-page-shell">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -221,7 +221,7 @@ export default function ManageRegionsPage() {
                   ) : null}
                 </div>
 
-                <div className="mt-3 min-h-16 rounded border border-[#eaecf0] bg-[#f9fafb] p-2">
+                <div className="mt-3 min-h-16 rounded border border-[#eaecf0] bg-[#f8fafd] p-2">
                   {selected.length ? (
                     <div className="flex flex-wrap gap-2">
                       {selected.map((place) => (

@@ -360,14 +360,14 @@ export default function DraftsPage() {
   return (
     <>
 
-      <div className="min-h-screen bg-gray-50" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
+      <div className="min-h-screen bg-gray-100" style={{ fontFamily: "'DM Sans','Helvetica Neue',sans-serif" }}>
 
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between sticky top-[84px] z-20">
           <div className="flex items-center gap-2">
             <button
               onClick={() => router.back()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] text-[12.5px] font-medium text-[#374151] cursor-pointer transition-all hover:bg-[#f1f5f9] hover:-translate-x-px"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] text-[12.5px] font-medium text-[#334155] cursor-pointer transition-all hover:bg-[#f1f5f9] hover:-translate-x-px"
             >
               back
             </button>
@@ -540,7 +540,7 @@ export default function DraftsPage() {
                       ? (
                         <tr><td colSpan={9}>
                           <div className="flex flex-col items-center justify-center py-16 gap-3">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.2" strokeLinecap="round">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d5ddec" strokeWidth="1.2" strokeLinecap="round">
                               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                               <polyline points="14 2 14 8 20 8" />
                             </svg>

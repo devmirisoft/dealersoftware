@@ -48,8 +48,8 @@ function AccountList() {
 
   const userEmail =
     role === "3" ? user.ADMIN_EMAIL || ""
-    : role === "2" ? user.Dealer_Email || user.email || "dealer@omsons.com"
-    : user.email || "staff@omsons.com"
+    : role === "2" ? user.Dealer_Email || user.email || ""
+    : user.email || ""
 
   const dashboardLink =
     role === "3" ? "/dashboard/admin"
@@ -71,7 +71,7 @@ function AccountList() {
     alignItems: "center",
     gap: 8,
     fontSize: 13,
-    color: "#374151",
+    color: "#334155",
     textDecoration: "none",
     padding: "4px 0",
     transition: "color .15s",
