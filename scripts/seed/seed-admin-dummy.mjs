@@ -263,13 +263,15 @@ discountRequest({ dealerKey: "kaveri.scientific.co", daysAgo: 0, requested: deal
 discountRequest({ dealerKey: "bengal.lab.suppliers", daysAgo: 12, requested: dealerByKey.get("bengal.lab.suppliers").discountPercent + 6, status: "APPROVED", nsm: "APPROVED", linkOrder: true });
 discountRequest({ dealerKey: "northern.lab.supplies", daysAgo: 20, requested: dealerByKey.get("northern.lab.supplies").discountPercent + 10, status: "REJECTED", nsm: "REJECTED", note: "Too steep on this order value; best we can do is +4%." });
 
-// Order numbers in placement order, per calendar year, in the app's format (dealerOrderCreate.ts nextOrderNumber).
+// Order numbers in placement order, per calendar year: MS/26/A001 … MS/26/A100, then MS/26/B001.
 orders.sort((a, b) => a.orderDate - b.orderDate);
 const orderSeq = {};
+const seedOrderNumber = (year, seq) =>
+  `MS/${String(year).slice(-2)}/${String.fromCharCode(65 + Math.floor((seq - 1) / 100))}${String((seq - 1) % 100 + 1).padStart(3, "0")}`;
 orders.forEach((o, i) => {
   const year = Number(istDate(o.orderDate).slice(0, 4));
   orderSeq[year] = (orderSeq[year] ?? 0) + 1;
-  o.orderNumber = `OM/${String(year).slice(-2)}-${String(year + 1).slice(-2)}/DMS-${String(orderSeq[year]).padStart(3, "0")}`;
+  o.orderNumber = seedOrderNumber(year, orderSeq[year]);
   o.idempotencyKey = `dummy-seed:${i + 1}`;
 });
 

@@ -539,8 +539,13 @@ async function orderFilterWhere(filters: OrderFilters): Promise<Prisma.OrderWher
   const search = text(filters.search);
   if (search) and.push(orderSearchWhere(search));
   const orderId = text(filters.orderId);
+  // The stored number (OM/26-27/DMS-103, MS/26/A001) by any part of it; ids by prefix/exact.
   // ponytail: a numeric id (no legacy id) matches exactly, not by prefix.
-  if (orderId) and.push({ OR: [{ legacyPhpId: { startsWith: orderId, mode: "insensitive" } }, ...(isIdText(orderId) ? [{ legacyPhpId: null, id: BigInt(orderId) }] : [])] });
+  if (orderId) and.push({ OR: [
+    { orderNumber: { contains: orderId, mode: "insensitive" } },
+    { legacyPhpId: { startsWith: orderId, mode: "insensitive" } },
+    ...(isIdText(orderId) ? [{ legacyPhpId: null, id: BigInt(orderId) }] : []),
+  ] });
   const dealerId = text(filters.targetDealerId);
   if (dealerId) and.push(isIdText(dealerId) ? { dealerId: BigInt(dealerId) } : NO_ORDERS);
   const warehouse = text(filters.warehouse);

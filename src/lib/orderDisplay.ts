@@ -1,6 +1,8 @@
 export function formatDisplayOrderNumber(value: unknown, orderDate?: unknown) {
   const raw = String(value ?? '').trim()
   if (!raw) return ''
+  // Seeded numbers (MS/26/A001) are already final.
+  if (/^MS\//i.test(raw)) return raw
 
   const existing = /^OM\/(\d{2}-\d{2})\/DMS-(.+)$/i.exec(raw)
   const yearRange = existing?.[1] || resolveFinancialYearRange(orderDate)
