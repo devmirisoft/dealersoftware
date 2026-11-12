@@ -53,7 +53,7 @@ function createOrder(db, { idempotencyKey, finalPayableAmountPaise }) {
   if (existing) return { order: existing, duplicate: true };
   const order = {
     id: db.orders.length + 1,
-    orderNumber: `OM/26-27/DMS-${String(db.orders.length + 1).padStart(3, "0")}`,
+    orderNumber: `DS/26-27/DMS-${String(db.orders.length + 1).padStart(3, "0")}`,
     idempotencyKey,
     finalPayableAmountPaise,
     status: "AWAITING_ACCEPTANCE",

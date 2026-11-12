@@ -1,4 +1,4 @@
-import { formatDisplayOrderNumber } from '@/lib/orderDisplay';
+import { orderNumberOf } from '@/lib/orderDisplay';
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/ban-ts-comment */
 import jsPDF from "jspdf";
 import moment from "moment";
@@ -289,9 +289,6 @@ async function fetchOrderProductNotes(orderId: string): Promise<Array<Record<str
 }
 
 
-function invoiceNumber(orderId: string): string {
-    return formatDisplayOrderNumber(orderId);
-}
 
 function fmt(n: number): string {
     return n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -481,7 +478,7 @@ export async function buildInvoiceTemplateData(
     const gross = amounts.gross;
     const discount = amounts.discountAmount;
     const net = amounts.netPayable;
-    const invNo = invoiceNumber(displayOrder.order_id);
+    const invNo = orderNumberOf(displayOrder);
     let discountBreakdown = resolveOrderDiscountBreakdown(displayOrder as OrderAmountSource);
     let invoiceRemark = "N/A";
 
@@ -708,7 +705,7 @@ export async function generateOrderInvoiceHtml(
     options?: InvoiceDownloadOptions,
 ): Promise<{ html: string; sheet: InvoiceSheet }> {
     const { data, sheet } = await buildInvoiceTemplateData(order, options);
-    const response = await fetch(invoiceTemplateUrl(sheet), { cache: "force-cache" });
+    const response = await fetch(invoiceTemplateUrl(sheet), { cache: "no-cache" });
     if (!response.ok) throw new Error(`Could not load the ${sheet} invoice template`);
     return { html: fillInvoiceTemplate(await response.text(), data), sheet };
 }
@@ -822,7 +819,7 @@ export async function uploadOrderInvoice(
             : null;
         const summaryOverride = inlineSummaryOverride ?? ((order as any).__source === "postgres" ? null : await fetchOrderSummaryOverride(order));
         const displayOrder = summaryOverride ? { ...(order as any), ...summaryOverride } : order;
-        const invNo = invoiceNumber(order.order_id);
+        const invNo = orderNumberOf(order);
         const net = resolveOrderAmounts(displayOrder).netPayable;
 
         const dp = getDealerProfile();
@@ -863,7 +860,7 @@ export async function downloadOrderInvoice(order: OrderInvoiceData, options?: In
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `${invoiceNumber(order.order_id).replace(/\//g, "-")}.pdf`;
+        link.download = `${orderNumberOf(order).replace(/\//g, "-")}.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

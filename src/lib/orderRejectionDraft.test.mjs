@@ -16,7 +16,7 @@ const orderItems = [
   { catalogueNumberSnapshot: "CAT-2", productNameSnapshot: "Flask 250ml", quantityPacks: 1, packSize: 6, unitPricePaise: BigInt(30000), isPriority: true, productNote: "handle with care" },
 ];
 
-const declinedOrder = { id: BigInt(41), orderNumber: "OM/25-26/DMS-041", shipTo: "Plant 2", refNo: "PO-9", note: "urgent" };
+const declinedOrder = { id: BigInt(41), orderNumber: "DS/25-26/DMS-041", shipTo: "Plant 2", refNo: "PO-9", note: "urgent" };
 
 test("order items become editable draft rows in rupees and packs", () => {
   const rows = orderItemsToDraftRows(orderItems);
@@ -46,7 +46,7 @@ test("the rejection snapshot carries the reviewer, role, note, and source order"
 
   assert.equal(snapshot.source, ORDER_REJECTION_SOURCE);
   assert.equal(snapshot.source_order_id, "41");
-  assert.equal(snapshot.source_order_number, "OM/25-26/DMS-041");
+  assert.equal(snapshot.source_order_number, "DS/25-26/DMS-041");
   assert.deepEqual(snapshot.rejection_notes, {
     rejected_by: "RSM",
     rejected_by_name: "Priya Nair",
@@ -63,9 +63,9 @@ test("the rejection snapshot carries the reviewer, role, note, and source order"
 
 test("a second rejection keeps the first order's rows and the edit history", () => {
   const first = buildOrderRejectionSnapshot({ order: declinedOrder, items: orderItems, rejectedBy: { role: "RSM", name: "Priya" }, note: "no" });
-  const withEdits = { ...first, edit_log: [buildEditLogEntry({ orderNumber: "OM/25-26/DMS-042", changes: [], at: "2026-08-29T11:00:00.000Z" })] };
+  const withEdits = { ...first, edit_log: [buildEditLogEntry({ orderNumber: "DS/25-26/DMS-042", changes: [], at: "2026-08-29T11:00:00.000Z" })] };
   const second = buildOrderRejectionSnapshot({
-    order: { ...declinedOrder, id: BigInt(42), orderNumber: "OM/25-26/DMS-042" },
+    order: { ...declinedOrder, id: BigInt(42), orderNumber: "DS/25-26/DMS-042" },
     items: [orderItems[0]],
     rejectedBy: { role: "STAFF", name: "Arun" },
     note: "still wrong",
@@ -76,7 +76,7 @@ test("a second rejection keeps the first order's rows and the edit history", () 
   assert.equal(second.original_rows.length, 2, "baseline stays the order the dealer first placed");
   assert.equal(second.edit_log.length, 1);
   assert.equal(second.rejection_notes.rejected_by_name, "Arun");
-  assert.equal(second.source_order_number, "OM/25-26/DMS-042");
+  assert.equal(second.source_order_number, "DS/25-26/DMS-042");
 });
 
 test("a missing note never leaves the dealer without a reason", () => {
@@ -105,9 +105,9 @@ test("the diff names every kind of edit the dealer can make", () => {
 test("an untouched resubmission reports no changes", () => {
   const rows = orderItemsToDraftRows(orderItems);
   assert.deepEqual(diffOrderRows(rows, rows), []);
-  assert.deepEqual(buildEditLogEntry({ orderNumber: "OM/1", changes: [], at: "2026-08-29T12:00:00.000Z" }), {
+  assert.deepEqual(buildEditLogEntry({ orderNumber: "DS/1", changes: [], at: "2026-08-29T12:00:00.000Z" }), {
     at: "2026-08-29T12:00:00.000Z",
-    order_number: "OM/1",
+    order_number: "DS/1",
     changes: [],
   });
 });

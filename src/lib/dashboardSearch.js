@@ -82,7 +82,7 @@ function normalizeOrderQuery(value) {
   const rawQuery = collapseWhitespace(value);
   const lowered = rawQuery.toLowerCase();
   const compact = lowered.replace(/[\s]+/g, "");
-  const formattedMatch = lowered.match(/^om[\s/-]*(?:\d{4}|\d{2}[\s/-]*\d{2})[\s/-]*(?:dms[\s/-]*)?(\d+)$/i);
+  const formattedMatch = lowered.match(/^(?:ds|om)[\s/-]*(?:\d{4}|\d{2}[\s/-]*\d{2})[\s/-]*(?:dms[\s/-]*)?(\d+)$/i);
   const exactOrderId = formattedMatch
     ? normalizeOrderId(formattedMatch[1])
     : /^\d+$/.test(rawQuery)
@@ -131,18 +131,18 @@ function getDashboardQueryInfo(value) {
 function buildOrderDisplayNumber(orderId, orderDate) {
   const normalizedId = pickFirstString(orderId);
   if (!normalizedId) return "";
-  const existingMatch = /^OM\/(\d{2}-\d{2})\/DMS-(.+)$/i.exec(normalizedId);
+  const existingMatch = /^(?:DS|OM)\/(\d{2}-\d{2})\/DMS-(.+)$/i.exec(normalizedId);
   if (existingMatch) {
     const sequence = normalizeOrderId(existingMatch[2]).replace(/^0+(?=\d)/, "").padStart(3, "0");
-    return `OM/${existingMatch[1]}/DMS-${sequence}`;
+    return `DS/${existingMatch[1]}/DMS-${sequence}`;
   }
-  if (/^OM\//i.test(normalizedId)) return normalizedId;
+  if (/^(?:DS|OM)\//i.test(normalizedId)) return normalizedId;
 
   const yearMatch = String(orderDate ?? "").match(/\b(20\d{2})\b/);
   const year = Number(yearMatch ? yearMatch[1] : new Date().getFullYear());
   const yearRange = `${String(year).slice(-2)}-${String(year + 1).slice(-2)}`;
   const sequence = normalizeOrderId(normalizedId).replace(/^0+(?=\d)/, "").padStart(3, "0");
-  return `OM/${yearRange}/DMS-${sequence}`;
+  return `DS/${yearRange}/DMS-${sequence}`;
 }
 
 function compareResults(left, right) {

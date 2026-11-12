@@ -181,7 +181,7 @@ test("Staff cannot search an unassigned dealer order", () => {
 test("Exact unassigned order id returns no order result to staff", () => {
   const response = buildDashboardSearchResponse({
     role: "staff",
-    query: "OM/26-27/DMS-5001",
+    query: "DS/26-27/DMS-5001",
     orders: [],
   });
 
@@ -221,7 +221,7 @@ test("Dealer cannot search another dealer order", () => {
 test("Exact foreign order id returns no order result to dealer", () => {
   const response = buildDashboardSearchResponse({
     role: "dealer",
-    query: "OM-2027-5001",
+    query: "DS-2027-5001",
     orders: [],
   });
 
@@ -281,7 +281,7 @@ test("Exact raw order id matches", () => {
 test("Formatted OM order number matches", () => {
   const response = buildDashboardSearchResponse({
     role: "admin",
-    query: "OM/27-28/DMS-3841",
+    query: "DS/27-28/DMS-3841",
     orders,
   });
 
@@ -291,7 +291,7 @@ test("Formatted OM order number matches", () => {
 test("Hyphenated order format matches safely", () => {
   const response = buildDashboardSearchResponse({
     role: "admin",
-    query: "OM-27-28-DMS-03841",
+    query: "DS-27-28-DMS-03841",
     orders,
   });
 
@@ -415,13 +415,13 @@ test("Enter opens a highlighted suggestion", () => {
 test("Exact permitted order navigation works without highlight", () => {
   const response = buildDashboardSearchResponse({
     role: "admin",
-    query: "OM/27-28/DMS-3841",
+    query: "DS/27-28/DMS-3841",
     orders,
   });
 
   assert.equal(
     chooseDashboardSearchNavigation({
-      query: "OM/27-28/DMS-3841",
+      query: "DS/27-28/DMS-3841",
       results: response.results,
     }),
     "/orders/3841",
@@ -449,8 +449,8 @@ test("Query URL fallback is encoded correctly", () => {
 });
 
 test("Order display formatting keeps repository route shape", () => {
-  assert.equal(buildOrderDisplayNumber("3841", "2027-02-14"), "OM/27-28/DMS-3841");
-  assert.equal(buildOrderDisplayNumber("OM/26-27/DMS-00001", "2026-08-13"), "OM/26-27/DMS-001");
+  assert.equal(buildOrderDisplayNumber("3841", "2027-02-14"), "DS/27-28/DMS-3841");
+  assert.equal(buildOrderDisplayNumber("OM/26-27/DMS-00001", "2026-08-13"), "DS/26-27/DMS-001");
 });
 
 test("dashboard order search applies actor scope across all dates before product-line matching", () => {

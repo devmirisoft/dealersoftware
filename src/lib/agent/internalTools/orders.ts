@@ -48,7 +48,7 @@ export const getOrder: Tool<InternalScope> = {
     type: "function",
     function: {
       name: "get_order",
-      description: "One order you can access: dealer, approval stage (RSM / staff), items, dispatch and tracking. Accepts OM/26-27/DMS-029, DMS-029 or 29.",
+      description: "One order you can access: dealer, approval stage (RSM / staff), items, dispatch and tracking. Accepts DS/26-27/DMS-029, DMS-029 or 29.",
       parameters: { type: "object", properties: { orderId: { type: "string" } }, required: ["orderId"] },
     },
   },

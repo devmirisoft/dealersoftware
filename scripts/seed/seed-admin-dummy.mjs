@@ -343,7 +343,7 @@ const forms = [
 ].map(([companyName, cityState, smName, daysAgo, productsWanted, industry, source, reqType, timeline], i) => {
   const visitedDate = istAt(daysAgo, 11);
   return {
-    leadNo: `OML-${String(i + 1).padStart(3, "0")}`, companyName, products: productsWanted, submittedByKey: slug(smName), submittedByName: smName,
+    leadNo: `DSL-${String(i + 1).padStart(3, "0")}`, companyName, products: productsWanted, submittedByKey: slug(smName), submittedByName: smName,
     submittedByRole: "STAFF", visitedDate, submittedAt: addDays(visitedDate, 0.3),
     customerDetails: { companyName, contactPerson: pick(CONTACTS), department: "QC Lab", designation: "Lab Manager", mobile: phone(), email: email(companyName),
       website: "", address: `Plot ${int(10, 200)}, Industrial Estate`, cityState, industryTypeOther: "", existingSupplier: pick(["Imported brand", "Local trader", "None"]),

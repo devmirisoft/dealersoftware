@@ -22,7 +22,7 @@ const { renderDealerEmail, renderStaffEmail } = await jiti.import(path.join(ROOT
 const { sendEmail } = await jiti.import(path.join(ROOT, "src/server/auth/email.ts"));
 
 const link = `${(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "")}/orders/1`;
-const order = { orderNumber: "OM/26-27/TEST-0001", dealerName: "Test Dealer", amountPaise: 1234550, link };
+const order = { orderNumber: "DS/26-27/TEST-0001", dealerName: "Test Dealer", amountPaise: 1234550, link };
 const shipment = { dispatchPartner: "BlueDart", trackingNumber: "AWB123456", trackingLink: "https://www.bluedart.com/" };
 
 const emails = [

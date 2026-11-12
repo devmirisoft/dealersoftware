@@ -31,9 +31,9 @@ const CATALOGUE = {
 const DISCOUNT = 10;
 const net = (price) => Math.round(price * (1 - DISCOUNT / 100) * 100) / 100;
 const ORDERS = [
-  { orderId: 'OM/26-27/DMS-022', date: '2026-08-26', status: 'Dispatched', total: 1500.48, itemCount: 1 },
-  { orderId: 'OM/26-27/DMS-019', date: '2026-08-12', status: 'Awaiting approval', total: 9880, itemCount: 2 },
-  { orderId: 'OM/26-27/DMS-011', date: '2026-07-30', status: 'Completed', total: 3240, itemCount: 3 },
+  { orderId: 'DS/26-27/DMS-022', date: '2026-08-26', status: 'Dispatched', total: 1500.48, itemCount: 1 },
+  { orderId: 'DS/26-27/DMS-019', date: '2026-08-12', status: 'Awaiting approval', total: 9880, itemCount: 2 },
+  { orderId: 'DS/26-27/DMS-011', date: '2026-07-30', status: 'Completed', total: 3240, itemCount: 3 },
 ];
 
 const productMocks = {
@@ -60,7 +60,7 @@ const dealerMocks = {
   },
   get_order_status: ({ orderId }) => {
     if (!/0?22$/.test(orderId)) return { error: 'ORDER_NOT_FOUND', message: `No order ${orderId} on this account.` };
-    return { orderId: 'OM/26-27/DMS-022', date: '2026-08-26', status: 'Dispatched', total: 1500.48, items: [{ productId: 'ABC-123', name: 'Glass Funnel 75 mm', packs: 3, packSize: 10, lineTotal: 1500.48 }], dispatchedOn: '2026-08-29', courier: 'DTDC', trackingNo: 'D12345678' };
+    return { orderId: 'DS/26-27/DMS-022', date: '2026-08-26', status: 'Dispatched', total: 1500.48, items: [{ productId: 'ABC-123', name: 'Glass Funnel 75 mm', packs: 3, packSize: 10, lineTotal: 1500.48 }], dispatchedOn: '2026-08-29', courier: 'DTDC', trackingNo: 'D12345678' };
   },
   get_ledger_summary: () => ({ accountType: 'credit', creditDays: 30, creditLimit: 100000, temporaryCredit: 0, creditUsed: 57500, creditAvailable: 42500, overdue: false, unpaidBills: 2, unpaidBillsAmount: 18200, lastPaymentDate: '2026-09-20', lastPaymentAmount: 12000 }),
   draft_order: ({ items, customDiscount }) => {
@@ -97,17 +97,17 @@ const internalMocks = (persona) => {
       dealerId: '45', name: 'VKS enterprise', code: 'VKS-01', city: 'Ambala', region: 'North 1', assignedTo: 'SM AMBALA AREA', discountPercent: 50,
       salesThisFinancialYear: { since: '2026-04-01', acceptedOrders: 6, total: 184500, annualTarget: 1000000 },
       account: { accountType: 'credit', creditLimit: 100000, creditAvailable: 22000, overdue: false, unpaidBills: 1, unpaidBillsAmount: 78000 },
-      recentOrders: [{ orderId: 'OM/26-27/DMS-040', date: '2026-09-28', status: 'Awaiting approval', total: 12400, itemCount: 2 }],
+      recentOrders: [{ orderId: 'DS/26-27/DMS-040', date: '2026-09-28', status: 'Awaiting approval', total: 12400, itemCount: 2 }],
     },
-    find_orders: ({ dealer }) => isAmbiguous(dealer) ? AMBIGUOUS : { orders: [{ orderId: 'OM/26-27/DMS-047', dealer: 'Panji dealer 2', date: '2026-10-04', status: 'Awaiting approval', total: 2600, itemCount: 1 }], hasMore: false },
+    find_orders: ({ dealer }) => isAmbiguous(dealer) ? AMBIGUOUS : { orders: [{ orderId: 'DS/26-27/DMS-047', dealer: 'Panji dealer 2', date: '2026-10-04', status: 'Awaiting approval', total: 2600, itemCount: 1 }], hasMore: false },
     get_order: ({ orderId }) => (!admin || !/0?22$/.test(orderId))
       ? { error: 'ORDER_NOT_FOUND', message: `No order ${orderId} that you can access.` }
-      : { orderId: 'OM/26-27/DMS-022', dealer: 'Panji dealer 2', date: '2026-08-26', status: 'Dispatched', total: 1500.48, rsmApproval: 'approved', staffAcceptance: 'approved', salesManager: 'SM PANJI', items: [{ productId: 'ABC-123', name: 'Glass Funnel 75 mm', packs: 3, packSize: 10, lineTotal: 1500.48 }], dispatchedOn: '2026-08-29', courier: 'DTDC', trackingNo: 'D12345678' },
+      : { orderId: 'DS/26-27/DMS-022', dealer: 'Panji dealer 2', date: '2026-08-26', status: 'Dispatched', total: 1500.48, rsmApproval: 'approved', staffAcceptance: 'approved', salesManager: 'SM PANJI', items: [{ productId: 'ABC-123', name: 'Glass Funnel 75 mm', packs: 3, packSize: 10, lineTotal: 1500.48 }], dispatchedOn: '2026-08-29', courier: 'DTDC', trackingNo: 'D12345678' },
     pending_approvals: () => ({
       pending: admin
         ? [{ item: 'Orders awaiting approval', count: 17 }, { item: 'Custom discount requests waiting for you', count: 2 }, { item: 'New dealer requests', count: 1 }]
         : [{ item: 'Orders awaiting approval', count: 3 }],
-      oldestAwaitingOrders: [{ orderId: 'OM/26-27/DMS-019', dealer: 'VKS enterprise', date: '2026-08-12', status: 'Awaiting approval', total: 9880, itemCount: 2 }],
+      oldestAwaitingOrders: [{ orderId: 'DS/26-27/DMS-019', dealer: 'VKS enterprise', date: '2026-08-12', status: 'Awaiting approval', total: 9880, itemCount: 2 }],
       note: 'Approve or decline these in the app; the assistant is read-only.',
     }),
     sales_report: ({ fromDate, toDate, dealer }) => isAmbiguous(dealer) ? AMBIGUOUS : dealer ? {

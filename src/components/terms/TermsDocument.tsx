@@ -134,7 +134,7 @@ export const DEFAULT_TERMS_BLOCKS: TermsBlock[] = ([
   ["h4", "PROMOTION"],
   ["p", "DealerSoftware may time to time send material of promotion."],
   ["h4", "JURISDICTION"],
-  ["p", "All the disputes/differences or claims arising out of dealership agreement shall have Ambala as its jurisdiction"],
+  ["p", "All the disputes/differences or claims arising out of dealership agreement shall have [COMPANY CITY] as its jurisdiction"],
   ["sign", "Authorized Signatory\nDealer signature\nSales person’s signature"],
 ] as [TermsBlockType, string][]).map(([type, text]) => ({ type, text }));
 

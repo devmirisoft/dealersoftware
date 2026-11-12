@@ -129,7 +129,7 @@ test("explicit base discount wins over row item discount total", () => {
   assert.deepEqual(rows.map((row) => row.key), ["gross", "base", "slab", "total", "net"]);
 });
 
-test("OM/2026/3856 slab fixture preserves total discount and net payable", () => {
+test("DS/2026/3856 slab fixture preserves total discount and net payable", () => {
   const breakdown = orderAmounts.resolveOrderDiscountBreakdown({
     order_id: "3856",
     grossAmount: 1098300,

@@ -23,7 +23,7 @@ async function loadRefunds() {
 }
 
 const { refundOrderWallet } = await loadRefunds();
-const order = { id: 500n, dealerId: 137n, orderNumber: "OM/26-27/DMS-1017" };
+const order = { id: 500n, dealerId: 137n, orderNumber: "DS/26-27/DMS-1017" };
 
 function walletWith(rows) {
   globalThis.__refunds = [];

@@ -50,7 +50,7 @@ async function nextOrderNumber(tx: Prisma.TransactionClient) {
     update: { lastValue: { increment: BigInt(1) } },
   });
   const yearRange = `${String(year).slice(-2)}-${String(year + 1).slice(-2)}`;
-  return `OM/${yearRange}/DMS-${sequence.lastValue.toString().padStart(3, "0")}`;
+  return `DS/${yearRange}/DMS-${sequence.lastValue.toString().padStart(3, "0")}`;
 }
 
 type ApprovedRequest = {

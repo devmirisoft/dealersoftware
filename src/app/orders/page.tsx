@@ -11,7 +11,7 @@ import { exportOrdersToCloud, downloadPDFDirectly } from "@/lib/Exporttopdf";
 import { InvoiceModal } from "@/components/InvoiceModel";
 import { downloadOrderInvoice, uploadOrderInvoice, generateOrderInvoicePDF, listInvoices } from "@/lib/invoicegenerator";
 import { formatAdditionalDiscountBadge, getCompactOrderDiscountRows, withDisplayOrderAmounts } from "@/lib/orderAmounts";
-import { formatDisplayOrderNumber } from '@/lib/orderDisplay';
+import { formatDisplayOrderNumber, orderNumberOf } from '@/lib/orderDisplay';
 import { STAFF_ORDER_SCOPE_VERSION } from "@/lib/staffOrderScope.js";
 import {
   buildCustomDiscountProgressMap,
@@ -936,7 +936,7 @@ function DispatchDetailsDrawer({
         <div className="dispatch-header">
           <div>
             <p className="dispatch-kicker">Dispatch Details</p>
-            <h2 className="dispatch-title">Order No: {order.order_number || formatDisplayOrderNumber(order.order_id)}</h2>
+            <h2 className="dispatch-title">Order No: {orderNumberOf(order)}</h2>
             <p className="dispatch-subtitle">Dealer: {order.Dealer_Name || '—'}</p>
           </div>
           <button type="button" className="dispatch-close" onClick={onClose} aria-label="Close dispatch details">
@@ -1253,7 +1253,7 @@ export default function OrderHistoryPage() {
     try {
       const existing = await listInvoices(selectedDealerIds[0] || dealerId || "", 500);
       const existingNumbers = new Set(Array.isArray(existing.data) ? existing.data.map((invoice: any) => String(invoice.invoiceNumber ?? "")) : []);
-      const duplicates = selectedOrdersForBilling.filter((order) => existingNumbers.has(formatDisplayOrderNumber(order.order_id)));
+      const duplicates = selectedOrdersForBilling.filter((order) => existingNumbers.has(orderNumberOf(order)));
       if (duplicates.length > 0) {
         showToast("error", `Already billed: ${duplicates.map((order) => order.order_id).join(", ")}`);
         return;
@@ -1538,7 +1538,7 @@ export default function OrderHistoryPage() {
       const customDiscountSummary = customDiscountProgressMap[getCustomDiscountProgressKeyForOrder(o.order_id)];
       const base: Record<string, string | number> = {
         "S.No.":        (page - 1) * pageSize + i + 1,
-        "Order No":     o.order_number || formatDisplayOrderNumber(o.order_id),
+        "Order No":     orderNumberOf(o),
         "Date":         (o.orderDate || o.order_date || "").slice(0, 10),
         "Due Date":     o.outstandingDate || "",
         "Amount (₹)":   amounts.grossAmount,

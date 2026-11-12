@@ -1,7 +1,7 @@
 "use client";
 
 import DateInput from "@/components/ui/date-input";
-import { formatDisplayOrderNumber } from '@/lib/orderDisplay';
+import { orderNumberOf } from '@/lib/orderDisplay';
 import { formatPeriodLabel } from "@/lib/salesPeriods";
 import Link from "next/link";
 import { Users, Wallet, Calendar, CalendarCheck, CreditCard, IndianRupee, FileText, ArrowUp, ArrowDown, ArrowRight, ShoppingCart, UserRound, Percent, ChartColumn, Globe, LayoutGrid, MapPin, Trophy, TrendingUp, Download } from 'lucide-react';
@@ -1344,7 +1344,7 @@ function AdminDashboardInner() {
                 ) : data.length > 0 ? (
                   data.map((item) => (
                     <div key={item.order_id} className="report-item">
-                      <span className="report-name">{formatDisplayOrderNumber(item.order_id)}</span>
+                      <span className="report-name">{orderNumberOf(item)}</span>
                       <span className="report-value">{inr(Number(item.total))}</span>
                     </div>
                   ))

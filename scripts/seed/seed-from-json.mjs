@@ -318,7 +318,7 @@ function activeOrderData(row) {
   const accepted = text(row.accept_order) === "1";
   const orderDate = placedDate(row.orderdata_datetime, row.orderDate) ?? legacyDate(row.order_date);
   return {
-    orderNumber: `OM/${ORDER_SEQUENCE_YEAR}/${text(row.order_id)}`,
+    orderNumber: `DS/${ORDER_SEQUENCE_YEAR}/${text(row.order_id)}`,
     orderDate, createdAt: orderDate,
     grossAmountPaise: gross,
     baseDiscountPercent: percent(row.baseDiscountPercent) ?? "0",
@@ -352,7 +352,7 @@ function cancelledOrderData(row) {
   const accepted = text(ref.accept_order) === "1";
   const orderDate = placedDate(ref.orderdata_datetime, ref.orderDate) ?? legacyDate(ref.order_date);
   return {
-    orderNumber: text(row.formattedOrderNumber) || `OM/${ORDER_SEQUENCE_YEAR}/${text(row.orderId)}`,
+    orderNumber: text(row.formattedOrderNumber) || `DS/${ORDER_SEQUENCE_YEAR}/${text(row.orderId)}`,
     orderDate, createdAt: orderDate,
     grossAmountPaise: gross,
     baseDiscountPercent: percent(ref.discount) ?? "0",
@@ -384,7 +384,7 @@ function itemOrderData(legacyId, rows) {
   report.derived.push({ entity: "order", legacyId, column: "all header amounts", to: `gross ${gross} discount ${discount} net ${net} (paise)`, why: `not in orders.json; summed from ${rows.length} item rows (rows' order_discount field says ${text(rows[0].order_discount)})` });
   const orderDate = placedDate(rows[0].orderdata_datetime, rows[0].order_date);
   return {
-    orderNumber: `OM/${ORDER_SEQUENCE_YEAR}/${legacyId}`,
+    orderNumber: `DS/${ORDER_SEQUENCE_YEAR}/${legacyId}`,
     orderDate, createdAt: orderDate,
     grossAmountPaise: gross,
     baseDiscountPercent: percents.length === 1 ? percent(percents[0]) ?? "0" : ratioPercent(discount, gross),
@@ -446,7 +446,7 @@ async function seedOrders() {
       count("orders", existing ? "updated" : "inserted");
       count("orders", data.status === "CANCELLED" ? "cancelled" : "active");
     }
-    // Next app order must not reuse a legacy number (display: OM/26-27/DMS-<n>). Only ever raise it.
+    // Next app order must not reuse a legacy number (display: DS/26-27/DMS-<n>). Only ever raise it.
     const seq = await tx.orderSequence.findUnique({ where: { year: ORDER_SEQUENCE_YEAR } });
     const next = seq && seq.lastValue > maxLegacyId ? seq.lastValue : maxLegacyId;
     report.orderSequence = { year: ORDER_SEQUENCE_YEAR, from: seq?.lastValue.toString() ?? null, to: next.toString() };
@@ -785,7 +785,7 @@ async function seedForms() {
       const staff = staffById.get(submitterId);
       const user = staff ? await findStaffUser(tx, staff) : null;
       if (!user && !(mode === "dry-run" && staff)) { report.skipped.push({ ...ctx, reason: `submitter ${submitterId} has no app account` }); count("forms", "skipped"); continue; }
-      const seq = /^OML-(\d+)$/.exec(leadNo);
+      const seq = /^(?:DSL|OML)-(\d+)$/.exec(leadNo);
       if (seq) maxLead = Math.max(maxLead, Number(seq[1]));
       const existing = await tx.formSubmission.findUnique({ where: { leadNo }, select: { id: true } });
       if (write && !existing) {

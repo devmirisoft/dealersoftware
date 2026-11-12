@@ -23,7 +23,7 @@ const ledger = await readFile(new URL("./ledgerSystem.ts", import.meta.url), "ut
 const invoice = await readFile(new URL("./invoicegenerator.tsx", import.meta.url), "utf8");
 
 const bill = (billed, paid, date = "2026-08-20") => ({
-  id: 1n, orderNumber: "OM/26-27/DMS-001",
+  id: 1n, orderNumber: "DS/26-27/DMS-001",
   billAmountPaise: billed, paidAmountPaise: paid, lastPaymentDate: date,
 });
 

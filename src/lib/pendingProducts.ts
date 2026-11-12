@@ -77,7 +77,7 @@ export type PendingProductLine = {
   category: string;
   image: string;
   orderId: string;
-  // The stored, canonical order number (OM/26-27/DMS-001). orderId stays the
+  // The stored, canonical order number (DS/26-27/DMS-001). orderId stays the
   // internal join key; this is what a human-facing sheet must print.
   orderNumber: string;
   orderDate: string;

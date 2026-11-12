@@ -348,7 +348,7 @@ function extractOrderIdFromResponse(data: any): string {
   if (direct) return String(direct).trim();
 
   const msg = String(data?.msg || data?.message || "");
-  return msg.match(/OM\/\d{4}\/(\d+)/i)?.[1] || msg.match(/order\s*(?:id|no\.?)?\s*#?\s*(\d+)/i)?.[1] || "";
+  return msg.match(/(?:DS|OM)\/\d{4}\/(\d+)/i)?.[1] || msg.match(/order\s*(?:id|no\.?)?\s*#?\s*(\d+)/i)?.[1] || "";
 }
 
 function buildExpectedOrderNumber(lastOrderId: string | undefined | null): string {
@@ -2748,7 +2748,7 @@ const verifySubmittedProductNotes = async (orderId: string) => {
               ) : (
                 <span className="inline-flex items-center gap-2 rounded-xl border border-brand-100 bg-brand-50 px-3 py-1.5 font-mono text-[12px] font-bold text-brand-600">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-brand-400">Order No.</span>
-                  {expectedOrderLoading ? "Loading..." : expectedOrderNumber || "OM/..."}
+                  {expectedOrderLoading ? "Loading..." : expectedOrderNumber || "DS/..."}
                 </span>
               )}
             </div>
