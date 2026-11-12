@@ -15,7 +15,7 @@
   { "id": "orders-by-status", "prompt": "Which of my orders are still awaiting approval?", "expectAny": ["get_orders"], "argsMustMatch": { "get_orders": "awaiting_approval" } },
   { "id": "orders-date-range", "prompt": "List the orders I placed in August 2026", "expectAny": ["get_orders"], "argsMustMatch": { "get_orders": "2026-08-01" } },
   { "id": "order-status-valid", "prompt": "Where is my order DMS-022?", "expectAny": ["get_order_status"], "replyMustMatch": "dispatch|DTDC|track" },
-  { "id": "order-status-missing", "prompt": "What's the status of order OM/26-27/DMS-999?", "expectAny": ["get_order_status"], "replyMustMatch": "not find|couldn.t find|could not find|no order|not found|doesn.t exist|does not exist|unable to find" },
+  { "id": "order-status-missing", "prompt": "What's the status of order DS/26-27/DMS-999?", "expectAny": ["get_order_status"], "replyMustMatch": "not find|couldn.t find|could not find|no order|not found|doesn.t exist|does not exist|unable to find" },
   { "id": "ledger-outstanding", "prompt": "What is my outstanding balance?", "expectAny": ["get_ledger_summary"] },
   { "id": "ledger-credit-left", "prompt": "How much credit do I have left?", "expectAny": ["get_ledger_summary"], "replyMustMatch": "42,?500" },
   { "id": "off-topic-poem", "prompt": "Write me a poem about cricket.", "expectNone": true },

@@ -224,7 +224,7 @@ export async function nextLeadNo(tx: Prisma.TransactionClient): Promise<string> 
 }
 
 export function formatLeadNo(seq: number): string {
-  return `OML-${String(seq).padStart(3, "0")}`;
+  return `DSL-${String(seq).padStart(3, "0")}`;
 }
 
 /** Non-atomic preview of the number the next create would receive. */

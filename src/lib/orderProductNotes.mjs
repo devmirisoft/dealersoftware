@@ -1,6 +1,6 @@
 ﻿export const PRODUCT_NOTE_LIMIT = 500;
 
-const EXPECTED_ORDER_NUMBER_PATTERN = /^OM\/\d{4}\//i;
+const EXPECTED_ORDER_NUMBER_PATTERN = /^(?:DS|OM)\/\d{4}\//i;
 
 /**
  * @param {unknown} value

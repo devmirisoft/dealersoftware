@@ -500,7 +500,7 @@ export default function Form({
       : parsed.toLocaleDateString("en-IN");
   })();
 
-  const leadNo = submission?.leadNo || leadPreview || "OML-...";
+  const leadNo = submission?.leadNo || leadPreview || "DSL-...";
 
   return (
     <div className="min-h-screen w-full bg-gray-100 py-8">

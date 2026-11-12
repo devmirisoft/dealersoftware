@@ -59,7 +59,7 @@ async function fetchLatestOrderIdForDealer(dealerId: string | undefined) {
 
 function deriveOrderNumberFrom(lastOrderId: string | undefined | null, increment = 1) {
   const year = new Date().getFullYear();
-  const prefix = "OM";
+  const prefix = "DS";
   const defaultPadding = 4;
 
   if (!lastOrderId) return `${prefix}/${year}/${String(increment).padStart(defaultPadding, "0")}`;

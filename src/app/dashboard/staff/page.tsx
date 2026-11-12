@@ -1,6 +1,6 @@
 'use client'
 
-import { formatDisplayOrderNumber } from '@/lib/orderDisplay';
+import { orderNumberOf } from '@/lib/orderDisplay';
 import Link from "next/link"
 import { useMemo, useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
@@ -769,7 +769,7 @@ function ExecutiveDashboard() {
                     : topOrders.length > 0
                       ? topOrders.map(item => (
                         <div key={item.order_id} className="report-item">
-                          <span className="report-name">{formatDisplayOrderNumber(item.order_id)}</span>
+                          <span className="report-name">{orderNumberOf(item)}</span>
                           <span className="report-value">₹{Number(item.total).toLocaleString("en-IN")}</span>
                         </div>
                       ))

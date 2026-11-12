@@ -6,7 +6,7 @@ const importer = await import("../../scripts/legacy-order-importer.mjs");
 test("legacy order header maps PHP fields to PostgreSQL order fields", () => {
   const mapped = importer.buildOrderData({
     order_id: "3862",
-    order_number: "OM/PHP/3862",
+    order_number: "DS/PHP/3862",
     order_dealer: "226",
     assignedstaff: "53",
     orderdata_datetime: "2024-01-02 03:04:05",
@@ -22,7 +22,7 @@ test("legacy order header maps PHP fields to PostgreSQL order fields", () => {
   }, 226n, 53n);
 
   assert.equal(mapped.legacyPhpId, "3862");
-  assert.equal(mapped.orderNumber, "OM/PHP/3862");
+  assert.equal(mapped.orderNumber, "DS/PHP/3862");
   assert.equal(mapped.dealerId, 226n);
   assert.equal(mapped.assignedStaffId, 53n);
   assert.equal(mapped.shipTo, "Branch warehouse");
@@ -78,7 +78,7 @@ test("importOrder skips existing legacy orders before writing items", async () =
   const result = await importer.importOrder({
     prisma,
     backendUrl: "http://legacy.test",
-    header: { order_id: "3862", order_number: "OM/PHP/3862" },
+    header: { order_id: "3862", order_number: "DS/PHP/3862" },
     dryRun: true,
   });
   assert.equal(result.action, "skipped-existing");

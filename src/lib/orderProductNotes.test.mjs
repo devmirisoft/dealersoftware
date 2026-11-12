@@ -124,7 +124,7 @@ test("Predicted order numbers are rejected as fallback storage keys", async () =
     verifyOrderProductNotesPersistence({
       fetchImpl: async () => ({ ok: true, async json() { return { data: [] }; } }),
       backendUrl: "https://example.test/api",
-      actualOrderId: "OM/2026/0009",
+      actualOrderId: "DS/2026/0009",
       dealerId: "44",
       submittedRows: [{ variantCode: "50/8", productNote: "Pack separately" }],
     }),

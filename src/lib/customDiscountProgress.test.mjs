@@ -111,8 +111,8 @@ test("rejected request returns rejected", () => {
 
 test("duplicate request ids are ignored and order keys group records", () => {
   const progressMap = buildProgressMap([
-    { id: "a", orderId: "OM/2026/3838", status: "approved" },
-    { id: "a", orderId: "OM/2026/3838", status: "approved" },
+    { id: "a", orderId: "DS/2026/3838", status: "approved" },
+    { id: "a", orderId: "DS/2026/3838", status: "approved" },
     { id: "b", orderNumber: "3838", status: "pending" },
   ]);
 

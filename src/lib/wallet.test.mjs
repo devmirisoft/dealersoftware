@@ -298,7 +298,7 @@ test("active order reservation prevents overspend and final debit is linked once
   const store = createFakeDb({ wallets: [{ dealerId: "D-4", status: "active", balancePaise: 500000, balance: 5000, reservedPaise: 0 }] });
   await wallet.reserveOrderFunds(store.db, "D-4", 4200, { idempotencyKey: "order:D-4:1" });
   await assert.rejects(() => wallet.reserveOrderFunds(store.db, "D-4", 1000, { idempotencyKey: "order:D-4:2" }), /Insufficient wallet balance/);
-  const debit = await wallet.finalizeOrderDebit(store.db, "D-4", "order:D-4:1", { id: "101", number: "OM/2026/0101" }, { actorId: "D-4", actorRole: "dealer" });
+  const debit = await wallet.finalizeOrderDebit(store.db, "D-4", "order:D-4:1", { id: "101", number: "DS/2026/0101" }, { actorId: "D-4", actorRole: "dealer" });
   assert.equal(debit.amount, 4200);
   assert.equal(debit.balanceAfter, 800);
   assert.equal(debit.relatedOrderId, "101");

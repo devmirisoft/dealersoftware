@@ -34,7 +34,7 @@ import { TermsBlocksEditor } from "@/components/terms/TermsEditor";
 import type { TermsBlock } from "@/components/terms/TermsDocument";
 
 const ADMIN_STAFF_URL = "/api/admin/staff";
-const DEALER_CODE_PREFIX = "OM-";
+const DEALER_CODE_PREFIX = "DS-";
 const UNCHANGED_TERMS_WARNING = "If the document isn’t updated, a default template will appear at login.";
 
 type DealerFormMode = "admin-create" | "staff-submit" | "admin-review" | "rsm-review" | "staff-resubmit";
@@ -283,11 +283,11 @@ export default function DealerFormCard({
       ? "Generating a unique 4-digit dealer code..."
       : dealerCodeLocked
         ? "Generated automatically for staff requests and locked for editing."
-        : "Admin can edit this code. The OM- prefix is added automatically.";
+        : "Admin can edit this code. The DS- prefix is added automatically.";
 
-  // The stored dealer code stays a bare 4-digit number; "OM-" is a fixed display prefix.
+  // The stored dealer code stays a bare 4-digit number; "DS-" is a fixed display prefix.
   const handleDealerCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const typed = event.target.value.replace(/^(?:OM-?)+/i, "");
+    const typed = event.target.value.replace(/^(?:(?:DS|OM)-?)+/i, "");
     setFormData((prev) => ({ ...prev, dealerCode: typed }));
   };
 

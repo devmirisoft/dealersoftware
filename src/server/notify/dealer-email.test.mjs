@@ -31,7 +31,7 @@ async function load() {
 }
 
 const { renderDealerEmail, notifyDealer, notifyApprover, notifyReviewers } = await load();
-const ctx = { businessName: "Acme Labs", orderNumber: "OM/26-27/DMS-1017" };
+const ctx = { businessName: "Acme Labs", orderNumber: "DS/26-27/DMS-1017" };
 
 function orderRow(overrides = {}) {
   return {
@@ -65,7 +65,7 @@ const ADMIN = { role: "ADMIN", email: "admin@example.com" };
 
 test("every order event names the order in its subject", () => {
   for (const event of [{ kind: "placed" }, { kind: "accepted" }, { kind: "declined" }, { kind: "dispatched", full: true }, { kind: "cancelled" }]) {
-    assert.match(renderDealerEmail(event, ctx).subject, /OM\/26-27\/DMS-1017/, event.kind);
+    assert.match(renderDealerEmail(event, ctx).subject, /DS\/26-27\/DMS-1017/, event.kind);
   }
 });
 
@@ -115,7 +115,7 @@ test("a new order goes to the RSM whose scope holds it, with the amount", async 
   const sent = await runScheduled();
   assert.equal(sent.length, 1);
   assert.equal(sent[0].to, "rsm-south@example.com");
-  assert.match(sent[0].subject, /New order OM\/26-27\/DMS-1017 from Acme Labs needs your approval/);
+  assert.match(sent[0].subject, /New order DS\/26-27\/DMS-1017 from Acme Labs needs your approval/);
   assert.match(sent[0].html, /₹12,345\.50/);
 });
 
@@ -152,7 +152,7 @@ test("a dealer change request goes to Admin and NSM with the escaped note", asyn
   notifyReviewers(ctx.orderNumber, "cancel", "<b>wrong items</b>");
   const [sent] = await runScheduled();
   assert.equal(sent.to, "nsm@example.com, admin@example.com");
-  assert.match(sent.subject, /Acme Labs asked to cancel order OM\/26-27\/DMS-1017/);
+  assert.match(sent.subject, /Acme Labs asked to cancel order DS\/26-27\/DMS-1017/);
   assert.match(sent.html, /&#60;b&#62;wrong items/);
 });
 

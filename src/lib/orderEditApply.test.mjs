@@ -40,7 +40,7 @@ function setup({ creditDays = 30, walletRemaining = 0n, creditBlock = null, appr
     "OM262-020": { catNo: "OM262-020", productName: "Nylon Syringe Filters 50", packSize: 50, priceBasis: "pack", unitPricePaise: 6800n, packPricePaise: 340000n },
   } };
   const order = {
-    id: 500n, dealerId: 137n, orderNumber: "OM/26-27/DMS-1017", baseDiscountPercent: "50", finalPayableAmountPaise: 480000n,
+    id: 500n, dealerId: 137n, orderNumber: "DS/26-27/DMS-1017", baseDiscountPercent: "50", finalPayableAmountPaise: 480000n,
     slabDiscountPercent: "0", dispatchedAt: null, ...orderFields,
     dealer: { creditDays },
     items: items ?? [
@@ -141,7 +141,7 @@ test("disabling a product zeroes its undispatched line, keeps the earned slab an
   const { tx, calls } = setup({ creditDays: null, walletRemaining: 57000000n, order: slabOrder, items: [line(9001n), line(9002n)] });
   const zeroed = await disableOrderLines(tx, 500n, [9001n], "Discontinued by supplier");
 
-  assert.deepEqual(zeroed, [{ orderNumber: "OM/26-27/DMS-1017", catNo: "CAT-9001", fromPacks: 2, toPacks: 0 }]);
+  assert.deepEqual(zeroed, [{ orderNumber: "DS/26-27/DMS-1017", catNo: "CAT-9001", fromPacks: 2, toPacks: 0 }]);
   const disabled = calls.itemUpdate.find((call) => call.where.id === 9001n).data;
   assert.equal(disabled.quantityPacks, 0);
   assert.equal(disabled.listPriceTotalPaise, 0n);

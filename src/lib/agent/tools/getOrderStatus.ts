@@ -9,7 +9,7 @@ export const schema: OpenAI.Chat.ChatCompletionTool = {
   type: "function",
   function: {
     name: "get_order_status",
-    description: "Status, items, dispatch and tracking for one of this dealer's orders. Accepts the full order number (OM/26-27/DMS-029) or its last part (DMS-029 or 29).",
+    description: "Status, items, dispatch and tracking for one of this dealer's orders. Accepts the full order number (DS/26-27/DMS-029) or its last part (DMS-029 or 29).",
     parameters: {
       type: "object",
       properties: { orderId: { type: "string" } },

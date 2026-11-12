@@ -256,7 +256,7 @@ test("the final row absorbs the rounding remainder so row totals match exactly",
   assert.equal(result.totals.netAmount, 39.99);
 });
 
-// OM/26-27/DMS-2211: 15 lines at the dealer's 50%, gross 1,17,358.
+// DS/26-27/DMS-2211: 15 lines at the dealer's 50%, gross 1,17,358.
 const dms2211Amounts = { gross: 117358, discountAmount: 58679, netPayable: 58679 };
 const dms2211Breakdown = {
   ...dms2211Amounts,
