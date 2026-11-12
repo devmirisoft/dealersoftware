@@ -366,9 +366,9 @@ export async function loadCatalogueProducts(): Promise<CatalogueProduct[]> {
   if (cachedProducts) return cachedProducts;
   if (cataloguePromise) return cataloguePromise;
 
-  // omsonsdata.json is the only catalogue file, with explicit pack/piece pricing.
+  // catalogue.json is the only catalogue file, with explicit pack/piece pricing.
   cataloguePromise = Promise.all([
-    fetchCatalogueFile("/data/omsonsdata.json"),
+    fetchCatalogueFile("/data/catalogue.json"),
     fetchPostgresCatalogueProducts(),
   ])
     .then(([records, postgresProducts]) => {

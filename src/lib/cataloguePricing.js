@@ -1,7 +1,7 @@
 /**
  * Pack / piece pricing: the one place catalogue prices are computed.
  *
- * Every variant states how its price is printed (omsonsdata.json, mirrored in
+ * Every variant states how its price is printed (catalogue.json, mirrored in
  * product_variants): priceBasis ("pack" | "piece"), packSize, packUnit, pricePerPack and
  * pricePerPiece in rupees. Nothing is inferred from names or categories. The pack price
  * is authoritative and all maths is integer paise: a line costs quantityPacks × packPricePaise.

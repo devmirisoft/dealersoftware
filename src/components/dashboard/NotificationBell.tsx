@@ -6,8 +6,8 @@ import { Bell } from "lucide-react";
 import { toast } from "@/components/ui/toast";
 import type { MissedActivity } from "@/lib/missedActivity";
 
-const SEEN_KEY = "omsons-missed-activity-seen";
-const READ_KEY = "omsons-notifications-read";
+const SEEN_KEY = "dealersoftware-missed-activity-seen";
+const READ_KEY = "dealersoftware-notifications-read";
 const TIMEOUT_MS = 7000;
 // One below the Toaster limit, leaving room for the "+N more" summary.
 const MAX_TOASTS = 4;

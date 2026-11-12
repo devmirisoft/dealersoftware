@@ -195,7 +195,7 @@ function payloadAmount(amount: number): string {
   return String(Math.round((amount + Number.EPSILON) * 100) / 100);
 }
 
-const ORDER_DETAILS_FALLBACK_STORAGE_KEY = "omsons.orderDetailsFallback.v1";
+const ORDER_DETAILS_FALLBACK_STORAGE_KEY = "dealersoftware.orderDetailsFallback.v1";
 
 function saveLocalOrderDetailsFallback(orderId: string, fallback: Record<string, unknown>) {
   if (typeof window === "undefined" || !orderId) return;
@@ -789,8 +789,8 @@ function AddOrderPageInner() {
     setReorderLoading(true);
     fetch(`/api/custom-discount-requests/${encodeURIComponent(reorderIdParam)}`, {
       headers: {
-        "x-omsons-actor-role": "dealer",
-        "x-omsons-actor-id": String(user.Dealer_Id),
+        "x-dealersoftware-actor-role": "dealer",
+        "x-dealersoftware-actor-id": String(user.Dealer_Id),
       },
     })
       .then((r) => {
@@ -901,8 +901,8 @@ function AddOrderPageInner() {
         if (approvalRequestId) {
           const res = await fetch(`/api/custom-discount-requests/${encodeURIComponent(approvalRequestId)}`, {
             headers: {
-              "x-omsons-actor-role": "dealer",
-              "x-omsons-actor-id": String(user.Dealer_Id),
+              "x-dealersoftware-actor-role": "dealer",
+              "x-dealersoftware-actor-id": String(user.Dealer_Id),
             },
           });
           if (res.ok) {
@@ -1923,7 +1923,7 @@ function AddOrderPageInner() {
     setWalletLoading(true);
     fetch(`/api/wallet/${encodeURIComponent(user.Dealer_Id)}?limit=5`, {
       cache: "no-store",
-      headers: { "x-omsons-actor-role": "dealer", "x-omsons-actor-id": String(user.Dealer_Id) },
+      headers: { "x-dealersoftware-actor-role": "dealer", "x-dealersoftware-actor-id": String(user.Dealer_Id) },
     })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error("wallet unavailable")))
       .then((json) => { if (json.success) { setWallet(json); setCredit(json.credit ?? null); } })
@@ -2205,9 +2205,9 @@ const verifySubmittedProductNotes = async (orderId: string) => {
       setLoading(true);
       orderIdempotencyKey.current ||= createIdempotencyKey("dealer-order");
       const { data } = await axios.post(targetApiUrl, fd, { headers: {
-        "x-omsons-actor-role": "dealer",
-        "x-omsons-actor-id": String(user.Dealer_Id),
-        "x-omsons-actor-name": String(user.Dealer_Name ?? ""),
+        "x-dealersoftware-actor-role": "dealer",
+        "x-dealersoftware-actor-id": String(user.Dealer_Id),
+        "x-dealersoftware-actor-name": String(user.Dealer_Name ?? ""),
         "idempotency-key": orderIdempotencyKey.current,
       } });
       logPhpExchange("PlaceOrderarray", {
@@ -2344,9 +2344,9 @@ const verifySubmittedProductNotes = async (orderId: string) => {
       setLoading(true);
       orderIdempotencyKey.current ||= createIdempotencyKey("dealer-order");
       const { data } = await axios.post(targetApiUrl, fd, { headers: {
-        "x-omsons-actor-role": "dealer",
-        "x-omsons-actor-id": String(user.Dealer_Id),
-        "x-omsons-actor-name": String(user.Dealer_Name ?? ""),
+        "x-dealersoftware-actor-role": "dealer",
+        "x-dealersoftware-actor-id": String(user.Dealer_Id),
+        "x-dealersoftware-actor-name": String(user.Dealer_Name ?? ""),
         "idempotency-key": orderIdempotencyKey.current,
       } });
       logPhpExchange("importdata", {

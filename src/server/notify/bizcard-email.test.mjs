@@ -140,7 +140,7 @@ function withEnv(values, fn) {
 
 const card = cardAt(new Date(+START + HOUR));
 const fresh = new Date(+card.createdAt + 2 * MIN);
-const env = { BIZCARD_MONGODB_URI: "mongodb://stub", SMTP_USER: "omsonsexport@gmail.com", SMTP_EXHIBITION_FROM: undefined };
+const env = { BIZCARD_MONGODB_URI: "mongodb://stub", SMTP_USER: "sender@example.com", SMTP_EXHIBITION_FROM: undefined };
 
 test("outside production without a redirect nothing is sent", async () => {
   useDb({ card });
@@ -159,11 +159,11 @@ test("with a redirect the email goes to the test inbox and names the real recipi
   });
   const [mail] = globalThis.__sent;
   assert.equal(mail.to, "devbigu@gmail.com");
-  assert.equal(mail.subject, "[to visitor@example.com] A pleasure meeting you at ANALYTICA MUNICH - 2026 | Omsons Glassware");
-  assert.deepEqual(mail.from, { name: "Ravinder | Omsons Glassware", address: "omsonsexport@gmail.com" });
-  assert.equal(mail.replyTo, "ravi@omsonsnsi.com");
+  assert.equal(mail.subject, "[to visitor@example.com] A pleasure meeting you at ANALYTICA MUNICH - 2026 | DealerSoftware");
+  assert.deepEqual(mail.from, { name: "DealerSoftware", address: "sender@example.com" });
+  assert.equal(mail.replyTo, "sales@example.com");
   assert.ok(mail.html.includes("Dear Rajesh,") && mail.text.includes("Dear Rajesh,"));
-  assert.equal(mail.attachments[0].cid, "omsons-logo");
+  assert.equal(mail.attachments[0].cid, "logo");
 });
 
 test("in production without a redirect the visitor gets it", async () => {
@@ -173,7 +173,7 @@ test("in production without a redirect the visitor gets it", async () => {
     assert.equal(await handleCard("c1", fresh), "sent");
   });
   assert.equal(globalThis.__sent[0].to, "visitor@example.com");
-  assert.equal(globalThis.__sent[0].subject, "A pleasure meeting you at ANALYTICA MUNICH - 2026 | Omsons Glassware");
+  assert.equal(globalThis.__sent[0].subject, "A pleasure meeting you at ANALYTICA MUNICH - 2026 | DealerSoftware");
 });
 
 test("the bizcard email links the catalogue and attaches only the logo", async () => {
@@ -181,7 +181,7 @@ test("the bizcard email links the catalogue and attaches only the logo", async (
   globalThis.__sent = [];
   await withEnv({ ...env, NODE_ENV: "production", FOLLOWUP_EMAILS_REDIRECT: undefined }, () => handleCard("c1", fresh));
   const [mail] = globalThis.__sent;
-  assert.ok(mail.html.includes(">View catalogue</a>") && mail.text.includes("drive.google.com"));
+  assert.ok(mail.html.includes(">View catalogue</a>") && mail.text.includes("example.com/catalogue.pdf"));
   assert.equal(mail.attachments.length, 1);
 });
 

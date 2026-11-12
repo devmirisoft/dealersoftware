@@ -75,7 +75,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
         subject: redirect ? `[to ${email}] ${subject}` : subject,
         html,
         text,
-        attachments: [{ filename: "omsons-logo.png", path: LOGO_FILE, cid: LOGO_CID, contentDisposition: "inline" }],
+        attachments: [{ filename: "logo.png", path: LOGO_FILE, cid: LOGO_CID, contentDisposition: "inline" }],
       });
       if (!info.accepted?.length) throw new Error(`Recipient rejected: ${info.response}`);
     } catch (error) {

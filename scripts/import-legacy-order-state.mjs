@@ -292,7 +292,7 @@ async function importWallet({ prisma, db, limit, orderId, dryRun, stats, unresol
 async function main() {
   const mongoUri = process.env.MONGODB_URI;
   if (!mongoUri) throw new Error("MONGODB_URI is required");
-  const dbName = process.env.MONGODB_DB_NAME || "omsons";
+  const dbName = process.env.MONGODB_DB_NAME || "dealersoftware";
   const limit = Math.max(1, Number(argValue("limit", String(DEFAULT_LIMIT))) || DEFAULT_LIMIT);
   const orderId = normalizeLookup(argValue("order-id", ""));
   const dryRun = hasFlag("dry-run") || !hasFlag("apply");

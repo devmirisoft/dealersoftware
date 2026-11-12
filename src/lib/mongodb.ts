@@ -1,7 +1,7 @@
 import { MongoClient, Db, MongoClientOptions, ServerApiVersion } from "mongodb";
 
 const uri = process.env.MONGODB_URI?.trim();
-const dbName = process.env.MONGODB_DB_NAME?.trim() || "omsons";
+const dbName = process.env.MONGODB_DB_NAME?.trim() || "dealersoftware";
 
 type MongoGlobalCache = {
   client?: MongoClient;

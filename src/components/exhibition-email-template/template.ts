@@ -1,12 +1,12 @@
 // Exhibition follow-up email. Import-free so the CRM modal renders its preview
 // with the same function the send route uses: what staff see is what goes out.
 
-export const SENDER = { name: "Ravinder | Omsons Glassware", address: "ravi@omsonsnsi.com" };
-export const LOGO_CID = "omsons-logo";
+export const SENDER = { name: "DealerSoftware", address: "sales@example.com" };
+export const LOGO_CID = "logo";
 /** Under public/: the preview loads it by URL, the send route attaches the file. */
-export const LOGO_PATH = "/email/omsons-germany-logo.png";
-/** The full-size catalogue on Drive. Replace it there with "Manage versions" so this link keeps working. */
-export const CATALOGUE_URL = "https://drive.google.com/file/d/1u2A_1fcgtnpMBGzH_ij3BRELdA6vZoyI/view";
+export const LOGO_PATH = "/logo.png";
+/** The full-size catalogue. Placeholder until the real one is hosted. */
+export const CATALOGUE_URL = "https://www.example.com/catalogue.pdf";
 export const EXHIBITION_NAME_LIMIT = 120;
 export const SUBJECT_LIMIT = 200;
 export const FALLBACK_NAME = "Valued Customer";
@@ -14,8 +14,8 @@ export const FALLBACK_NAME = "Valued Customer";
 const ORANGE = "#E85222"; // sampled from the logo; divider only
 const TEXT_ORANGE = "#C9441A"; // the logo orange darkened to 4.9:1 on white, for small text
 const PHONE = "+91 999 2525 018";
-const PHONE_URL = "tel:+919992525018";
-const WHATSAPP_URL = "https://wa.me/919992525018";
+const PHONE_URL = "tel:+910000000000";
+const WHATSAPP_URL = "https://wa.me/910000000000";
 const MAILTO = `mailto:${SENDER.address}`;
 const SANS = "Arial, Helvetica, sans-serif";
 const SERIF = "Georgia, 'Times New Roman', Times, serif";
@@ -31,7 +31,7 @@ export function oneLine(value: unknown, limit: number) {
 }
 
 export function defaultSubject(exhibitionName: string) {
-  return `A pleasure meeting you at ${exhibitionName} | Omsons Glassware`;
+  return `A pleasure meeting you at ${exhibitionName} | DealerSoftware`;
 }
 
 const TITLE = /^(mr|mrs|ms|miss|dr|prof|shri|smt|sri)\b\.?\s*/i;
@@ -50,9 +50,9 @@ export function isValidEmail(value: string) {
 
 function paragraphs(exhibition: string) {
   return [
-    `Thank you for visiting Omsons Glassware at ${exhibition}! It was a pleasure meeting you, introducing our product range, and exploring potential business opportunities.`,
+    `Thank you for visiting DealerSoftware at ${exhibition}! It was a pleasure meeting you, introducing our product range, and exploring potential business opportunities.`,
     "We sincerely appreciate your interest in our products and look forward to building a strong, long-term business relationship with you.",
-    "Stay connected with Omsons Glassware for our product updates and exciting business opportunities. We look forward to staying in touch!",
+    "Stay connected with DealerSoftware for our product updates and exciting business opportunities. We look forward to staying in touch!",
   ];
 }
 
@@ -106,7 +106,7 @@ export function renderExhibitionEmail({
 <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background-color:#FFFFFF;">
 <tr><td class="px" style="padding:40px 44px 0;">
-  <img src="${escapeHtml(logoSrc)}" width="200" height="118" alt="OMSONS" style="display:block;width:200px;max-width:100%;height:auto;border:0;font-family:${SANS};font-size:32px;font-weight:bold;color:${ORANGE};">
+  <img src="${escapeHtml(logoSrc)}" width="96" height="96" alt="DealerSoftware" style="display:block;width:96px;max-width:100%;height:auto;border:0;font-family:${SANS};font-size:32px;font-weight:bold;color:${ORANGE};">
 </td></tr>
 <tr><td class="px" style="padding:28px 44px 0;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-top:1px solid ${ORANGE};font-size:0;line-height:0;">&nbsp;</td></tr></table>
@@ -116,7 +116,7 @@ export function renderExhibitionEmail({
   <h1 class="h1" style="margin:12px 0 28px;font-family:${SERIF};font-size:36px;line-height:42px;font-weight:bold;color:#111111;">A pleasure meeting you.</h1>
   ${body}
   ${catalogue}
-  <p style="margin:30px 0 0;${text(16, 26)}">Warm regards,<br><strong>Ravinder</strong><br>Director<br>Omsons Glassware Private Limited</p>
+  <p style="margin:30px 0 0;${text(16, 26)}">Warm regards,<br><strong>[SENDER NAME]</strong><br>DealerSoftware</p>
 </td></tr>
 <tr><td class="px" style="padding:32px 44px 28px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
@@ -125,7 +125,7 @@ export function renderExhibitionEmail({
     </td>
   </tr></table>
 </td></tr>
-<tr><td class="px" style="padding:18px 44px;background-color:#F4F5F7;font-family:${SANS};font-size:13px;line-height:18px;font-weight:bold;color:#5F6670;">Omsons Glassware Private Limited</td></tr>
+<tr><td class="px" style="padding:18px 44px;background-color:#F4F5F7;font-family:${SANS};font-size:13px;line-height:18px;font-weight:bold;color:#5F6670;">DealerSoftware</td></tr>
 </table>
 <!--[if mso]></td></tr></table><![endif]-->
 </td></tr>
@@ -137,7 +137,7 @@ export function renderExhibitionEmail({
     `Dear ${firstName},`,
     ...paragraphs(exhibitionName),
     ...(withCatalogue ? [`${CATALOGUE_LINE}\n${CATALOGUE_URL}`] : []),
-    "Warm regards,\nRavinder\nDirector\nOmsons Glassware Private Limited",
+    "Warm regards,\n[SENDER NAME]\nDealerSoftware",
     `Call / WhatsApp: ${PHONE} (${WHATSAPP_URL})\nEmail: ${SENDER.address}`,
   ].join("\n\n");
 

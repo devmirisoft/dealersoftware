@@ -15,7 +15,7 @@ import { SalePrice, salePaise } from '@/components/SalePrice';
 import { useTodaysSale } from '@/hooks/useTodaysSale';
 
 // ─────────────────────────────────────────────────────────────
-// TYPES  (matches omsonsdata.json)
+// TYPES  (matches catalogue.json)
 // ─────────────────────────────────────────────────────────────
 type Variant = {
   id: string;

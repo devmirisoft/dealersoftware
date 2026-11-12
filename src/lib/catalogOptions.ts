@@ -205,7 +205,7 @@ export function buildCatalogOptions(products: CatalogueProductRecord[]): Catalog
 
 export async function fetchCatalogueProducts(): Promise<CatalogueProductRecord[]> {
   const json = await fetchJson<unknown>(
-    "/data/omsonsdata.json",
+    "/data/catalogue.json",
     { cache: "no-store" },
     "Catalogue JSON"
   );

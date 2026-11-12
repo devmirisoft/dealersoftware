@@ -19,23 +19,19 @@ export const SEARCH_CATEGORIES = [
 export const bottleProducts = [
   {
     name: "Bottle for Automatic Burette",
-    link: "https://omsonslabs.com/product/bottle-for-automatic-burette/",
-    image: "https://omsonslabs.com/wp-content/uploads/BOD-Bottle-product-image.webp",
+    image: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg",
   },
   {
     name: "Bottle Aspirator with GL 45 Cap Socket Interchangeable Stopcock",
-    link: "https://omsonslabs.com/product/bottle-aspirator-with-gl-45-cap-socket-interchangeable-stopcock/",
-    image: "https://omsonslabs.com/wp-content/uploads/Bottle-Aspirator-GL-45-Cap-with-Tubulation-product-image.webp",
+    image: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg",
   },
   {
     name: "Bottle Aspirator GL 45 Cap with Tubulation",
-    link: "https://omsonslabs.com/product/bottle-aspirator-gl-45-cap-with-tubulation/",
-    image: "https://omsonslabs.com/wp-content/uploads/Bottle-Aspirator-with-GL-45-Cap-with-Socket-Interchangeable-Stopcock.webp",
+    image: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg",
   },
   {
     name: "BOD Bottle",
-    link: "https://omsonslabs.com/product/bod-bottle/",
-    image: "https://omsonslabs.com/wp-content/uploads/Bottle-for-Automatic-Burette-product-image.webp",
+    image: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg",
   },
 ];
 
@@ -78,40 +74,40 @@ export const CATEGORY_CARDS = [
   {
     title: "Bottles",
     items: [
-      { label: "BOD Bottle", imageUrl: "https://omsonslabs.com/wp-content/uploads/BOD-Bottle-product-image.webp" },
-      { label: "Bottle Amber for Automatic Burette", imageUrl: "https://omsonslabs.com/wp-content/uploads/Bottle-Amber-for-Automatic-Burette-product-image.webp" },
-      { label: "Bottle Aspirator GL 45 Cap with Tubulation", imageUrl: "https://omsonslabs.com/wp-content/uploads/Bottle-Aspirator-GL-45-Cap-with-Tubulation-product-image.webp" },
-      { label: "Bottle Aspirator with GL 45 Cap with Socket & Interchangeable Stopcock ", imageUrl: "https://omsonslabs.com/wp-content/uploads/Bottle-Aspirator-with-GL-45-Cap-with-Socket-Interchangeable-Stopcock.webp" },
+      { label: "BOD Bottle", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Bottle Amber for Automatic Burette", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Bottle Aspirator GL 45 Cap with Tubulation", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Bottle Aspirator with GL 45 Cap with Socket & Interchangeable Stopcock ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
     ],
     link: "/Products?cat=Bottles",
   },
   {
     title: "Flask",
     items: [
-      { label: "Flask Erlenmeyer Amber with Socket", imageUrl: "https://omsonslabs.com/wp-content/uploads/144-1024x1024.jpg" },
-      { label: "Flask Erlenmeyer Narrow Mouth ", imageUrl: "https://omsonslabs.com/wp-content/uploads/145-1024x1024.jpg" },
-      { label: "Flask Iodine with Funnel Shaped Cup and Stopper ", imageUrl: "https://omsonslabs.com/wp-content/uploads/147-1024x1024.jpg" },
-      { label: "Flask Kjeldahl with Socket ", imageUrl: "https://omsonslabs.com/wp-content/uploads/139-1024x1024.jpg" },
+      { label: "Flask Erlenmeyer Amber with Socket", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Flask Erlenmeyer Narrow Mouth ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Flask Iodine with Funnel Shaped Cup and Stopper ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Flask Kjeldahl with Socket ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
     ],
     link: "/Products?cat=Flasks",
   },
   {
     title: "Syringe filters",
     items: [
-      { label: "CA Syringe Filters Non Sterile ", imageUrl: "https://omsonslabs.com/wp-content/uploads/CA-Syringe-Filters-Non-Sterile.webp" },
-      { label: "CA Syringe Filters Sterile ", imageUrl: "https://omsonslabs.com/wp-content/uploads/CA-Syringe-Filters-Sterile.webp" },
-      { label: "Double Layered Syringe Filters Hydrophilic PTFE Non Sterile ", imageUrl: "https://omsonslabs.com/wp-content/uploads/Double-Layered-Syringe-Filters-Hydrophilic-PTFE-Non-Sterile.webp" },
-      { label: "Double Layered Syringe Filters Hydrophobic PTFE Sterile ", imageUrl: "https://omsonslabs.com/wp-content/uploads/Double-Layered-Syringe-Filters-Hydrophobic-PTFE-Sterile.webp" },
+      { label: "CA Syringe Filters Non Sterile ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "CA Syringe Filters Sterile ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Double Layered Syringe Filters Hydrophilic PTFE Non Sterile ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Double Layered Syringe Filters Hydrophobic PTFE Sterile ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
     ],
     link: "/Products?cat=Filters",
   },
   {
     title: "Membrane Filters",
     items: [
-      { label: "CN Membrane Disc Filter ", imageUrl: "https://omsonslabs.com/wp-content/uploads/CN-Membrane-Disc-Filter.webp" },
-      { label: "Microfiltration Membrane Filter (MF) Sterile ", imageUrl: "https://omsonslabs.com/wp-content/uploads/CN-Membrane-Disc-Filter-Gridded.webp" },
-      { label: "Ultrafiltration Membrane Filter (UF) Non Sterile ", imageUrl: "https://omsonslabs.com/wp-content/uploads/CN-Membrane-Disc-Filter-Plain-Hydrophobic-Edge-Sterile.webp" },
-      { label: "Glass Fiber Membrane Disc Filter ", imageUrl: "https://omsonslabs.com/wp-content/uploads/PES-Membrane-Disc-Filter.webp" },
+      { label: "CN Membrane Disc Filter ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Microfiltration Membrane Filter (MF) Sterile ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Ultrafiltration Membrane Filter (UF) Non Sterile ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
+      { label: "Glass Fiber Membrane Disc Filter ", imageUrl: "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg" },
     ],
     link: "/Products?cat=Filters",
   },

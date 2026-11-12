@@ -21,7 +21,7 @@ import { getRecentlyViewed, pushRecentlyViewed, type RecentlyViewedItem } from "
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const PLACEHOLDER_IMAGE =
-  "https://omsonslabs.com/wp-content/uploads/Pycnometers-Class-A-Individual-Work-Certificate-product-image.webp";
+  "https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg";
 
 const HOT_BADGES = ["🔥 Bestseller", "⚡ Fast moving", "🔥 Trending", "⚡ Popular", "🔥 Top rated", "⚡ Hot pick"];
 
@@ -357,7 +357,7 @@ export default function Page() {
   // Fallback: first 6 products that have images in the local catalog
   useEffect(() => {
     Promise.all([
-      axios.get<CatalogueProduct[]>("/data/omsonsdata.json"),
+      axios.get<CatalogueProduct[]>("/data/catalogue.json"),
       fetch("/api/hot-items", { cache: "no-store" })
         .then((r) => r.json())
         .catch(() => ({ success: false, data: { items: [] } })),

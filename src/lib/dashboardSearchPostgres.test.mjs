@@ -20,7 +20,7 @@ test("dashboard search uses authenticated PostgreSQL access only", async () => {
   assert.match(route, /prisma\.order\.findMany/);
   assert.match(route, /user:\s*\{/);
   assert.doesNotMatch(combined, /mirisoft|php-compat|dealerpegination|staffpegination|orderpegination|productname/);
-  assert.doesNotMatch(combined, /x-omsons-actor|actorFromRequestHeaders/i);
+  assert.doesNotMatch(combined, /x-dealersoftware-actor|actorFromRequestHeaders/i);
 });
 
 test("dashboard search keeps role scopes and legacy response aliases", async () => {

@@ -1,6 +1,6 @@
 import "server-only";
 
-import catalogueJson from "../../../../public/data/omsonsdata.json";
+import catalogueJson from "../../../../public/data/catalogue.json";
 import { buildCatalogueIndex, findCatalogueEntry, mergeCatalogueRecords, type CatalogueProduct, type CatalogueVariant } from "@/lib/catalogue";
 import { mergeCatalogueProducts } from "@/lib/catalogueClient";
 import cataloguePricing from "@/lib/cataloguePricing";

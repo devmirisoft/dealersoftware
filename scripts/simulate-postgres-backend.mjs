@@ -13,7 +13,7 @@ const password = `${tag}-Password123!`;
 const port = Number(process.env.SIM_PORT || 3107);
 const baseUrl = process.env.SIM_BASE_URL || `http://127.0.0.1:${port}`;
 const useExistingServer = !!process.env.SIM_BASE_URL;
-const isProductionUrl = /prod|production|vercel\.app|omsons/i.test(process.env.DATABASE_URL || "") && !process.env.SIM_ALLOW_PRODUCTION;
+const isProductionUrl = /prod|production|vercel\.app|dealersoftware/i.test(process.env.DATABASE_URL || "") && !process.env.SIM_ALLOW_PRODUCTION;
 
 const results = [];
 const state = { cookies: new Map(), server: null, ids: {}, details: [] };
@@ -177,7 +177,7 @@ async function main() {
   const productVerify = await api("GET", `/api/admin/products?search=${encodeURIComponent(tag)}`);
   addResult("Products", productVerify.ok, failDetail("admin product list", "created product visible", productVerify.status, { response: productVerify.body }));
 
-  const codeRes = await api("GET", "/api/dealer-code", { headers: { "x-omsons-actor-role": "STAFF", "x-omsons-actor-id": String(staffProfile.id) } });
+  const codeRes = await api("GET", "/api/dealer-code", { headers: { "x-dealersoftware-actor-role": "STAFF", "x-dealersoftware-actor-id": String(staffProfile.id) } });
   const dealerCode = String(codeRes.body?.data?.dealerCode || codeRes.body?.dealerCode || "0001").padStart(4, "0").slice(-4);
   const dealerSnapshot = { name: `${tag} Dealer`, dealerCode, email: dealerEmail, username: `dealer-${tag}`, password, whatsapp: "9999999999", address: `${tag} Address`, city: "Sim City", pincode: "110001", gstNo: "SIMGSTIN", discount: "10", creditDays: "30", annualTarget: "100000", currentLimit: "0", assignedStaffIds: [String(staffProfile.id)], staffNames: staffProfile.displayName };
   const createReq = await api("POST", "/api/dealer-requests", { json: { role: "staff", actorId: String(staffProfile.id), actorName: staffProfile.displayName, formSnapshot: dealerSnapshot }, auth: false });
@@ -198,29 +198,29 @@ async function main() {
   addResult("Dealer login", dealerLogin.ok && dealerMe.ok && String(dealerMe.body?.data?.Dealer_Id || dealerMe.body?.data?.id) === String(dealer?.id), failDetail("dealer login/me", "dealer profile identity", `${dealerLogin.status}/${dealerMe.status}`, { response: dealerMe.body }));
 
   const rows = [{ key: 1, productname: variant.catalogueNumber, displayName: product.name, variantCode: variant.catalogueNumber, producQuanity: 10, quantityPacks: 2, packSize: 5, price: 999, productNote: `${tag} product note` }];
-  const draftCreate = await api("POST", "/api/drafts", { json: { dealer_id: String(dealer.id), name: `${tag} Draft`, rows, shipto: `${tag} ship`, refno: `${tag} ref`, order_note: `${tag} order note` }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
+  const draftCreate = await api("POST", "/api/drafts", { json: { dealer_id: String(dealer.id), name: `${tag} Draft`, rows, shipto: `${tag} ship`, refno: `${tag} ref`, order_note: `${tag} order note` }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
   const draftId = String(draftCreate.body?.data?.id || "");
-  const draftRead = await api("GET", `/api/drafts/${draftId}?dealer_id=${dealer.id}`, { headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
-  const draftUpdate = await api("PUT", `/api/drafts/${draftId}`, { json: { dealer_id: String(dealer.id), name: `${tag} Draft Updated`, rows }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
-  const wrongDraft = await api("GET", `/api/drafts/${draftId}?dealer_id=${otherDealer.id}`, { auth: false, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(otherDealer.id) } });
+  const draftRead = await api("GET", `/api/drafts/${draftId}?dealer_id=${dealer.id}`, { headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
+  const draftUpdate = await api("PUT", `/api/drafts/${draftId}`, { json: { dealer_id: String(dealer.id), name: `${tag} Draft Updated`, rows }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
+  const wrongDraft = await api("GET", `/api/drafts/${draftId}?dealer_id=${otherDealer.id}`, { auth: false, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(otherDealer.id) } });
   addResult("Draft", draftCreate.ok && draftRead.ok && draftUpdate.ok && wrongDraft.status === 404, failDetail("draft CRUD + ownership", "201/200/200/404", `${draftCreate.status}/${draftRead.status}/${draftUpdate.status}/${wrongDraft.status}`, { response: wrongDraft.body }));
 
-  const cart1 = await api("POST", "/api/draft-cart", { auth: false, json: { dealer_id: String(dealer.id), items: rows }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
-  const cartRead = await api("GET", `/api/draft-cart?dealer_id=${dealer.id}`, { auth: false, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
-  const cart2 = await api("POST", "/api/draft-cart", { auth: false, json: { dealer_id: String(dealer.id), items: [{ ...rows[0], producQuanity: 15 }] }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
+  const cart1 = await api("POST", "/api/draft-cart", { auth: false, json: { dealer_id: String(dealer.id), items: rows }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
+  const cartRead = await api("GET", `/api/draft-cart?dealer_id=${dealer.id}`, { auth: false, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
+  const cart2 = await api("POST", "/api/draft-cart", { auth: false, json: { dealer_id: String(dealer.id), items: [{ ...rows[0], producQuanity: 15 }] }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
   const draftCartOk = cart1.ok && cartRead.ok && cart2.ok;
   addResult("Draft cart", draftCartOk, failDetail("draft cart CRUD", "success", `${cart1.status}/${cartRead.status}/${cart2.status}`, { response: cart2.body }));
 
   const discountPayload = { dealer_id: String(dealer.id), orderDraftId: draftId, discountScope: "order", requestedDiscountPercent: 20, currentDiscountPercent: 10, shipto: `${tag} ship`, refno: `${tag} ref`, orderSnapshot: { orderNote: `${tag} order note`, products: [{ productKey: variant.catalogueNumber.toLowerCase(), sku: variant.sku, catalogueNumber: variant.catalogueNumber, productName: product.name, quantity: 2, packSize: 5, unitPrice: 10, productNote: `${tag} product note` }] } };
-  const discCreate = await api("POST", "/api/custom-discount-requests", { auth: false, json: discountPayload, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
+  const discCreate = await api("POST", "/api/custom-discount-requests", { auth: false, json: discountPayload, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
   const discountId = String(discCreate.body?.data?.id || "");
   addResult("Custom discount request", discCreate.ok && discCreate.body?.data?.status === "pending", failDetail("discount create", "pending", discCreate.status, { response: discCreate.body }));
-  const ownApprove = await api("PATCH", `/api/custom-discount-requests/${discountId}`, { auth: false, json: { status: "APPROVED" }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
+  const ownApprove = await api("PATCH", `/api/custom-discount-requests/${discountId}`, { auth: false, json: { status: "APPROVED" }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
   await login(adminEmail);
   const discReadAdmin = await api("GET", `/api/custom-discount-requests/${discountId}`);
   const approve = await api("PATCH", `/api/custom-discount-requests/${discountId}`, { json: { status: "APPROVED", adminNote: `${tag} approved` } });
   const approvedRow = await prisma.customDiscountRequest.findUnique({ where: { id: BigInt(discountId || 0) } }).catch(() => null);
-  const discDealerReload = await api("GET", `/api/custom-discount-requests/${discountId}`, { auth: false, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
+  const discDealerReload = await api("GET", `/api/custom-discount-requests/${discountId}`, { auth: false, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
   addResult("Discount approval", discReadAdmin.ok && approve.ok && ownApprove.status === 403 && !!approvedRow?.reviewedAt && approvedRow?.reviewedByUserId === admin.id && approvedRow?.allowReorder === true && discDealerReload.body?.data?.status === "approved", failDetail("admin approve", "reviewed fields + own approve rejected", `${discReadAdmin.status}/${approve.status}/${ownApprove.status}`, { row: approvedRow, response: approve.body }));
 
   const form = new FormData();
@@ -282,8 +282,8 @@ async function main() {
   invalidForm.set("productorder", JSON.stringify([{ productname: `${tag}-NOPE`, productName: "Nope", variantCode: `${tag}-NOPE`, quantityPacks: 1, packSize: 1 }]));
   const invalidProduct = await api("POST", "/api/dealer-order", { form: invalidForm, headers: { "idempotency-key": `${tag}-invalid` } });
   const duplicateReq = await api("POST", "/api/dealer-requests", { json: { role: "staff", actorId: String(staffProfile.id), actorName: staffProfile.displayName, formSnapshot: dealerSnapshot }, auth: false });
-  const invalidDiscount = await api("POST", "/api/custom-discount-requests", { auth: false, json: { ...discountPayload, orderDraftId: draftId, requestedDiscountPercent: 5, currentDiscountPercent: 10 }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(dealer.id) } });
-  const wrongHeaderDraft = await api("POST", "/api/drafts", { auth: false, json: { dealer_id: String(dealer.id), name: `${tag} Bad Draft`, rows }, headers: { "x-omsons-actor-role": "DEALER", "x-omsons-actor-id": String(otherDealer.id) } });
+  const invalidDiscount = await api("POST", "/api/custom-discount-requests", { auth: false, json: { ...discountPayload, orderDraftId: draftId, requestedDiscountPercent: 5, currentDiscountPercent: 10 }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(dealer.id) } });
+  const wrongHeaderDraft = await api("POST", "/api/drafts", { auth: false, json: { dealer_id: String(dealer.id), name: `${tag} Bad Draft`, rows }, headers: { "x-dealersoftware-actor-role": "DEALER", "x-dealersoftware-actor-id": String(otherDealer.id) } });
   addResult("Negative tests", invalidProduct.status >= 400 && duplicateReq.status === 409 && invalidDiscount.status >= 400 && wrongHeaderDraft.status === 403 && otherAccess.status === 403 && unassignedAccess.status === 403 && ownApprove.status === 403, failDetail("negative cases", "all rejected", { invalidProduct: invalidProduct.status, duplicateReq: duplicateReq.status, invalidDiscount: invalidDiscount.status, wrongHeaderDraft: wrongHeaderDraft.status, otherAccess: otherAccess.status, unassignedAccess: unassignedAccess.status, ownApprove: ownApprove.status }));
   await prisma.user.delete({ where: { id: inactiveUser.id } }).catch(() => undefined);
 

@@ -95,7 +95,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    axios.get('/data/omsonsdata.json')
+    axios.get('/data/catalogue.json')
       .then(res => { setAllProducts(mergeCatalogueRecords(res.data).products as unknown as Product[]); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);

@@ -25,7 +25,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const jiti = createJiti(import.meta.url, { alias: { "@": path.join(ROOT, "src") } });
 const { mergeCatalogueRecords, stripHtml } = await jiti.import(path.join(ROOT, "src/lib/catalogue.ts"));
 const { variantPricing, unitLabel } = createRequire(import.meta.url)(path.join(ROOT, "src/lib/cataloguePricing.js"));
-const { describe } = await import("./omsonsdata-describe.mjs");
+const { describe } = await import("./catalogue-describe.mjs");
 const { PrismaClient } = await import("../prisma.mjs");
 const prisma = new PrismaClient();
 
@@ -33,7 +33,7 @@ const text = (v) => String(v ?? "").trim();
 const UNIT_NAMES = { pc: "Pcs.", m: "m", set: "Set" };
 const readJson = async (file) => JSON.parse(await readFile(path.join(ROOT, "public/data", file), "utf8"));
 // Variants the file contradicts itself on come back unpriced; they import as "on request".
-const { products } = mergeCatalogueRecords(await readJson("omsonsdata.json"));
+const { products } = mergeCatalogueRecords(await readJson("catalogue.json"));
 
 const report = { catalogue: products.length, created: 0, existing: 0, noVariants: [], skuConflicts: [], lossySpecs: [], noCategory: [] };
 

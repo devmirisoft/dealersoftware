@@ -75,7 +75,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     try {
-      setDark(localStorage.getItem("omsons-theme") === "dark");
+      setDark(localStorage.getItem("dealersoftware-theme") === "dark");
     } catch {}
     const onFs = () => setFullscreen(Boolean(document.fullscreenElement));
     document.addEventListener("fullscreenchange", onFs);
@@ -85,7 +85,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     document.documentElement.classList.toggle("dl-dark", dark);
     try {
-      localStorage.setItem("omsons-theme", dark ? "dark" : "light");
+      localStorage.setItem("dealersoftware-theme", dark ? "dark" : "light");
     } catch {}
     return () => document.documentElement.classList.remove("dl-dark");
   }, [dark]);

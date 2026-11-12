@@ -21,7 +21,7 @@ test("dealer profile route is own-profile only and session authorized", () => {
   assert.match(dealerProfileRoute, /actor.dealerId/);
   assert.match(dealerProfileRoute, /where: { id: actor.dealerId }/);
   assert.match(dealerProfileRoute, /hashPassword/);
-  assert.doesNotMatch(dealerProfileRoute, /php-compat|getdealer|dealerinfo|updateDealer|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(dealerProfileRoute, /php-compat|getdealer|dealerinfo|updateDealer|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });
 
 test("staff profile route is own-profile only and session authorized", () => {
@@ -30,7 +30,7 @@ test("staff profile route is own-profile only and session authorized", () => {
   assert.match(staffProfileRoute, /actor.staffId/);
   assert.match(staffProfileRoute, /where: { id: actor.staffId }/);
   assert.match(staffProfileRoute, /hashPassword/);
-  assert.doesNotMatch(staffProfileRoute, /php-compat|getstaff|staffinfo|staffUpdate|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(staffProfileRoute, /php-compat|getstaff|staffinfo|staffUpdate|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });
 
 test("staff dealer APIs enforce active assignments", () => {
@@ -42,7 +42,7 @@ test("staff dealer APIs enforce active assignments", () => {
   assert.ok(staffDealerDetailRoute.includes("dealerId: BigInt(dealerId)"));
   assert.match(staffDealerDetailRoute, /staffId: actor.staffId/);
   assert.match(staffDealerDetailRoute, /Dealer not assigned to this staff account/);
-  assert.doesNotMatch(staffDealersRoute + staffDealerDetailRoute, /php-compat|staffDealers|getdealer|dealerpegination|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(staffDealersRoute + staffDealerDetailRoute, /php-compat|staffDealers|getdealer|dealerpegination|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });
 
 test("profile and staff dealer pages use migrated APIs and no PHP profile calls", () => {

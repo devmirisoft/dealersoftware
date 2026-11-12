@@ -57,7 +57,7 @@ export function getCurrentRole(): AppRole | null {
   return session?.status === "authenticated" ? session.role : null;
 }
 
-const channel = typeof window !== "undefined" && "BroadcastChannel" in window ? new BroadcastChannel("omsons-auth") : null;
+const channel = typeof window !== "undefined" && "BroadcastChannel" in window ? new BroadcastChannel("dealersoftware-auth") : null;
 
 // Another tab signed in, out, or switched identity: re-check who we are and refetch
 // everything, since cached data may belong to the previous user.

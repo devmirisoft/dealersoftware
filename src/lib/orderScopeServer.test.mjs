@@ -71,7 +71,7 @@ test("order-access route ignores spoofed actor headers and query identity", asyn
   assert.match(source, /requireAuth\(\)/);
   assert.match(source, /orderActorFromAuth\(authActor\)/);
   assert.match(source, /NextResponse\.json\(serializePrismaValue\(/);
-  assert.doesNotMatch(source, /x-omsons-actor-/);
+  assert.doesNotMatch(source, /x-dealersoftware-actor-/);
   assert.doesNotMatch(source, /query\.get\("role"\)/);
   assert.doesNotMatch(source, /query\.get\("actor_id"\)/);
   assert.doesNotMatch(source, /query\.get\("dealer_id"\)/);

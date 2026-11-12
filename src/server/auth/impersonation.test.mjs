@@ -335,9 +335,9 @@ test("revoking a session is safe to repeat", async () => {
 
 test("cookies keep their names, paths and flags; the impersonator cookie holds only the opaque token", async () => {
   const session = await read("src/server/auth/session.ts");
-  assert.match(session, /export const ACCESS_COOKIE = "omsons_access"/);
-  assert.match(session, /export const REFRESH_COOKIE = "omsons_refresh"/);
-  assert.match(session, /export const IMPERSONATOR_COOKIE = "omsons_impersonator"/);
+  assert.match(session, /export const ACCESS_COOKIE = "dealersoftware_access"/);
+  assert.match(session, /export const REFRESH_COOKIE = "dealersoftware_refresh"/);
+  assert.match(session, /export const IMPERSONATOR_COOKIE = "dealersoftware_impersonator"/);
   // Secure follows the scheme the browser used, which nginx passes on as X-Forwarded-Proto.
   assert.match(session, /httpOnly: true,\s*secure: isHttps,/);
   assert.match(session, /request\.headers\.get\("x-forwarded-proto"\)\?\.split\(","\)\[0\]\?\.trim\(\) === "https"/);

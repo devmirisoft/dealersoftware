@@ -12,8 +12,8 @@ import type { AuthenticatedPostgresUser } from "@/server/auth/providers/postgres
 import type { ImpersonationDeps } from "./impersonation";
 import type { AuthRole } from "./providers/types";
 
-export const ACCESS_COOKIE = "omsons_access";
-export const REFRESH_COOKIE = "omsons_refresh";
+export const ACCESS_COOKIE = "dealersoftware_access";
+export const REFRESH_COOKIE = "dealersoftware_refresh";
 const ACCESS_TTL_SECONDS = 15 * 600;
 const REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 
@@ -53,11 +53,11 @@ function refreshPepper() {
 }
 
 function issuer() {
-  return process.env.AUTH_JWT_ISSUER?.trim() || "omsons";
+  return process.env.AUTH_JWT_ISSUER?.trim() || "dealersoftware";
 }
 
 function audience() {
-  return process.env.AUTH_JWT_AUDIENCE?.trim() || "omsons-web";
+  return process.env.AUTH_JWT_AUDIENCE?.trim() || "dealersoftware-web";
 }
 
 // Re-exported so the existing importers of these from session.ts keep working.
@@ -115,7 +115,7 @@ export function setAuthCookies(response: NextResponse, accessToken: string, refr
 // While an admin is signed in as a dealer this holds only the opaque restoration token; the
 // server keeps its hash in auth_impersonations (see impersonation.ts). Path /api/auth, like the
 // refresh cookie, so only the auth routes (logout among them) ever receive it.
-export const IMPERSONATOR_COOKIE = "omsons_impersonator";
+export const IMPERSONATOR_COOKIE = "dealersoftware_impersonator";
 
 export function clearAccessCookie(response: NextResponse, request: NextRequest) {
   response.cookies.set(ACCESS_COOKIE, "", { ...cookieOptions(0, "lax", "/", isHttpsRequest(request)), expires: new Date(0) });

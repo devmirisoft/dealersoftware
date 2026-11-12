@@ -200,10 +200,10 @@ export function resolveDealerRequestActor(input: {
   actorName?: unknown;
   roletype?: unknown;
 }): DealerRequestActor | null {
-  const headerRole = cleanText(input.headers?.get("x-omsons-actor-role"), 20).toLowerCase();
-  const headerActorId = cleanText(input.headers?.get("x-omsons-actor-id"), 80);
-  const headerActorName = cleanText(input.headers?.get("x-omsons-actor-name"), 200);
-  const headerRoleType = cleanText(input.headers?.get("x-omsons-actor-roletype"), 20);
+  const headerRole = cleanText(input.headers?.get("x-dealersoftware-actor-role"), 20).toLowerCase();
+  const headerActorId = cleanText(input.headers?.get("x-dealersoftware-actor-id"), 80);
+  const headerActorName = cleanText(input.headers?.get("x-dealersoftware-actor-name"), 200);
+  const headerRoleType = cleanText(input.headers?.get("x-dealersoftware-actor-roletype"), 20);
 
   const role = (headerRole || cleanText(input.role, 20).toLowerCase()) as DealerRequestActorRole;
   const actorId = headerActorId || cleanText(input.actorId, 80);
@@ -228,10 +228,10 @@ export function resolveDealerRequestActor(input: {
 
 export function buildDealerRequestHeaders(actor: DealerRequestActor) {
   return {
-    "x-omsons-actor-role": actor.role,
-    "x-omsons-actor-id": actor.actorId,
-    "x-omsons-actor-name": actor.actorName,
-    "x-omsons-actor-roletype": actor.roletype,
+    "x-dealersoftware-actor-role": actor.role,
+    "x-dealersoftware-actor-id": actor.actorId,
+    "x-dealersoftware-actor-name": actor.actorName,
+    "x-dealersoftware-actor-roletype": actor.roletype,
   };
 }
 

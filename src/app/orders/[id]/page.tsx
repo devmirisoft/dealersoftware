@@ -232,7 +232,7 @@ type EffectiveOrderOverlayState = {
   acceptance?: { status?: string; rawStatus?: string; acceptedAt?: string } | null;
 };
 
-const ORDER_DETAILS_FALLBACK_STORAGE_KEY = "omsons.orderDetailsFallback.v1";
+const ORDER_DETAILS_FALLBACK_STORAGE_KEY = "dealersoftware.orderDetailsFallback.v1";
 
 function readLocalOrderDetailsFallback(orderId: string): OrderSummaryOverride | null {
   if (typeof window === "undefined" || !orderId) return null;

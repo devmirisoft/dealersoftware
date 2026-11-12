@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-// Makes the PostgreSQL catalogue match public/data/omsonsdata.json, the source of truth, for
+// Makes the PostgreSQL catalogue match public/data/catalogue.json, the source of truth, for
 // products already in the DB:
 //   - pricing: price_basis, pack_size, unit_name, pack_assumed, unit_price_paise (the piece
 //     price) and pack_price_paise (the authoritative pack price)
 //   - names (except KEEP_NAMES) and descriptions (base text, ABOUT THIS ITEM, VARIANT SPECIFICATIONS)
 //   - variants the file no longer lists, and products it no longer has, are deactivated
 // Orders are never read or written: order lines keep their own snapshots. Variants missing from
-// the DB are added by backfill-from-omsonsdata.mjs (run it first) and new products by
+// the DB are added by backfill-from-catalogue.mjs (run it first) and new products by
 // import-catalogue-products.mjs.
 //
-//   DATABASE_URL='postgres://…' node scripts/seed/sync-pricing-from-omsonsdata.mjs [--dry-run|--commit]
+//   DATABASE_URL='postgres://…' node scripts/seed/sync-pricing-from-catalogue.mjs [--dry-run|--commit]
 //
 // Variants match by (product_code, sku or catalogue number). Variants the file contradicts
 // itself on keep their DB price and spec line; unpriced ones keep their DB price. Only rows that
@@ -32,7 +32,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const jiti = createJiti(import.meta.url, { alias: { "@": path.join(ROOT, "src") } });
 const { mergeCatalogueRecords, stripHtml } = await jiti.import(path.join(ROOT, "src/lib/catalogue.ts"));
 const { variantPricing, formatPriceLine, formatRupees } = createRequire(import.meta.url)(path.join(ROOT, "src/lib/cataloguePricing.js"));
-const { describe, specLinesOf } = await import("./omsonsdata-describe.mjs");
+const { describe, specLinesOf } = await import("./catalogue-describe.mjs");
 const { PrismaClient } = await import("../prisma.mjs");
 const prisma = new PrismaClient();
 
@@ -42,7 +42,7 @@ const UNIT_NAMES = { pc: "Pcs.", m: "m", set: "Set" };
 // The file gives 605 exactly 604's name, dropping "& Vacuum Tubulation".
 const KEEP_NAMES = new Set(["605"]);
 
-const { products: fileProducts, conflicts } = mergeCatalogueRecords(JSON.parse(await readFile(path.join(ROOT, "public/data/omsonsdata.json"), "utf8")));
+const { products: fileProducts, conflicts } = mergeCatalogueRecords(JSON.parse(await readFile(path.join(ROOT, "public/data/catalogue.json"), "utf8")));
 const fileByCode = new Map(fileProducts.map((product) => [text(product.sku), product]));
 
 const report = {

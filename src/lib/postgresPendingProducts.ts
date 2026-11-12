@@ -1,4 +1,4 @@
-import catalogueJson from "../../public/data/omsonsdata.json";
+import catalogueJson from "../../public/data/catalogue.json";
 import { mergeCatalogueRecords, type CatalogueProduct } from "@/lib/catalogue";
 import { prisma } from "@/server/db/prisma";
 import type { PendingProductsItemRow, PendingProductsOrderRow } from "@/lib/pendingProducts";

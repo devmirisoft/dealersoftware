@@ -14,7 +14,7 @@ test("dealer-status route is PostgreSQL-only and session-authorized", () => {
   assert.match(dealerStatusRoute, /user:\s*\{\s*select:\s*\{\s*status/);
   assert.match(dealerStatusRoute, /prisma\.dealerStaffAssignment/);
   assert.match(dealerStatusRoute, /actor\.role !== "ADMIN"/);
-  assert.doesNotMatch(dealerStatusRoute, /@\/lib\/mongodb|getDb|getMongoClient|collection\("dealer_statuses"\)|php-compat|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(dealerStatusRoute, /@\/lib\/mongodb|getDb|getMongoClient|collection\("dealer_statuses"\)|php-compat|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });
 
 test("dealer-status preserves response aliases and mutation shape", () => {
@@ -32,7 +32,7 @@ test("hot-items route is manually curated in PostgreSQL", () => {
   assert.match(hotItemsRoute, /prisma\.hotItem\.findMany/);
   assert.match(hotItemsRoute, /tx\.hotItem\.deleteMany/);
   assert.match(hotItemsRoute, /tx\.hotItem\.createMany/);
-  assert.doesNotMatch(hotItemsRoute, /@\/lib\/mongodb|getDb|getMongoClient|homepage_content|collection\(|php-compat|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(hotItemsRoute, /@\/lib\/mongodb|getDb|getMongoClient|homepage_content|collection\(|php-compat|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });
 
 test("hot-items handles inactive products and preserves API aliases", () => {

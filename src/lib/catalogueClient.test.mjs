@@ -15,7 +15,7 @@ test("loadCatalogueProducts merges a product's per-page records into one", async
 
   globalThis.fetch = async (url) => {
     const pathName = String(url);
-    if (pathName.includes("omsonsdata")) {
+    if (pathName.includes("catalogue.json")) {
       return {
         ok: true,
         json: async () => [
@@ -121,7 +121,7 @@ test("loadCatalogueProducts normalizes PostgreSQL products into the catalogue sh
 
   globalThis.fetch = async (url) => {
     const pathName = String(url);
-    if (pathName.includes("omsonsdata")) return { ok: true, json: async () => [] };
+    if (pathName.includes("catalogue.json")) return { ok: true, json: async () => [] };
     if (pathName === "/api/products") {
       return { ok: true, json: async () => ({ success: true, data: [{ id: "pg-152", sku: "PG-152", productCode: "PG-152", name: "Sandbox PostgreSQL Joint", category: "JOINTS", categories: ["JOINTS"], imageUrl: "https://res.cloudinary.com/demo/image/upload/sample.jpg", images: ["https://res.cloudinary.com/demo/image/upload/sample.jpg"], active: true, descriptionHtml: "Base description\n\nABOUT THIS ITEM\n- First point\n- Second point\n\nVARIANT SPECIFICATIONS\n152/1 - Socket Size: 10/19; Diameter: 13; Height: 120\n152/2 - Socket Size: 12/21; Diameter: 14; Height: 125", variants: [{ id: "v1", sku: "152/1", catalogueNumber: "152/1", packSize: 10, unitPricePaise: "9400", price: 94, priceBasis: "pack", unitName: "Pcs.", pricePerPack: 940, pricePerPiece: 94, packAssumed: false, active: true }, { id: "v2", sku: "152/2", catalogueNumber: "152/2", packSize: 10, unitPricePaise: "9900", price: 99, active: true }] }] }) };
     }
@@ -158,7 +158,7 @@ test("loadCatalogueProducts lets PostgreSQL products win duplicate catalogue SKU
 
   globalThis.fetch = async (url) => {
     const pathName = String(url);
-    if (pathName.includes("omsonsdata")) return { ok: true, json: async () => [{ id: "DUP", sku: "DUP", name: "JSON Product", variants: [] }] };
+    if (pathName.includes("catalogue.json")) return { ok: true, json: async () => [{ id: "DUP", sku: "DUP", name: "JSON Product", variants: [] }] };
     if (pathName === "/api/products") return { ok: true, json: async () => ({ success: true, data: [{ id: "pg-dup", sku: "DUP", name: "PostgreSQL Product", active: true, variants: [{ id: "pg-v", sku: "DUP/1", catalogueNumber: "DUP/1", price: 12, packSize: 1, active: true }] }] }) };
     throw new Error(`Unexpected URL ${pathName}`);
   };

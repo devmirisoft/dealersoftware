@@ -511,11 +511,9 @@ export default function Form({
         <div className="flex flex-col gap-4 rounded-xl bg-[#12508C]/5 px-6 py-5 md:flex-row md:items-center">
           <div className="flex flex-col items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Omsons_Logo.png" alt="Logo" className="h-20 w-20 rounded-full object-cover" />
-            <span className="mt-1 text-[10px] font-semibold tracking-[0.25em] text-slate-600">GERMANY</span>
+            <img src="/logo.png" alt="DealerSoftware" className="h-20 w-20 rounded-full object-cover" />
           </div>
           <div className="flex-1 text-center md:text-left">
-            <p className="text-[13px] font-medium text-slate-600">Exploring the Science...</p>
             <p className="mt-1 text-[13px] font-bold uppercase tracking-[0.12em] text-slate-700">
               Filter Leads
             </p>
