@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import dealerCategoryReport from "./dealerCategoryReport.js";
-import products from "../../public/data/omsonsdata.json" with { type: "json" };
+import products from "../../public/data/catalogue.json" with { type: "json" };
 
 const {
   aggregateDealerCategorySales,

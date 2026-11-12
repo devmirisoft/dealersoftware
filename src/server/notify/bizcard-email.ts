@@ -115,7 +115,7 @@ async function deliver({ to, firstName, exhibitionName }: Extract<CardEmailDecis
     subject: redirect ? `[to ${to}] ${subject}` : subject,
     html,
     text,
-    attachments: [{ filename: "omsons-logo.png", path: LOGO_FILE, cid: LOGO_CID, contentDisposition: "inline" }],
+    attachments: [{ filename: "logo.png", path: LOGO_FILE, cid: LOGO_CID, contentDisposition: "inline" }],
   });
   if (!info.accepted?.length) throw new Error(`Recipient rejected: ${info.response}`);
   return redirect ? "sent redirected" : "sent";

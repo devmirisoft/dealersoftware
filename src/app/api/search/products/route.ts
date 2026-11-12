@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import catalogueJson from '../../../../../public/data/omsonsdata.json'
+import catalogueJson from '../../../../../public/data/catalogue.json'
 import { buildCatalogueSearchText, mergeCatalogueRecords, normalizeText, type CatalogueProduct } from '@/lib/catalogue'
 
 // The file has one record per catalogue page; search works on whole products.

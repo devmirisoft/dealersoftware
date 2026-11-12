@@ -64,7 +64,7 @@ export default function AccountantLogin() {
               <div className="mb-4">
                 <div className="mb-3 flex items-center gap-3">
                   <img
-                    src="https://omsonslabs.com/wp-content/uploads/elementor/thumbs/Logo-White-rjr8rdx3pqxz9p6ypfegb07hgtpvj3g22mnujlpa0w.png"
+                    src="/logo.png"
                     alt="Logo"
                     width={34}
                     height={34}
@@ -179,7 +179,7 @@ export default function AccountantLogin() {
           {/* ── Image panel ────────────────────────────────────────────── */}
           <div className="relative hidden bg-[#1177e9] lg:block">
             <img
-              src="/login2.png"
+              src="https://images.pexels.com/photos/11905374/pexels-photo-11905374.jpeg"
               alt="Laboratory glassware"
               className="absolute inset-0 h-full w-full object-cover object-left"
             />

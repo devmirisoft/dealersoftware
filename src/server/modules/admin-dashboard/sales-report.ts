@@ -9,7 +9,7 @@ import type { SalesFilters } from "@/server/modules/admin-dashboard/sales-summar
 // the sample's styles, formulas, conditional formats and chart. A sheet's first body row is the
 // pattern - its styles are reused and its formulas re-pointed for each generated row.
 
-const TEMPLATE = path.join(process.cwd(), "public", "Omsons_Dealer_Sales_Report_SAMPLE.xlsx");
+const TEMPLATE = path.join(process.cwd(), "public", "Dealer_Sales_Report_SAMPLE.xlsx");
 // Orders are booked ex-GST; the sample values them at 18% (its note says to confirm per HSN).
 const GST_RATE = 0.18;
 const DAY_MS = 86_400_000;
@@ -216,7 +216,7 @@ export async function buildSalesReport(filters: SalesFilters, scope: SalesReport
   const setCell = (xml: string, ref: string, value: Value) =>
     xml.replace(new RegExp(`<c r="${ref}"([^>]*?)(?:/>|>[\\s\\S]*?</c>)`), (_m, attrs: string) => cell(ref, /s="(\d+)"/.exec(attrs)?.[1] ?? "", value));
   sheets[1] = [
-    ["A1", "Omsons Dealer Sales Report"],
+    ["A1", "DealerSoftware Dealer Sales Report"],
     ["A2", `Region: ${scope.region} · ASM: ${scope.asm} · City: ${scope.city} · ${scope.range}. Change the yellow cells; every other sheet recalculates from Orders and Order Lines.`],
     ["C5", from], ["C6", to], ["C7", to],
     ["E25", "• Targets prorate each dealer's annual target to the period; outstanding is billed minus paid in the ledger."],

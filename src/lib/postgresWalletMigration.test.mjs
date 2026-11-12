@@ -14,7 +14,7 @@ test("wallet routes use JWT auth and Prisma instead of Mongo", () => {
   for (const source of [walletRoute, walletAdjustRoute]) {
     assert.match(source, /requireAuth/);
     assert.match(source, /prisma/);
-    assert.doesNotMatch(source, /getDb|mongodb|walletUtils|parseOrderActor|x-omsons-actor/i);
+    assert.doesNotMatch(source, /getDb|mongodb|walletUtils|parseOrderActor|x-dealersoftware-actor/i);
   }
 });
 

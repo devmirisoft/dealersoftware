@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Fills gaps in existing PostgreSQL products from public/data/omsonsdata.json.
+// Fills gaps in existing PostgreSQL products from public/data/catalogue.json.
 // The DB wins wherever it has data; the file only supplies what the DB lacks:
 //   - variants the product doesn't have (active or not) are created
 //   - variants still at ₹0 take the file's price and pack size
 //   - variants without a VARIANT SPECIFICATIONS line get one; a missing ABOUT THIS ITEM block is added
 // Deleted (inactive) products, products not in the DB, and variants the file contradicts itself on are skipped.
 //
-//   DATABASE_URL='postgres://…' node scripts/seed/backfill-from-omsonsdata.mjs [--dry-run|--commit] [--show=<productCode>]
+//   DATABASE_URL='postgres://…' node scripts/seed/backfill-from-catalogue.mjs [--dry-run|--commit] [--show=<productCode>]
 //
 // Re-runnable: a second run finds nothing left to fill. Needs the 20261017120000_pack_piece_pricing migration.
 import { readFile } from "node:fs/promises";
@@ -42,7 +42,7 @@ const report = {
 };
 
 // ---- File: merge the per-catalogue-page duplicates ("670", "670--p2", …) into one product per SKU.
-const records = JSON.parse(await readFile(path.join(ROOT, "public/data/omsonsdata.json"), "utf8"));
+const records = JSON.parse(await readFile(path.join(ROOT, "public/data/catalogue.json"), "utf8"));
 const fileProducts = new Map();
 const variantSources = new Map(); // variant sku -> Set of distinct (product, price, pack, specs)
 for (const record of records) {

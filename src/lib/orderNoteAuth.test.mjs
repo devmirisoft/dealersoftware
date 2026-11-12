@@ -27,7 +27,7 @@ test("unauthenticated order-note requests fail instead of using nullable auth", 
 });
 
 test("order-note route ignores spoofed actor headers and query actor identity", () => {
-  assert.doesNotMatch(route, /x-omsons-|actorFromRequestHeaders|actor_id|actorId\s*=\s*req\.nextUrl|role\s*=\s*req\.nextUrl/i);
+  assert.doesNotMatch(route, /x-dealersoftware-|actorFromRequestHeaders|actor_id|actorId\s*=\s*req\.nextUrl|role\s*=\s*req\.nextUrl/i);
   assert.match(route, /requireAuth\(\)/);
 });
 

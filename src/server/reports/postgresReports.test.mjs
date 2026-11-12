@@ -30,7 +30,7 @@ test("active report paths contain no PHP report reads", () => {
 test("report routes use authenticated session identity only", () => {
   for (const source of [reportRoute, dealersRoute, accountantRoute]) {
     assert.match(source, /requireAuth\(\)/);
-    assert.doesNotMatch(source, /x-omsons-/);
+    assert.doesNotMatch(source, /x-dealersoftware-/);
   }
 });
 

@@ -1,4 +1,4 @@
-# Omsons Ecommerce Rebuild: Pre-PRD
+# DealerSoftware Ecommerce Rebuild: Pre-PRD
 
 Status: Draft foundation  
 Audit date: 2026-07-16  
@@ -6,7 +6,7 @@ Source: Current Next.js application in this repository
 
 ## 1. Purpose
 
-This document captures what the current Omsons application does, where its product value lies, which implementation choices are risky, and what a new ecommerce platform should retain or redesign.
+This document captures what the current DealerSoftware application does, where its product value lies, which implementation choices are risky, and what a new ecommerce platform should retain or redesign.
 
 It is a pre-PRD rather than a final specification. It should be used to align product, design, engineering, sales, operations, and finance before detailed wireframes, schemas, API contracts, estimates, and delivery plans are approved.
 
@@ -40,11 +40,11 @@ Repository inventory at audit time:
 | Persistence/services | External PHP API, MongoDB, Supabase, static JSON, browser storage |
 | Export tools | PDF, CSV, XLSX |
 
-The current catalogue source is `public/data/omsons_products_from_excel_with_images.json`. Other older catalogue files remain in `public/data` and are still used by a few order/cart/invoice paths.
+The current catalogue source is `public/data/dealersoftware_products_from_excel_with_images.json`. Other older catalogue files remain in `public/data` and are still used by a few order/cart/invoice paths.
 
 ## 4. Product Vision for the Rebuild
 
-Create a dependable B2B ecommerce and order-operations platform for Omsons laboratory products that lets approved dealers find technical products quickly, build accurate orders, request commercial approvals, track fulfillment, and reconcile accounts, while giving staff and administrators controlled operational tools.
+Create a dependable B2B ecommerce and order-operations platform for DealerSoftware laboratory products that lets approved dealers find technical products quickly, build accurate orders, request commercial approvals, track fulfillment, and reconcile accounts, while giving staff and administrators controlled operational tools.
 
 The new experience should feel like a focused procurement system: fast to search, precise about specifications and prices, efficient for repeat ordering, and transparent about approvals, stock, dispatch, and balances.
 
@@ -255,9 +255,9 @@ Never encode `On request` as numeric zero. Never maintain both an ambiguous nume
 
 - 1,295 families and 5,125 variants.
 - Largest categories include Hydrometers, Filters & Membrane, Thermometers, Plasticware, Adaptors, Distillations, and Lab Instruments.
-- Product images currently include third-party search-result URLs. These must be downloaded, rights-checked, optimized, and hosted under Omsons control before launch.
+- Product images currently include third-party search-result URLs. These must be downloaded, rights-checked, optimized, and hosted under DealerSoftware control before launch.
 - Category paths and aliases require a migration map and canonical IDs.
-- Old `products.json`, `nested_omsons_products.json`, CSV, and generated JSON files must not remain runtime sources after migration.
+- Old `products.json`, `nested_dealersoftware_products.json`, CSV, and generated JSON files must not remain runtime sources after migration.
 
 ### 10.4 Pricing Rules
 
@@ -504,7 +504,7 @@ Severity reflects rebuild risk, not a claim that every issue is currently exploi
 
 #### F-01: Client-controlled authentication and authorization
 
-Protected navigation is primarily based on role/user objects in `localStorage`. Multiple server routes trust browser-supplied headers such as `x-omsons-actor-role` and `x-omsons-actor-id`, or accept a `dealer_id` directly without verifying a server session.
+Protected navigation is primarily based on role/user objects in `localStorage`. Multiple server routes trust browser-supplied headers such as `x-dealersoftware-actor-role` and `x-dealersoftware-actor-id`, or accept a `dealer_id` directly without verifying a server session.
 
 Impact: A caller can potentially impersonate a role or access another dealer's object by changing client storage, headers, path values, or query values.
 
@@ -562,7 +562,7 @@ Rebuild requirement: Remove all runtime legacy sources after a validated migrati
 
 #### F-08: Direct browser dependency on hard-coded production services
 
-Many client pages contain hard-coded `https://mirisoft.co.in/...` and `https://omsonsapp.vercel.app/...` URLs.
+Many client pages contain hard-coded `https://mirisoft.co.in/...` and `https://dealersoftwareapp.vercel.app/...` URLs.
 
 Impact: CORS and availability failures, difficult staging, vendor coupling, leaked implementation details, and inconsistent configuration.
 

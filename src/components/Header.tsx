@@ -107,7 +107,7 @@ export default function Header() {
     return () => window.clearTimeout(timeoutId);
   }, []);
 
-  const logoImage = "/Omsons_Logo.png";
+  const logoImage = "/logo.png";
 
   const locationTop = city || pincode ? "Delivering to" : "Delivering to you";
   const locationBottom = city ? city : pincode ? pincode : "Update location";

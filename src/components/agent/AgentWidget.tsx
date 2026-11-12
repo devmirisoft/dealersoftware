@@ -63,7 +63,7 @@ export default function AgentWidget() {
           hidden={!open}
           className={`fixed inset-0 z-45 bg-white sm:inset-auto sm:bottom-24 sm:right-5 sm:h-[70vh] sm:max-h-[640px] sm:overflow-hidden sm:rounded-2xl sm:border sm:border-gray-200 sm:shadow-2xl ${audience === "internal" ? "sm:w-[440px]" : "sm:w-[380px]"}`}
         >
-          <ChatPanel key={userKey} audience={audience} storageKey={`omsons-agent-chat:${userKey}`} currentPage={pathname} open={open} onClose={() => { setOpen(false); launcherRef.current?.focus(); }} />
+          <ChatPanel key={userKey} audience={audience} storageKey={`dealersoftware-agent-chat:${userKey}`} currentPage={pathname} open={open} onClose={() => { setOpen(false); launcherRef.current?.focus(); }} />
         </div>
       )}
       <button

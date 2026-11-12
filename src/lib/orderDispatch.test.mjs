@@ -464,7 +464,7 @@ test("Order details fetch header access fields through the session-scoped orders
   const source = await fs.readFile(orderDetailPath, "utf8");
   assert.match(source, /orders-data\?page=1&limit=20&search=/);
   assert.doesNotMatch(source, /orders-data[^`"']*source=|orders-data[^`"']*role=|orders-data[^`"']*id=/);
-  assert.doesNotMatch(source, /x-omsons-actor-/);
+  assert.doesNotMatch(source, /x-dealersoftware-actor-/);
 });
 
 test("Dispatch API is PostgreSQL-only and has no legacy header fetch", async () => {

@@ -29,7 +29,7 @@ test("catalogue read route is session authorized and hides inactive rows for dea
   assert.ok(catalogueRoute.includes('variants: { where: includeInactive ? {} : { active: true }'));
   assert.match(catalogueRoute, /unitPricePaise/);
   assert.match(catalogueRoute, /packSize/);
-  assert.doesNotMatch(catalogueRoute, /requireAdmin\(|php-compat|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(catalogueRoute, /requireAdmin\(|php-compat|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });
 
 test("admin product routes keep mutations behind requireAdmin", () => {
@@ -39,5 +39,5 @@ test("admin product routes keep mutations behind requireAdmin", () => {
   assert.match(detailRoute, /export async function PATCH/);
   assert.match(detailRoute, /export async function DELETE/);
   assert.match(listRoute + detailRoute, /requireAdmin\(\)/);
-  assert.doesNotMatch(listRoute + detailRoute, /php-compat|actorFromRequestHeaders|x-omsons-actor/i);
+  assert.doesNotMatch(listRoute + detailRoute, /php-compat|actorFromRequestHeaders|x-dealersoftware-actor/i);
 });

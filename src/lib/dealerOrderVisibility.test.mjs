@@ -119,7 +119,7 @@ test("direct details, invoice, and reorder all retain Dealer ownership gates", a
   assert.match(detailRoute, /actor,[\s\S]*assignedDealerIds/);
   assert.match(detailPage, /buildDispatchHeaders\(currentUser\)/);
   assert.match(invoice, /actor\.actorId === ownerId/);
-  assert.doesNotMatch(reorder, /x-omsons-actor-role|x-omsons-actor-id/);
+  assert.doesNotMatch(reorder, /x-dealersoftware-actor-role|x-dealersoftware-actor-id/);
   assert.match(reorderRoute, /actorId !== ownerId/);
   assert.ok(reorder.indexOf("req.dealerId") < reorder.indexOf("req.orderSnapshot.products"));
 });

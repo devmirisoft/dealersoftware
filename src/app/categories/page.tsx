@@ -30,7 +30,7 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('/data/omsonsdata.json')
+    axios.get('/data/catalogue.json')
       .then(res => { setProducts(mergeCatalogueRecords(res.data).products as unknown as Product[]); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);

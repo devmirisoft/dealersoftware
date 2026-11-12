@@ -207,7 +207,7 @@
 
 //     Promise.all([
 //       fetch('/api/admin/products?page=1&pageSize=1000', { cache: 'no-store' }).then((res) => res.ok ? res.json() : null).catch(() => null),
-//       fetch('/data/omsonsdata.json', { cache: 'force-cache' }).then((res) => res.ok ? res.json() : []).catch(() => []),
+//       fetch('/data/catalogue.json', { cache: 'force-cache' }).then((res) => res.ok ? res.json() : []).catch(() => []),
 //     ]).then(([adminPayload, cataloguePayload]) => {
 //       const adminItems = Array.isArray(adminPayload?.data?.items) ? adminPayload.data.items : Array.isArray(adminPayload?.items) ? adminPayload.items : []
 //       const catalogueItems = Array.isArray(cataloguePayload) ? cataloguePayload : []
@@ -909,7 +909,7 @@ export default function AddProductPage() {
 
     Promise.all([
       fetch('/api/admin/products?page=1&limit=5000', { cache: 'no-store' }).then((res) => res.ok ? res.json() : null).catch(() => null),
-      fetch('/data/omsonsdata.json', { cache: 'force-cache' }).then((res) => res.ok ? res.json() : []).catch(() => []),
+      fetch('/data/catalogue.json', { cache: 'force-cache' }).then((res) => res.ok ? res.json() : []).catch(() => []),
     ]).then(([adminPayload, cataloguePayload]) => {
       const adminItems = Array.isArray(adminPayload?.data?.items) ? adminPayload.data.items : Array.isArray(adminPayload?.items) ? adminPayload.items : []
       const catalogueItems = Array.isArray(cataloguePayload) ? cataloguePayload : []

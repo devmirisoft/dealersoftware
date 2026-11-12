@@ -29,7 +29,7 @@ async function refreshSession() {
         .catch(() => false);
     // Refresh tokens rotate on use, so two tabs refreshing at once would revoke each
     // other's token. The lock makes the second tab wait and use the rotated cookie.
-    refreshPromise = (navigator.locks ? navigator.locks.request("omsons-auth-refresh", doRefresh).then((ok) => ok) : doRefresh())
+    refreshPromise = (navigator.locks ? navigator.locks.request("dealersoftware-auth-refresh", doRefresh).then((ok) => ok) : doRefresh())
       .finally(() => {
         refreshPromise = null;
       });

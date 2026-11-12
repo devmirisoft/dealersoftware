@@ -43,7 +43,7 @@ test("custom discount routes enforce dealer scope, admin review, order linking, 
     read("src/lib/dealerOrderCreate.ts"),
   ]);
 
-  assert.doesNotMatch(listRoute + detailRoute + reorderRoute + helperRoute, /actorFromRequestHeaders|x-omsons-actor|header-fallback/);
+  assert.doesNotMatch(listRoute + detailRoute + reorderRoute + helperRoute, /actorFromRequestHeaders|x-dealersoftware-actor|header-fallback/);
   assert.match(listRoute, /requireAuth/);
   assert.match(detailRoute, /requireAuth/);
   assert.match(reorderRoute, /requireAuth/);

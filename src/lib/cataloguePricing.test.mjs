@@ -8,7 +8,7 @@ import pricing from "./cataloguePricing.js";
 // The real catalogue, merged per product exactly as the app loads it.
 const jiti = createJiti(import.meta.url, { alias: { "@": path.resolve("src") } });
 const { mergeCatalogueRecords } = await jiti.import(path.resolve("src/lib/catalogue.ts"));
-const { products, conflicts } = mergeCatalogueRecords(JSON.parse(fs.readFileSync(path.resolve("public/data/omsonsdata.json"), "utf8")));
+const { products, conflicts } = mergeCatalogueRecords(JSON.parse(fs.readFileSync(path.resolve("public/data/catalogue.json"), "utf8")));
 const variants = new Map(products.flatMap((product) => product.variants.map((variant) => [variant.sku, variant])));
 
 // [catalogue number, packs, expected line total in paise]
