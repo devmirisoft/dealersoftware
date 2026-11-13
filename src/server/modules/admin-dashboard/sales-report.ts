@@ -2,7 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import * as XLSX from "xlsx";
 import { prisma } from "@/server/db/prisma";
-import { formatSalesRegionLabel, SALES_REGION_OPTIONS } from "@/lib/salesRegions";
+import { formatSalesRegionLabel } from "@/lib/salesRegions";
+import { listSalesRegions } from "@/server/sales-region-states";
 import type { SalesFilters } from "@/server/modules/admin-dashboard/sales-summary";
 
 // The dashboard's sales report is the sample workbook filled with live data: every sheet keeps
@@ -90,7 +91,7 @@ function fill(xml: string, rows: string[], refs: Record<string, string> = {}) {
 export type SalesReportScope = { region: string; asm: string; city: string; range: string };
 
 async function loadData(filters: SalesFilters) {
-  const [dealerRows, asmRows] = await Promise.all([
+  const [dealerRows, asmRows, regionOptions] = await Promise.all([
     prisma.dealerProfile.findMany({
       where: { ...filters.dealer, OR: [{ deletedAt: null }, { orders: { some: {} } }] },
       select: {
@@ -104,6 +105,7 @@ async function loadData(filters: SalesFilters) {
       select: { id: true, displayName: true, salesRegion: true, assignedStates: true },
       orderBy: { displayName: "asc" },
     }),
+    listSalesRegions(prisma),
   ]);
   const dealerIds = dealerRows.map((dealer) => dealer.id);
   const [orders, bills] = await Promise.all([
@@ -142,7 +144,7 @@ async function loadData(filters: SalesFilters) {
       rawCity: dealer.city ?? "",
       city: titleCase(dealer.city ?? ""),
       state: dealer.state?.trim() ?? "",
-      region: formatSalesRegionLabel(dealer.region),
+      region: formatSalesRegionLabel(dealer.region, regionOptions),
       asmId: asm?.id ?? null,
       asm: asm?.displayName ?? "",
       onboarded: serial(dealer.createdAt),
@@ -187,13 +189,13 @@ async function loadData(filters: SalesFilters) {
   const usedAsms = new Set(dealers.map((dealer) => dealer.asmId));
   const asms = asmRows.filter((asm) => (filters.asmId === null || asm.id === filters.asmId)
     && (usedAsms.has(asm.id) || (!filters.city && (!filters.region || asm.salesRegion === filters.region))));
-  const regions = SALES_REGION_OPTIONS.filter((option) => !filters.region || option.value === filters.region).map((option) => option.label);
+  const regions = regionOptions.filter((option) => !filters.region || option.value === filters.region).map((option) => option.label);
 
-  return { dealers, orders: rows, asms, regions };
+  return { dealers, orders: rows, asms, regions, regionOptions };
 }
 
 export async function buildSalesReport(filters: SalesFilters, scope: SalesReportScope) {
-  const { dealers, orders, asms, regions } = await loadData(filters);
+  const { dealers, orders, asms, regions, regionOptions } = await loadData(filters);
   const today = serial(new Date());
   const accepted = orders.filter((order) => order.status === "Accepted");
   const from = filters.from ? serial(filters.from) : accepted[0]?.date ?? today;
@@ -233,7 +235,7 @@ export async function buildSalesReport(filters: SalesFilters, scope: SalesReport
   const periodShare = (to - from + 1) / 365;
   const asmTable = table(tpl(3), [1, 2, 3], 4, asms.map((asm) => ({
     A: asm.displayName,
-    B: formatSalesRegionLabel(asm.salesRegion),
+    B: formatSalesRegionLabel(asm.salesRegion, regionOptions),
     C: asm.assignedStates.join(", "),
     D: Math.round(dealers.filter((dealer) => dealer.asmId === asm.id).reduce((sum, dealer) => sum + dealer.annualTarget, 0) * periodShare),
   })), { tpl: 12, lastTpl: 11 });

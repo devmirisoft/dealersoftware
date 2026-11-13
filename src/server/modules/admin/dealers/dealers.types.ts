@@ -1,5 +1,5 @@
 import type { AdminListInput } from "@/server/admin/admin.types";
-import type { Prisma, SalesRegion, UserStatus } from "@prisma/client";
+import type { Prisma, UserStatus } from "@prisma/client";
 
 export type AdminDealerListInput = AdminListInput & {
   staffId?: string;
@@ -21,7 +21,7 @@ export type AdminDealerStaffAssignment = {
     displayName: string;
     designation: string | null;
     staffRoleType: string | null;
-    salesRegion: SalesRegion | null;
+    salesRegion: string | null;
     mobileNo: string | null;
     user: { email: string; status: string; deletedAt: Date | null; role: string };
   };
@@ -52,9 +52,9 @@ export type AdminDealerRecord = {
   deletedAt?: Date | null;
   user: { id: bigint; email: string; username?: string | null; status: string; deletedAt?: Date | null };
   wallet?: { status: string } | null;
-  region?: SalesRegion | null;
+  region?: string | null;
   rsmUserId?: bigint | null;
-  regionalManager?: { id: bigint; email: string; staffProfile: { displayName: string; salesRegion: SalesRegion | null } | null } | null;
+  regionalManager?: { id: bigint; email: string; staffProfile: { displayName: string; salesRegion: string | null } | null } | null;
   staffAssignments?: AdminDealerStaffAssignment[];
 };
 
@@ -85,7 +85,7 @@ export type CreateAdminDealerInput = {
   status?: UserStatus;
   assignedStaffIds: string[];
   rsmUserId?: string;
-  region?: SalesRegion;
+  region?: string;
   walletActive?: boolean;
 };
 
@@ -118,4 +118,4 @@ export interface AdminDealerRepository {
 
 // RSM link for a dealer. With `region` set, an absent rsmUserId clears the RSM
 // and the dealer keeps that region (a region with no active RSM).
-export type DealerRoutingInput = { rsmUserId?: bigint; region?: SalesRegion };
+export type DealerRoutingInput = { rsmUserId?: bigint; region?: string };

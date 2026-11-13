@@ -2,7 +2,7 @@ import { z } from "zod";
 import { optionalPhoneSchema } from "@/lib/fieldRules";
 import { AdminRouteError } from "@/server/admin/admin-errors";
 import { parseAdminPagination } from "@/server/admin/admin-pagination";
-import { SALES_REGION_OPTIONS } from "@/lib/salesRegions";
+import { normalizeSalesRegion } from "@/server/auth/sales-scope";
 import { MIN_STAFF_AGE, isAdultDob } from "@/lib/staffDob";
 import type { AdminStaffListInput } from "./staff.types";
 
@@ -12,15 +12,12 @@ export function parseAdminStaffListInput(searchParams: URLSearchParams): AdminSt
   const includeNsm = ["1", "true", "yes"].includes(String(searchParams.get("includeNsm") ?? "").trim().toLowerCase());
   const role = roleParam === "NSM" || roleParam === "ASM" ? roleParam : undefined;
   // An ASM has no region of its own; it inherits the one its parent RSM holds.
-  const regionParam = String(searchParams.get("region") ?? "").trim().toUpperCase();
-  const salesRegion = SALES_REGION_OPTIONS.find((option) => option.value === regionParam)?.value;
+  const salesRegion = normalizeSalesRegion(searchParams.get("region"));
   return { ...base, role, salesRegion, includeNsm };
 }
 
-const salesRegion = z.preprocess((value) => {
-  if (value === undefined || value === null || String(value).trim() === "") return undefined;
-  return String(value).trim().toUpperCase();
-}, z.enum(["NORTH_1", "NORTH_2", "SOUTH_1", "SOUTH_2", "WEST_1", "WEST_2", "EAST", "ROM", "CENTRAL"]).optional());
+// Any region code; the repository checks it exists (assertSalesRegion).
+const salesRegion = z.preprocess(normalizeSalesRegion, z.string().max(64).optional());
 
 const warehouse = z.preprocess((value) => {
   if (value === undefined || value === null || String(value).trim() === "") return undefined;

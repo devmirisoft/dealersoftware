@@ -1,7 +1,7 @@
 import type { AdminListInput } from "@/server/admin/admin.types";
-import type { SalesRegion, UserRole, UserStatus, Warehouse } from "@prisma/client";
+import type { UserRole, UserStatus, Warehouse } from "@prisma/client";
 
-export type AdminStaffListInput = AdminListInput & { role?: "NSM" | "ASM"; salesRegion?: SalesRegion; includeNsm?: boolean };
+export type AdminStaffListInput = AdminListInput & { role?: "NSM" | "ASM"; salesRegion?: string; includeNsm?: boolean };
 export type AdminStaffRole = Extract<UserRole, "STAFF" | "RSM" | "ASM" | "NSM">;
 export type AdminCreateUserRole = Extract<UserRole, "NSM" | "RSM" | "ASM" | "STAFF">;
 
@@ -22,7 +22,7 @@ export type AdminStaffRecord = {
   emergencyContactNo1: string | null;
   emergencyContactNo2: string | null;
   staffRoleType: string | null;
-  salesRegion: SalesRegion | null;
+  salesRegion: string | null;
   warehouse: Warehouse | null;
   parentRsmId: bigint | null;
   parentAsmId: bigint | null;
@@ -54,7 +54,7 @@ export type CreateAdminStaffInput = {
   emergencyContactNo1?: string;
   emergencyContactNo2?: string;
   staffRoleType?: string;
-  salesRegion?: SalesRegion;
+  salesRegion?: string;
   warehouse?: Warehouse;
   parentRsmId?: string;
   parentAsmId?: string;
@@ -89,7 +89,7 @@ export type UpdateAdminStaffInput = {
   emergencyContactNo1?: string;
   emergencyContactNo2?: string;
   staffRoleType?: string;
-  salesRegion?: SalesRegion;
+  salesRegion?: string;
   warehouse?: Warehouse;
   parentRsmId?: string;
   parentAsmId?: string;

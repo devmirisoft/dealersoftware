@@ -4,7 +4,8 @@ import { prisma } from "@/server/db/prisma";
 import { requireAdmin } from "@/server/admin/admin-route";
 import { adminErrorResponse } from "@/server/admin/admin-errors";
 import { day, resolveSalesFilters, rupees, summarizeSales } from "@/server/modules/admin-dashboard/sales-summary";
-import { formatSalesRegionLabel } from "@/lib/salesRegions";
+import { formatSalesRegionLabel, type SalesRegionOption } from "@/lib/salesRegions";
+import { listSalesRegions } from "@/server/sales-region-states";
 import { csvRow } from "@/lib/csv";
 import { buildSalesReport, type SalesReportScope } from "@/server/modules/admin-dashboard/sales-report";
 
@@ -30,13 +31,14 @@ export async function GET(request: Request) {
     const format = params.get("format");
     if (format === "csv" || format === "xlsx") {
       const { from, to, region, asm, asmId, city } = filters;
+      const regions = await listSalesRegions(prisma);
       const scope = {
-        region: region ? formatSalesRegionLabel(region) : "All regions",
+        region: region ? formatSalesRegionLabel(region, regions) : "All regions",
         asm: asm?.displayName ?? (asmId === null ? "All ASMs" : "Unknown ASM"),
         city: city || "All cities",
         range: from || to ? `${from ? day(from) : "start"} to ${to ? day(to) : "today"}` : "All time",
       };
-      if (format === "csv") return csvReport(filters.where, scope);
+      if (format === "csv") return csvReport(filters.where, scope, regions);
       return new NextResponse(new Uint8Array(await buildSalesReport(filters, scope)), {
         headers: {
           "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -68,6 +70,7 @@ function reportName(scope: SalesReportScope) {
 async function csvReport(
   where: Prisma.OrderWhereInput,
   scope: { region: string; asm: string; city: string; range: string },
+  regions: SalesRegionOption[],
 ) {
   const orders = await prisma.order.findMany({
     where,
@@ -103,7 +106,7 @@ async function csvReport(
       order.dealer?.dealerCode ?? "",
       order.dealer?.city ?? "",
       order.dealer?.state ?? "",
-      order.dealer?.region ? formatSalesRegionLabel(order.dealer.region) : "",
+      order.dealer?.region ? formatSalesRegionLabel(order.dealer.region, regions) : "",
       staff?.parentRsm?.displayName ?? staff?.rsmLinks.map((link) => link.rsm.displayName).join(" / ") ?? "",
       asmName,
       salesManager,

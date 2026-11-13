@@ -2,10 +2,10 @@ import { z } from "zod";
 import { optionalPhoneSchema, requiredPhoneSchema } from "@/lib/fieldRules";
 import { AdminRouteError } from "@/server/admin/admin-errors";
 import { parseAdminPagination } from "@/server/admin/admin-pagination";
-import { normalizeSalesRegion, SALES_REGIONS } from "@/server/auth/sales-scope";
+import { normalizeSalesRegion } from "@/server/auth/sales-scope";
 
 // The form's sales region. Only used when no RSM is linked; an RSM always wins.
-const optionalRegion = z.preprocess((value) => normalizeSalesRegion(value), z.enum(SALES_REGIONS).optional());
+const optionalRegion = z.preprocess(normalizeSalesRegion, z.string().max(64).optional());
 
 const staffId = z.preprocess(
   (value) => (value === undefined || value === null || String(value).trim() === "" ? undefined : String(value).trim()),

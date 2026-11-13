@@ -28,7 +28,7 @@ import {
 } from "@/lib/dealerForm";
 import { clampPercentInput, phoneInput, phoneInputProps } from "@/lib/fieldRules";
 import { CITIES_BY_STATE, STATE_OPTIONS } from "@/lib/places";
-import { SALES_REGION_OPTIONS } from "@/lib/salesRegions";
+import { useSalesRegions } from "@/components/useSalesRegions";
 import { formatWarehouseLabel } from "@/lib/warehouses";
 import { TermsBlocksEditor } from "@/components/terms/TermsEditor";
 import type { TermsBlock } from "@/components/terms/TermsDocument";
@@ -745,6 +745,7 @@ export function RoleAssignmentPanel({
   roleAssignments: RoleAssignments;
   onChange: (region: string, roleAssignments: RoleAssignments) => void;
 }) {
+  const regions = useSalesRegions();
   const roleOptions = useMemo(() => buildRoleOptions(staffList), [staffList]);
   const salesGroups = useMemo(() => buildRegionSalesOptions(roleOptions, staffList, region), [roleOptions, staffList, region]);
   const selectedRows = ASSIGNMENT_FIELDS.map((field) => {
@@ -768,7 +769,7 @@ export function RoleAssignmentPanel({
             className={SELECT_CLASS}
           >
             <option value="">{loading ? "Loading..." : "Select region"}</option>
-            {SALES_REGION_OPTIONS.map((option) => (
+            {regions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>

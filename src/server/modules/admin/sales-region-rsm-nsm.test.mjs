@@ -14,18 +14,19 @@ const staffUi = readFileSync("src/app/dashboard/admin/staff/addstaff/page.tsx", 
 
 const block = (name) => schema.match(new RegExp(`(?:enum|model) ${name} \\{[\\s\\S]*?\\n\\}`))?.[0] || "";
 
-test("schema adds NSM/RSM roles and SalesRegion without regional roles", () => {
+test("schema adds NSM/RSM roles and an admin-managed SalesRegion table without regional roles", () => {
   assert.match(block("UserRole"), /\bNSM\b/);
   assert.match(block("UserRole"), /\bRSM\b/);
   assert.match(block("AuthRole"), /\bNSM\b/);
   assert.match(block("AuthRole"), /\bRSM\b/);
-  assert.match(block("SalesRegion"), /\bNORTH_1\b[\s\S]*\bNORTH_2\b[\s\S]*\bSOUTH_1\b[\s\S]*\bWEST_2\b[\s\S]*\bROM\b[\s\S]*\bCENTRAL\b/);
+  assert.match(block("SalesRegion"), /code\s+String @id[\s\S]*label\s+String @unique/);
+  assert.doesNotMatch(schema, /enum SalesRegion/);
   assert.doesNotMatch(schema, /RSM_NORTH|RSM_SOUTH|RSM_EAST|RSM_WEST/);
 });
 
 test("RSM region and dealer regional manager are modeled separately from staff assignments", () => {
-  assert.match(block("StaffProfile"), /salesRegion\s+SalesRegion\?\s+@map\("sales_region"\)/);
-  assert.match(block("DealerProfile"), /region\s+SalesRegion\?/);
+  assert.match(block("StaffProfile"), /salesRegion\s+String\?\s+@map\("sales_region"\)/);
+  assert.match(block("DealerProfile"), /region\s+String\?/);
   assert.match(block("DealerProfile"), /rsmUserId\s+BigInt\?\s+@map\("rsm_user_id"\)/);
   assert.match(block("DealerProfile"), /regionalManager\s+User\?/);
   assert.match(block("DealerProfile"), /staffAssignments\s+DealerStaffAssignment\[\]/);
@@ -44,7 +45,7 @@ test("staff creation keeps staff-management choices separate from admin and acco
   assert.match(staffSchemas, /value\.role && !\(value\.role === "RSM" \|\| value\.role === "ASM" \|\| \(value\.role === "STAFF" && value\.staffRoleType === "1"\)\)\) value\.salesRegion = undefined/);
   assert.match(staffSchemas, /value\.role === "STAFF" && value\.staffRoleType !== "1" && value\.staffRoleType !== "2"/);
   assert.match(staffRepo, /if \(input\.role === "NSM"\)/);
-  assert.match(staffRepo, /let salesRegion: SalesRegion \| null = input\.role === "RSM" \? input\.salesRegion \?\? null : null;/);
+  assert.match(staffRepo, /let salesRegion: string \| null = input\.role === "RSM" \? input\.salesRegion \?\? null : null;/);
   assert.match(staffUi, /value: 'EXECUTIVE', label: 'Sales Manager', authRole: 'STAFF', staffRoleType: '1'/);
   assert.match(staffUi, /value: 'FIELD_EXECUTIVE', label: 'Staff', authRole: 'STAFF', staffRoleType: '2'/);
   assert.match(staffUi, /value: 'RSM', label: 'RSM', authRole: 'RSM'/);

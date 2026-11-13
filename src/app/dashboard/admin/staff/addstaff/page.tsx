@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff } from 'lucide-react'
 import { STATE_OPTIONS, CITIES_BY_STATE, citiesForStates, statesForCities } from '@/lib/places'
-import { SALES_REGION_OPTIONS } from '@/lib/salesRegions'
+import { useSalesRegions } from '@/components/useSalesRegions'
 import { WAREHOUSE_OPTIONS } from '@/lib/warehouses'
 import { cityScopeStates, pickReportsTo, regionRsm, reportsToGroups } from '@/lib/staffHierarchy'
 import { RegionSelect, ReportsToSelect } from '@/components/staff/HierarchySelects'
@@ -146,6 +146,7 @@ export default function AddStaffPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [role, setRole] = useState<StaffFormRole>('')
   const [salesRegion, setSalesRegion] = useState('')
+  const salesRegions = useSalesRegions()
   const [warehouse, setWarehouse] = useState('')
   // Region an ASM / Sales Manager belongs to; the RSM role keeps its own salesRegion.
   const [region, setRegion] = useState('')
@@ -437,7 +438,7 @@ export default function AddStaffPage() {
                       className="px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
                     >
                       <option value="" disabled>Select region</option>
-                      {SALES_REGION_OPTIONS.map((option) => {
+                      {salesRegions.map((option) => {
                         const taken = rsmByRegion.get(option.value)
                         return <option key={option.value} value={option.value} disabled={!!taken}>{taken ? `${option.label} — ${taken.name}` : option.label}</option>
                       })}

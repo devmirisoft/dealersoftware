@@ -59,7 +59,7 @@ test("RSM and NSM map to their auth roles with RSM region only", () => {
     assert.match(source, /value: 'RSM'[^\n]*authRole: 'RSM'[^\n]*staffRoleType: 'RSM'/);
     assert.match(source, /value: 'NSM'[^\n]*authRole: 'NSM'[^\n]*staffRoleType: undefined/);
     assert.match(source, /role === "RSM"|role === 'RSM'/);
-    assert.match(source, /SALES_REGION_OPTIONS/);
+    assert.match(source, /useSalesRegions\(\)/);
     assert.match(source, /salesRegion: selectedRole\.authRole === 'RSM' \? salesRegion : undefined/);
   }
 });
@@ -80,7 +80,7 @@ test("RSM region is required; ASM / Sales Manager keep theirs, other roles drop 
   assert.match(staffRepo, /resolveRsm/);
   assert.match(staffRepo, /resolveAsm/);
   assert.match(staffRepo, /assertSubset/);
-  assert.match(staffRepo, /let salesRegion: SalesRegion \| null = input\.role === "RSM" \? input\.salesRegion \?\? null : null;/);
+  assert.match(staffRepo, /let salesRegion: string \| null = input\.role === "RSM" \? input\.salesRegion \?\? null : null;/);
   assert.match(staffRepo, /staffData\.staffRoleType = null/);
 });
 
@@ -141,9 +141,8 @@ test("staff subtype 2 keeps no territory of its own", () => {
 });
 
 test("staff creation caps NSM at one and RSM at the number of sales regions", () => {
-  assert.match(staffRepo, /import \{[^}]*\bSALES_REGION_OPTIONS\b[^}]*\} from "@\/lib\/salesRegions";/);
   assert.match(staffRepo, /existingNsm >= 1.*NSM_LIMIT_REACHED/s);
-  assert.match(staffRepo, /existingRsm >= SALES_REGION_OPTIONS\.length.*RSM_LIMIT_REACHED/s);
+  assert.match(staffRepo, /existingRsm >= await tx\.salesRegion\.count\(\).*RSM_LIMIT_REACHED/s);
 });
 
 test("staff update accepts hierarchy and territory changes", () => {

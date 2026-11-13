@@ -1,19 +1,19 @@
 import "server-only";
 
-import { Prisma, type SalesRegion, type UserStatus } from "@prisma/client";
+import { Prisma, type UserStatus } from "@prisma/client";
 import { prisma } from "@/server/db/prisma";
 import { paginationToPrisma } from "@/server/admin/admin-pagination";
 import { AdminRouteError } from "@/server/admin/admin-errors";
 import { normalizeEmail } from "@/server/auth/providers/postgres-auth.provider";
 import { hashPassword } from "@/server/auth/password";
 import { citiesForStates, statesForCities } from "@/lib/places";
-import { formatSalesRegionLabel, SALES_REGION_OPTIONS } from "@/lib/salesRegions";
+import { formatSalesRegionLabel } from "@/lib/salesRegions";
 import { AUDIT_ACTION, AUDIT_ENTITY, type AuditAction } from "@/lib/auditActions";
 import { createAuditLog } from "@/server/audit/audit-log";
 import type { AdminStaffListInput, AdminStaffRecord, CreateAdminStaffInput, UpdateAdminStaffInput, UpdateStaffStatusInput } from "./staff.types";
 import { staffPageWindow } from "./staff.paging";
 import type { AuthActor } from "@/server/auth/session";
-import { getRegionStates } from "@/server/sales-region-states";
+import { assertSalesRegion, getRegionStates, listSalesRegions } from "@/server/sales-region-states";
 
 function buildWhere(input: AdminStaffListInput): Prisma.StaffProfileWhereInput {
   const role: Prisma.StaffProfileWhereInput = input.role === "ASM"
@@ -239,7 +239,7 @@ async function resolveAsm(tx: Prisma.TransactionClient, id: bigint | null) {
  * (sales-scope fallback) and the region's own state list is their territory
  * until an RSM is created and adopts them (adoptFloatingStaff).
  */
-async function resolveSalesParent(tx: Prisma.TransactionClient, asmId: bigint | null, rsmId: bigint | null, region: SalesRegion | null | undefined) {
+async function resolveSalesParent(tx: Prisma.TransactionClient, asmId: bigint | null, rsmId: bigint | null, region: string | null | undefined) {
   if (asmId) {
     const asm = await resolveAsm(tx, asmId);
     return { parentAsmId: asm.id as bigint | null, parentRsmId: asm.parentRsmId, region: asm.region, scopeStates: asm.assignedStates };
@@ -255,7 +255,7 @@ async function resolveSalesParent(tx: Prisma.TransactionClient, asmId: bigint | 
 }
 
 // A new or reactivated RSM takes in the ASMs and Sales Managers already floating in its region.
-async function adoptFloatingStaff(tx: Prisma.TransactionClient, rsmId: bigint, region: SalesRegion | null) {
+async function adoptFloatingStaff(tx: Prisma.TransactionClient, rsmId: bigint, region: string | null) {
   if (!region) return;
   await tx.staffProfile.updateMany({
     where: { salesRegion: region, parentRsmId: null, staffRoleType: { in: ["ASM", "1"] } },
@@ -275,7 +275,7 @@ async function resolveNsm(tx: Prisma.TransactionClient, id: bigint | null) {
 
 // One region, one RSM. Status is ignored on purpose: a deactivated RSM still
 // holds its region, so reactivating can never produce two RSMs for one region.
-async function assertRegionFree(tx: Prisma.TransactionClient, salesRegion: SalesRegion | null, exceptStaffId: bigint | null) {
+async function assertRegionFree(tx: Prisma.TransactionClient, salesRegion: string | null, exceptStaffId: bigint | null) {
   if (!salesRegion) throw invalid("RSM region is required", "RSM_REGION_REQUIRED");
   const taken = await tx.staffProfile.findFirst({
     where: {
@@ -286,7 +286,7 @@ async function assertRegionFree(tx: Prisma.TransactionClient, salesRegion: Sales
     select: { displayName: true },
   });
   if (!taken) return;
-  throw conflict(`${formatSalesRegionLabel(salesRegion)} already has an RSM (${taken.displayName})`, "RSM_REGION_TAKEN");
+  throw conflict(`${formatSalesRegionLabel(salesRegion, await listSalesRegions(tx))} already has an RSM (${taken.displayName})`, "RSM_REGION_TAKEN");
 }
 
 export class PostgresAdminStaffRepository {
@@ -337,13 +337,14 @@ export class PostgresAdminStaffRepository {
 
   async create(input: CreateAdminStaffInput, actor: AuthActor): Promise<AdminStaffRecord> {
     return prisma.$transaction(async (tx) => {
+      await assertSalesRegion(tx, input.salesRegion);
       if (input.role === "NSM") {
         const existingNsm = await tx.adminProfile.count({ where: nsmWhereBase });
         if (existingNsm >= 1) throw conflict("An NSM already exists", "NSM_LIMIT_REACHED");
       }
       if (input.role === "RSM") {
         const existingRsm = await tx.staffProfile.count({ where: { user: { role: "RSM", status: "ACTIVE", deletedAt: null } } });
-        if (existingRsm >= SALES_REGION_OPTIONS.length) throw conflict("All regions already have an RSM assigned", "RSM_LIMIT_REACHED");
+        if (existingRsm >= await tx.salesRegion.count()) throw conflict("All regions already have an RSM assigned", "RSM_LIMIT_REACHED");
         await assertRegionFree(tx, input.salesRegion ?? null, null);
       }
 
@@ -355,7 +356,7 @@ export class PostgresAdminStaffRepository {
       let rsmIds: bigint[] = [];
       let assignedStates = uniqueStrings(input.assignedStates);
       let assignedCities = uniqueStrings(input.assignedCities);
-      let salesRegion: SalesRegion | null = input.role === "RSM" ? input.salesRegion ?? null : null;
+      let salesRegion: string | null = input.role === "RSM" ? input.salesRegion ?? null : null;
 
       if (input.role === "ASM") {
         const parent = await resolveSalesParent(tx, null, parseId(input.parentRsmId, "ASM_RSM_INVALID"), input.salesRegion);
@@ -446,6 +447,7 @@ export class PostgresAdminStaffRepository {
 
   async update(staffId: bigint, input: UpdateAdminStaffInput, actor: AuthActor): Promise<AdminStaffRecord> {
     return prisma.$transaction(async (tx) => {
+      await assertSalesRegion(tx, input.salesRegion);
       const current = await tx.staffProfile.findUnique({ where: { id: staffId }, include: { user: true } });
       if (!current) throw notFound("Staff member not found", "STAFF_NOT_FOUND");
       const userData: Prisma.UserUpdateInput = {};
@@ -560,7 +562,7 @@ export class PostgresAdminStaffRepository {
       }
       if (Object.keys(staffData).length) await tx.staffProfile.update({ where: { id: staffId }, data: staffData });
       if (nextRole === "RSM" && (input.status ?? current.user.status) === "ACTIVE") {
-        await adoptFloatingStaff(tx, staffId, (staffData.salesRegion as SalesRegion | undefined) ?? current.salesRegion);
+        await adoptFloatingStaff(tx, staffId, (staffData.salesRegion as string | undefined) ?? current.salesRegion);
       }
       const roleChanged = current.user.role !== nextRole;
       await audit(tx, actor, "ADMIN_STAFF_UPDATED", { staffId: staffId.toString(), role: nextRole }, {
