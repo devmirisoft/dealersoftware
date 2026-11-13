@@ -1,6 +1,7 @@
 import "server-only";
 
 import { prisma } from "@/server/db/prisma";
+import { listSalesRegions } from "@/server/sales-region-states";
 import type {
   AdminDashboardResult,
   AdminDashboardTopDealer,
@@ -10,7 +11,6 @@ import type {
 
 const TOP_DEALER_LIMIT = 10;
 const TOP_REGION_DEALER_LIMIT = 5;
-const SALES_REGIONS: SalesRegionKey[] = ["NORTH_1", "NORTH_2", "SOUTH_1", "SOUTH_2", "WEST_1", "WEST_2", "EAST", "ROM", "CENTRAL"];
 const SALES_GRANULARITIES: SalesGranularity[] = ["day", "month", "quarter", "half", "year"];
 const DEFAULT_GRANULARITY: SalesGranularity = "month";
 
@@ -59,15 +59,8 @@ function paiseToRupeeString(value: bigint | number | null | undefined) {
   return (paise / BigInt(100)).toString();
 }
 
-function createEmptyRegionalTotals() {
-  return SALES_REGIONS.reduce((acc, region) => {
-    acc[region] = BigInt(0);
-    return acc;
-  }, {} as Record<SalesRegionKey, bigint>);
-}
-
-function isSalesRegion(value: unknown): value is SalesRegionKey {
-  return typeof value === "string" && SALES_REGIONS.includes(value as SalesRegionKey);
+function createEmptyRegionalTotals(regions: SalesRegionKey[]) {
+  return Object.fromEntries(regions.map((region) => [region, BigInt(0)])) as Record<SalesRegionKey, bigint>;
 }
 
 function stripRegion(dealer: RankedDealer): AdminDashboardTopDealer {
@@ -82,7 +75,8 @@ export async function getPostgresAdminDashboard(
   options: { regionalGranularity?: SalesGranularity | string } = {},
 ): Promise<AdminDashboardResult> {
   const regionalGranularity = normalizeGranularity(options.regionalGranularity);
-  const [dealerCount, orderCount, ordersForRegionalTotals, dealerSalesGroups] = await Promise.all([
+  const [regions, dealerCount, orderCount, ordersForRegionalTotals, dealerSalesGroups] = await Promise.all([
+    listSalesRegions(prisma),
     prisma.dealerProfile.count(),
     prisma.order.count(),
     prisma.order.findMany({
@@ -112,6 +106,8 @@ export async function getPostgresAdminDashboard(
     }),
   ]);
 
+  const SALES_REGIONS = regions.map((region) => region.value);
+  const isSalesRegion = (value: unknown): value is SalesRegionKey => typeof value === "string" && SALES_REGIONS.includes(value);
   const monthlyTotals = new Map<string, bigint>();
   const regionalMonthlyTotals = new Map<string, Record<SalesRegionKey, bigint>>();
 
@@ -120,7 +116,7 @@ export async function getPostgresAdminDashboard(
     monthlyTotals.set(key, (monthlyTotals.get(key) ?? BigInt(0)) + order.finalPayableAmountPaise);
 
     const regionalKey = periodKey(order.orderDate, regionalGranularity);
-    const bucket = regionalMonthlyTotals.get(regionalKey) ?? createEmptyRegionalTotals();
+    const bucket = regionalMonthlyTotals.get(regionalKey) ?? createEmptyRegionalTotals(SALES_REGIONS);
     const region = order.dealer?.region;
     if (isSalesRegion(region)) bucket[region] += order.finalPayableAmountPaise;
     regionalMonthlyTotals.set(regionalKey, bucket);
@@ -172,6 +168,7 @@ export async function getPostgresAdminDashboard(
       month,
       total: paiseToRupeeString(total),
     })),
+    regions,
     regionalGranularity,
     regionalPerformance: Array.from(regionalMonthlyTotals.entries())
       .sort(([left], [right]) => left.localeCompare(right))

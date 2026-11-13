@@ -1,6 +1,6 @@
 'use client'
 
-import { SALES_REGION_OPTIONS } from '@/lib/salesRegions'
+import { useSalesRegions } from '@/components/useSalesRegions'
 
 // Shared by Add Staff and Edit Staff: region first, then who a Sales Manager reports to.
 
@@ -15,12 +15,13 @@ function Label({ text, required = true }: { text: string; required?: boolean }) 
 }
 
 export function RegionSelect({ value, onChange }: { value: string; onChange: (region: string) => void }) {
+  const regions = useSalesRegions()
   return (
     <div className="flex flex-col gap-1.5">
       <Label text="Region" />
       <select required value={value} onChange={(event) => onChange(event.target.value)} className={SELECT_CLASS}>
         <option value="" disabled>Select region</option>
-        {SALES_REGION_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        {regions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
       </select>
     </div>
   )

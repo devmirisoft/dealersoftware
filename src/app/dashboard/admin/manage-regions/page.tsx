@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { STATE_OPTIONS } from "@/lib/places";
-import { SALES_REGION_OPTIONS, type SalesRegionOptionValue } from "@/lib/salesRegions";
+import type { SalesRegionOption } from "@/lib/salesRegions";
 
 const ADMIN_STAFF_URL = "/api/admin/staff";
 const SALES_REGIONS_URL = "/api/admin/sales-regions";
@@ -11,8 +11,9 @@ const SALES_REGIONS_URL = "/api/admin/sales-regions";
 // region, so the RSM row is the single source of truth and this page edits it.
 // A region with no RSM yet keeps its own list (so ASMs / Sales Managers can be
 // given territory there); this page edits that list through SALES_REGIONS_URL.
+// Regions themselves are created and deleted here too (SALES_REGIONS_URL POST/DELETE).
 type RegionRsm = { id: string; name: string; email: string; assignedStates: string[] };
-type RegionRsms = Partial<Record<SalesRegionOptionValue, RegionRsm>>;
+type RegionRsms = Partial<Record<string, RegionRsm>>;
 
 function sortedStates(states: unknown): string[] {
   if (!Array.isArray(states)) return [];
@@ -24,8 +25,8 @@ function mapRegionRsms(rows: unknown[]): RegionRsms {
   for (const value of rows) {
     const row = value as Record<string, unknown>;
     if (String(row.role || "").toUpperCase() !== "RSM") continue;
-    const region = String(row.salesRegion || row.sales_region || "").toUpperCase() as SalesRegionOptionValue;
-    if (!SALES_REGION_OPTIONS.some((option) => option.value === region)) continue;
+    const region = String(row.salesRegion || row.sales_region || "").toUpperCase();
+    if (!region) continue;
     byRegion[region] = {
       id: String(row.id || row.staff_id || ""),
       name: String(row.name || row.staff_name || ""),
@@ -36,25 +37,38 @@ function mapRegionRsms(rows: unknown[]): RegionRsms {
   return byRegion;
 }
 
-function statesOf(rsms: RegionRsms, regionStates: Record<string, string[]>) {
-  return SALES_REGION_OPTIONS.reduce<Record<string, string[]>>((acc, region) => {
+function statesOf(regions: SalesRegionOption[], rsms: RegionRsms, regionStates: Record<string, string[]>) {
+  return regions.reduce<Record<string, string[]>>((acc, region) => {
     acc[region.value] = rsms[region.value]?.assignedStates ?? sortedStates(regionStates[region.value]);
     return acc;
   }, {});
 }
 
+async function sendJson(url: string, method: string, body?: unknown) {
+  const response = await fetch(url, {
+    method,
+    credentials: "include",
+    ...(body === undefined ? {} : { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  });
+  const payload = await response.json().catch(() => null);
+  if (!response.ok || payload?.success === false) throw new Error(payload?.message || "Request failed");
+  return payload;
+}
+
 export default function ManageRegionsPage() {
+  const [regions, setRegions] = useState<SalesRegionOption[]>([]);
+  const [newRegion, setNewRegion] = useState("");
   const [rsms, setRsms] = useState<RegionRsms>({});
   const [regionStates, setRegionStates] = useState<Record<string, string[]>>({});
   const [assignments, setAssignments] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [openRegion, setOpenRegion] = useState<SalesRegionOptionValue | null>(null);
+  const [openRegion, setOpenRegion] = useState<string | null>(null);
   const [placeSearch, setPlaceSearch] = useState("");
   const [saveMessage, setSaveMessage] = useState("");
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  const savedAssignments = useMemo(() => statesOf(rsms, regionStates), [rsms, regionStates]);
+  const savedAssignments = useMemo(() => statesOf(regions, rsms, regionStates), [regions, rsms, regionStates]);
 
   const filteredPlaceOptions = useMemo(() => {
     const query = placeSearch.trim().toLowerCase();
@@ -62,7 +76,7 @@ export default function ManageRegionsPage() {
     return STATE_OPTIONS.filter((place) => place.toLowerCase().includes(query));
   }, [placeSearch]);
 
-  const changedRegions = SALES_REGION_OPTIONS
+  const changedRegions = regions
     .map((region) => region.value)
     .filter((region) => JSON.stringify(assignments[region] ?? []) !== JSON.stringify(savedAssignments[region] ?? []));
 
@@ -75,12 +89,15 @@ export default function ManageRegionsPage() {
       .then(([staffJson, regionsJson]) => {
         if (cancelled) return;
         const next = mapRegionRsms(staffJson?.data || []);
-        const stored = regionsJson?.data && typeof regionsJson.data === "object" ? regionsJson.data : {};
+        const rows: Array<SalesRegionOption & { states?: string[] }> = Array.isArray(regionsJson?.data) ? regionsJson.data : [];
+        const list = rows.map(({ value, label }) => ({ value, label }));
+        const stored = Object.fromEntries(rows.map((row) => [row.value, sortedStates(row.states)]));
+        setRegions(list);
         setRsms(next);
         setRegionStates(stored);
-        setAssignments(statesOf(next, stored));
+        setAssignments(statesOf(list, next, stored));
       })
-      .catch(() => { if (!cancelled) setSaveMessage("Could not load RSMs."); })
+      .catch(() => { if (!cancelled) setSaveMessage("Could not load regions."); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, []);
@@ -94,7 +111,7 @@ export default function ManageRegionsPage() {
     return () => document.removeEventListener("mousedown", close);
   }, [openRegion]);
 
-  const togglePlace = (region: SalesRegionOptionValue, place: string) => {
+  const togglePlace = (region: string, place: string) => {
     setAssignments((current) => {
       const selected = current[region] ?? [];
       return {
@@ -105,9 +122,35 @@ export default function ManageRegionsPage() {
     setSaveMessage("");
   };
 
-  const clearRegion = (region: SalesRegionOptionValue) => {
+  const clearRegion = (region: string) => {
     setAssignments((current) => ({ ...current, [region]: [] }));
     setSaveMessage("");
+  };
+
+  const handleAddRegion = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!newRegion.trim()) return;
+    try {
+      const { data } = await sendJson(SALES_REGIONS_URL, "POST", { label: newRegion });
+      setRegions((current) => [...current, { value: data.value, label: data.label }].sort((a, b) => a.label.localeCompare(b.label)));
+      setRegionStates((current) => ({ ...current, [data.value]: [] }));
+      setAssignments((current) => ({ ...current, [data.value]: [] }));
+      setNewRegion("");
+      setSaveMessage(`${data.label} added.`);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Could not add region.");
+    }
+  };
+
+  const handleDeleteRegion = async (region: SalesRegionOption) => {
+    if (!window.confirm(`Delete ${region.label}? This cannot be undone.`)) return;
+    try {
+      await sendJson(`${SALES_REGIONS_URL}?code=${encodeURIComponent(region.value)}`, "DELETE");
+      setRegions((current) => current.filter((entry) => entry.value !== region.value));
+      setSaveMessage(`${region.label} deleted.`);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Could not delete region.");
+    }
   };
 
   const handleSave = async () => {
@@ -117,14 +160,7 @@ export default function ManageRegionsPage() {
         const rsm = rsms[region];
         const assignedStates = assignments[region] ?? [];
         if (!rsm) {
-          const response = await fetch(SALES_REGIONS_URL, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ region, states: assignedStates }),
-          });
-          const payload = await response.json().catch(() => null);
-          if (!response.ok || payload?.success === false) throw new Error(payload?.message || `Could not update ${region}`);
+          await sendJson(SALES_REGIONS_URL, "PUT", { region, states: assignedStates });
           setRegionStates((current) => ({ ...current, [region]: sortedStates(assignedStates) }));
           continue;
         }
@@ -154,19 +190,34 @@ export default function ManageRegionsPage() {
           <div>
             <h1 className="text-2xl font-semibold">Manage Regions</h1>
             <p className="mt-1 text-sm text-[#667085]">Each region has one RSM. The states you pick here are that RSM&apos;s allotted states; a region with no RSM yet keeps them for its ASMs and Sales Managers.</p>
+            <form onSubmit={handleAddRegion} className="mt-3 flex gap-2">
+              <input
+                value={newRegion}
+                onChange={(event) => setNewRegion(event.target.value)}
+                maxLength={40}
+                placeholder="New region name"
+                aria-label="New region name"
+                className="h-9 w-56 rounded border border-[#d0d5dd] bg-white px-3 text-sm text-[#344054] placeholder:text-[#98a2b3] focus:border-[#5d7df0] focus:outline-none focus:ring-2 focus:ring-[#dfe6ff]"
+              />
+              <button type="submit" disabled={!newRegion.trim()} className="rounded border border-[#4f6eed] px-3 text-sm font-semibold text-[#4f6eed] hover:bg-[#eef2ff] disabled:cursor-not-allowed disabled:opacity-50">
+                Add region
+              </button>
+            </form>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
             <button type="button" onClick={handleSave} disabled={!changedRegions.length || saving} className="rounded bg-[#4f6eed] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#3f5dd8] disabled:cursor-not-allowed disabled:bg-[#b9c4f8]">
               {saving ? "Saving..." : "Save"}
             </button>
-            <p className="min-h-4 text-xs text-[#667085]">
-              {saveMessage || (loading ? "Loading RSMs..." : changedRegions.length ? `Unsaved changes in ${changedRegions.length} region(s)` : "All changes saved")}
+            <p className="min-h-4 max-w-sm text-xs text-[#667085] sm:text-right">
+              {saveMessage || (loading ? "Loading regions..." : changedRegions.length ? `Unsaved changes in ${changedRegions.length} region(s)` : "All changes saved")}
             </p>
           </div>
         </div>
 
+        {!loading && !regions.length ? <p className="text-sm text-[#667085]">No regions yet. Add one above.</p> : null}
+
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {SALES_REGION_OPTIONS.map((region) => {
+          {regions.map((region) => {
             const rsm = rsms[region.value];
             const selected = assignments[region.value] ?? [];
             const isOpen = openRegion === region.value;
@@ -179,9 +230,14 @@ export default function ManageRegionsPage() {
                       {rsm ? `${rsm.name} · ${selected.length} selected` : `No RSM yet · ${selected.length} selected`}
                     </p>
                   </div>
-                  <button type="button" onClick={() => clearRegion(region.value)} className="rounded border border-[#d0d5dd] px-3 py-1.5 text-xs font-medium text-[#475467] hover:bg-[#f8fafc] disabled:cursor-not-allowed disabled:opacity-50">
-                    Clear
-                  </button>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => clearRegion(region.value)} className="rounded border border-[#d0d5dd] px-3 py-1.5 text-xs font-medium text-[#475467] hover:bg-[#f8fafc] disabled:cursor-not-allowed disabled:opacity-50">
+                      Clear
+                    </button>
+                    <button type="button" onClick={() => handleDeleteRegion(region)} className="rounded border border-[#fecdca] px-3 py-1.5 text-xs font-medium text-[#b42318] hover:bg-[#fef3f2]">
+                      Delete
+                    </button>
+                  </div>
                 </div>
 
                 <div className="relative mt-4" ref={isOpen ? dropdownRef : null}>

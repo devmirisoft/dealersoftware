@@ -2,9 +2,9 @@ import "server-only";
 
 import { z } from "zod";
 import { prisma } from "@/server/db/prisma";
-import { SALES_REGIONS } from "@/server/auth/sales-scope";
 import { findCatalogueEntry, getCatalogueSection } from "@/lib/catalogue";
-import { formatSalesRegionLabel } from "@/lib/salesRegions";
+import { findSalesRegion, formatSalesRegionLabel } from "@/lib/salesRegions";
+import { listSalesRegions } from "@/server/sales-region-states";
 import { ACCEPTED_ONLY, resolveSalesFilters, rupees as wholeRupees, summarizeSales } from "@/server/modules/admin-dashboard/sales-summary";
 import { listUnpaidBills } from "@/server/reports/billAgeing";
 import { loadCatalogue } from "@/server/modules/products/catalogue";
@@ -23,7 +23,7 @@ async function dealerFilter(scope: InternalScope, ref?: string) {
   return "error" in found ? { fail: found } : { dealerId: found.dealerId, dealerName: found.name };
 }
 
-type SalesArgs = { fromDate?: string; toDate?: string; region?: (typeof SALES_REGIONS)[number]; city?: string; asm?: string; dealer?: string };
+type SalesArgs = { fromDate?: string; toDate?: string; region?: string; city?: string; asm?: string; dealer?: string };
 
 export const salesReport: Tool<InternalScope> = {
   schema: {
@@ -36,7 +36,7 @@ export const salesReport: Tool<InternalScope> = {
         properties: {
           fromDate: { type: "string", description: "YYYY-MM-DD; omit for all time" },
           toDate: { type: "string", description: "YYYY-MM-DD, inclusive" },
-          region: { type: "string", enum: [...SALES_REGIONS] },
+          region: { type: "string", description: "Region name or code, e.g. North 1" },
           city: { type: "string" },
           asm: { type: "string", description: "ASM name: sales of the states that ASM covers" },
           dealer: { type: "string", description: "Dealer name, code or id" },
@@ -46,12 +46,15 @@ export const salesReport: Tool<InternalScope> = {
   },
   argsSchema: z.object({
     fromDate: dateArg, toDate: dateArg,
-    region: z.enum(SALES_REGIONS).optional(),
+    region: z.string().trim().max(60).optional(),
     city: z.string().trim().max(80).optional(),
     asm: z.string().trim().max(120).optional(),
     dealer: z.string().trim().max(120).optional(),
   }),
   async handler(args: SalesArgs, scope) {
+    const regions = await listSalesRegions(prisma);
+    const region = args.region ? findSalesRegion(regions, args.region)?.value : undefined;
+    if (args.region && !region) return { error: "REGION_NOT_FOUND", message: `No region "${args.region}". Regions: ${regions.map((r) => r.label).join(", ")}.` };
     const dealer = await dealerFilter(scope, args.dealer);
     if ("fail" in dealer) return dealer.fail;
     let asmId: bigint | undefined;
@@ -61,7 +64,7 @@ export const salesReport: Tool<InternalScope> = {
       asmId = asm.id;
     }
 
-    const filters = await resolveSalesFilters({ from: args.fromDate, to: args.toDate, region: args.region, city: args.city, asm: asmId?.toString() });
+    const filters = await resolveSalesFilters({ from: args.fromDate, to: args.toDate, region, city: args.city, asm: asmId?.toString() });
     const scopeWhere = { AND: [scope.orderWhere, ...(dealer.dealerId ? [{ dealerId: dealer.dealerId }] : [])] };
     const where = { AND: [filters.where, scopeWhere] };
     const [summary, top, regional] = await Promise.all([
@@ -79,14 +82,14 @@ export const salesReport: Tool<InternalScope> = {
       : new Map<bigint, string>();
     const byRegion = new Map<string, bigint>();
     for (const order of regional ?? []) {
-      const key = order.dealer.region ? formatSalesRegionLabel(order.dealer.region) : "No region";
+      const key = order.dealer.region ? formatSalesRegionLabel(order.dealer.region, regions) : "No region";
       byRegion.set(key, (byRegion.get(key) ?? BigInt(0)) + order.finalPayableAmountPaise);
     }
 
     const csv = new URLSearchParams({ format: "csv" });
     if (args.fromDate) csv.set("from", args.fromDate);
     if (args.toDate) csv.set("to", args.toDate);
-    if (args.region) csv.set("region", args.region);
+    if (region) csv.set("region", region);
     if (args.city) csv.set("city", args.city);
     if (asmId) csv.set("asm", asmId.toString());
 

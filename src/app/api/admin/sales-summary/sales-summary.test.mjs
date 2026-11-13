@@ -42,7 +42,7 @@ test("staff list can be filtered down to ASMs so the dropdown can page them in",
 test("the region, ASM and city filters cascade", () => {
   // An ASM holds no region of its own, so it is matched through its parent RSM.
   assert.match(staffRepo, /parentRsm: \{ salesRegion: input\.salesRegion \}/);
-  assert.match(staffSchemas, /SALES_REGION_OPTIONS\.find\(\(option\) => option\.value === regionParam\)/);
+  assert.match(staffSchemas, /normalizeSalesRegion\(searchParams\.get\("region"\)\)/);
   assert.match(page, /\/api\/admin\/staff\?role=ASM&region=\$\{saleRegion\}/);
   assert.match(page, /setSaleRegion\(next\); setSaleAsm\(""\); setSaleCity\(""\)/);
   assert.match(page, /setSaleAsm\(next\); setSaleCity\(""\)/);
@@ -81,7 +81,7 @@ test("the report downloads the same scope the tile is showing", () => {
   assert.match(route, /"Order No", "Order Date", "Dealer", "Dealer Code", "City", "State", "Region",/);
   assert.match(route, /"RSM", "ASM", "Sales Manager", "Amount \(INR\)"/);
   // Region, ASM and city each fall back to their "all" label when nothing is picked.
-  assert.match(route, /region \? formatSalesRegionLabel\(region\) : "All regions"/);
+  assert.match(route, /region \? formatSalesRegionLabel\(region, regions\) : "All regions"/);
   assert.match(route, /asmId === null \? "All ASMs" : "Unknown ASM"/);
   assert.match(route, /city \|\| "All cities"/);
   assert.match(route, /: "All time"/);

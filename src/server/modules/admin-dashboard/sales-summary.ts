@@ -1,7 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/server/db/prisma";
 import { periodKey } from "@/server/modules/admin-dashboard/postgres-admin-dashboard.repository";
-import { SALES_REGION_OPTIONS, type SalesRegionOptionValue } from "@/lib/salesRegions";
+import { normalizeSalesRegion } from "@/server/auth/sales-scope";
 
 // Lifted out of GET /api/admin/sales-summary so the assistant's sales report counts
 // sales by exactly the same rules as the Sales page.
@@ -38,10 +38,8 @@ export async function resolveSalesFilters(input: SalesFilterInput) {
   const from = parseDay(input.from);
   const to = parseDay(input.to, true);
 
-  const regionParam = String(input.region ?? "").trim().toUpperCase();
-  const region = SALES_REGION_OPTIONS.some((option) => option.value === regionParam)
-    ? (regionParam as SalesRegionOptionValue)
-    : undefined;
+  // An unknown region simply matches nothing.
+  const region = normalizeSalesRegion(input.region);
   // The sales of an ASM are the sales of the states assigned to them. The states are
   // read here rather than taken from the caller so an ASM with none scopes to nothing.
   // ponytail: exact state match, mirrors how assigned_states is stored on the ASM.

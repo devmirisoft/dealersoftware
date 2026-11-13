@@ -13,6 +13,7 @@ import { restampPendingOrders } from "@/lib/orderStaffStamp";
 import { AUDIT_ACTION, AUDIT_ENTITY, type AuditAction } from "@/lib/auditActions";
 import { createAuditLog } from "@/server/audit/audit-log";
 import { diffValues } from "@/server/audit/audit-sanitize";
+import { assertSalesRegion } from "@/server/sales-region-states";
 import type {
   AdminDealerListInput,
   AdminDealerRecord,
@@ -129,7 +130,9 @@ async function ensureStaff(tx: Prisma.TransactionClient, staffIds: bigint[]) {
   return staff;
 }
 
-async function resolveRsm(tx: Prisma.TransactionClient, rsmUserId: bigint | undefined) {
+// Every dealer region write passes through here, so the region check lives here too.
+async function resolveRsm(tx: Prisma.TransactionClient, rsmUserId: bigint | undefined, region: string | null | undefined) {
+  await assertSalesRegion(tx, region);
   if (!rsmUserId) return undefined;
   const rsm = await tx.user.findFirst({
     where: { id: rsmUserId, role: "RSM", status: "ACTIVE", deletedAt: null },
@@ -200,7 +203,7 @@ export class PostgresAdminDealerRepository implements AdminDealerRepository {
     const username = input.username || normalizedEmail;
     if (await tx.user.findUnique({ where: { normalizedUsername: username }, select: { id: true } })) throw conflict("Username already exists", "USERNAME_CONFLICT");
     await ensureStaff(tx, staffIds);
-    const rsm = await resolveRsm(tx, input.rsmUserId ? BigInt(input.rsmUserId) : undefined);
+    const rsm = await resolveRsm(tx, input.rsmUserId ? BigInt(input.rsmUserId) : undefined, input.region);
 
     const user = await tx.user.create({ data: { email: normalizedEmail, normalizedEmail, username, normalizedUsername: username, passwordHash, role: "DEALER", status: input.status ?? "ACTIVE" } });
     const dealer = await tx.dealerProfile.create({ data: {
@@ -341,7 +344,7 @@ export class PostgresAdminDealerRepository implements AdminDealerRepository {
           }
         }
         if (input.rsmUserId !== undefined || input.region !== undefined) {
-          const rsm = await resolveRsm(tx, input.rsmUserId ? BigInt(input.rsmUserId) : undefined);
+          const rsm = await resolveRsm(tx, input.rsmUserId ? BigInt(input.rsmUserId) : undefined, input.region);
           dealerData.regionalManager = rsm?.rsmUserId ? { connect: { id: rsm.rsmUserId } } : { disconnect: true };
           dealerData.region = rsm?.region ?? input.region ?? null;
           changedFields.push("rsmUserId", "region");
@@ -442,7 +445,7 @@ export class PostgresAdminDealerRepository implements AdminDealerRepository {
       const requested = Array.from(new Set(staffIds));
       await ensureStaff(tx, requested);
       if (rsmUserId !== undefined || region !== undefined) {
-        const rsm = await resolveRsm(tx, rsmUserId);
+        const rsm = await resolveRsm(tx, rsmUserId, region);
         await tx.dealerProfile.update({ where: { id: dealerId }, data: { rsmUserId: rsm?.rsmUserId ?? null, region: rsm?.region ?? region ?? null } });
       }
       const now = new Date();

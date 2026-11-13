@@ -1,17 +1,11 @@
-import type { Prisma, SalesRegion } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import type { AuthActor } from "@/server/auth/session";
 
-export const SALES_REGIONS = ["NORTH_1", "NORTH_2", "SOUTH_1", "SOUTH_2", "WEST_1", "WEST_2", "EAST", "ROM", "CENTRAL"] as const;
-export type SalesRegionCode = typeof SALES_REGIONS[number];
-
-export function isSalesRegion(value: unknown): value is SalesRegionCode {
-  return typeof value === "string" && (SALES_REGIONS as readonly string[]).includes(value.toUpperCase());
-}
-
-export function normalizeSalesRegion(value: unknown): SalesRegionCode | undefined {
+// Regions are admin-managed rows (sales_regions); this only cleans the input.
+// Writes check the region exists with assertSalesRegion.
+export function normalizeSalesRegion(value: unknown): string | undefined {
   if (value === undefined || value === null || String(value).trim() === "") return undefined;
-  const upper = String(value).trim().toUpperCase();
-  return isSalesRegion(upper) ? upper : undefined;
+  return String(value).trim().toUpperCase();
 }
 
 export function isAdminLike<T extends Pick<AuthActor, "role">>(actor: T): actor is T & { role: "ADMIN" | "NSM" } {
@@ -26,7 +20,7 @@ export function isRsm(actor: Pick<AuthActor, "role">) {
   return actor.role === "RSM";
 }
 
-export async function resolveActorSalesRegion(actor: Pick<AuthActor, "userId" | "role">, prisma: Pick<Prisma.TransactionClient, "staffProfile">): Promise<SalesRegion | null> {
+export async function resolveActorSalesRegion(actor: Pick<AuthActor, "userId" | "role">, prisma: Pick<Prisma.TransactionClient, "staffProfile">): Promise<string | null> {
   if (actor.role !== "RSM") return null;
   const profile = await prisma.staffProfile.findUnique({ where: { userId: actor.userId }, select: { salesRegion: true } });
   if (!profile?.salesRegion) throw Object.assign(new Error("RSM region is not configured"), { status: 403 });

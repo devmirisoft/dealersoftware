@@ -2,8 +2,8 @@ import "server-only";
 
 import { z } from "zod";
 import { prisma } from "@/server/db/prisma";
-import { SALES_REGIONS } from "@/server/auth/sales-scope";
-import { formatSalesRegionLabel } from "@/lib/salesRegions";
+import { findSalesRegion, formatSalesRegionLabel } from "@/lib/salesRegions";
+import { listSalesRegions } from "@/server/sales-region-states";
 import { ACCEPTED_ONLY } from "@/server/modules/admin-dashboard/sales-summary";
 import type { Tool } from "../types";
 import { financialYearStart, type InternalScope } from "../internalScope";
@@ -55,7 +55,7 @@ export const findDealers: Tool<InternalScope> = {
         properties: {
           query: { type: "string", description: "Name, dealer code or city" },
           city: { type: "string" },
-          region: { type: "string", enum: [...SALES_REGIONS] },
+          region: { type: "string", description: "Region name or code, e.g. North 1" },
           limit: { type: "integer", minimum: 1, maximum: 10 },
         },
       },
@@ -64,10 +64,13 @@ export const findDealers: Tool<InternalScope> = {
   argsSchema: z.object({
     query: z.string().trim().max(120).optional(),
     city: z.string().trim().max(80).optional(),
-    region: z.enum(SALES_REGIONS).optional(),
+    region: z.string().trim().max(60).optional(),
     limit: z.number().int().min(1).max(10).optional(),
   }),
-  async handler(args: { query?: string; city?: string; region?: (typeof SALES_REGIONS)[number]; limit?: number }, scope) {
+  async handler(args: { query?: string; city?: string; region?: string; limit?: number }, scope) {
+    const regions = await listSalesRegions(prisma);
+    const region = args.region ? findSalesRegion(regions, args.region)?.value : undefined;
+    if (args.region && !region) return { error: "REGION_NOT_FOUND", message: `No region "${args.region}". Regions: ${regions.map((r) => r.label).join(", ")}.` };
     const limit = args.limit ?? 10;
     const where = {
       AND: [
@@ -78,7 +81,7 @@ export const findDealers: Tool<InternalScope> = {
           { city: { contains: args.query, mode: "insensitive" as const } },
         ] }] : []),
         ...(args.city ? [{ city: { equals: args.city, mode: "insensitive" as const } }] : []),
-        ...(args.region ? [{ region: args.region }] : []),
+        ...(region ? [{ region }] : []),
       ],
     };
     const [total, dealers] = await Promise.all([
@@ -102,7 +105,7 @@ export const findDealers: Tool<InternalScope> = {
         code: d.dealerCode ?? undefined,
         city: d.city ?? undefined,
         state: d.state ?? undefined,
-        region: d.region ? formatSalesRegionLabel(d.region) : undefined,
+        region: d.region ? formatSalesRegionLabel(d.region, regions) : undefined,
         account: d.creditDays !== null ? `credit, ${d.creditDays} days` : d.wallet?.status === "ACTIVE" ? "advance (wallet)" : "none",
         discountPercent: Number(d.discountPercent ?? 0),
         assignedTo: d.staffAssignments.map((a) => a.staff.displayName).join(", ") || undefined,
@@ -158,7 +161,7 @@ export const getDealerSummary: Tool<InternalScope> = {
       code: profile.dealerCode ?? undefined,
       city: profile.city ?? undefined,
       state: profile.state ?? undefined,
-      region: profile.region ? formatSalesRegionLabel(profile.region) : undefined,
+      region: profile.region ? formatSalesRegionLabel(profile.region, await listSalesRegions(prisma)) : undefined,
       phone: profile.phone ?? undefined,
       email: profile.user.email,
       loginStatus: profile.user.status,

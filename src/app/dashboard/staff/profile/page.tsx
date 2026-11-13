@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { showToast } from "@/components/ui/toast";
-import { SALES_REGION_OPTIONS } from "@/lib/salesRegions";
+import { formatSalesRegionLabel } from "@/lib/salesRegions";
 import { WAREHOUSE_OPTIONS } from "@/lib/warehouses";
 
 type Person = { id: string; name: string; email?: string } | null;
@@ -137,7 +137,7 @@ export default function StaffProfilePage() {
             <Field label="Username" value={p.staff_username} />
             <Field label="Status" value={p.status === "ACTIVE" ? "Active" : "Inactive"} />
             <Field label="Role" value={roleLabel(p.role, p.staffRoleType)} />
-            {isRsm && <Field label="Region" value={optionLabel(SALES_REGION_OPTIONS, p.salesRegion)} />}
+            {isRsm && <Field label="Region" value={formatSalesRegionLabel(p.salesRegion)} />}
             {isFieldStaff && <Field label="Warehouse" value={optionLabel(WAREHOUSE_OPTIONS, p.warehouse)} />}
             {isFieldStaff && <Field label="RSMs" value={p.rsms.map(personLabel).join("\n")} wide />}
             {isAsm && <Field label="RSM" value={personLabel(p.parentRsm)} />}

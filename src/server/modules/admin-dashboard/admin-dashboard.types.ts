@@ -1,4 +1,7 @@
-export type SalesRegionKey = "NORTH_1" | "NORTH_2" | "SOUTH_1" | "SOUTH_2" | "WEST_1" | "WEST_2" | "EAST" | "ROM" | "CENTRAL";
+import type { SalesRegionOption } from "@/lib/salesRegions";
+
+// A sales_regions code; regions are admin-managed.
+export type SalesRegionKey = string;
 
 export type SalesGranularity = "day" | "month" | "quarter" | "half" | "year";
 
@@ -29,6 +32,8 @@ export type AdminDashboardResult = {
     orderCount: number;
   };
   monthlyPerformance: AdminDashboardMonthlyPerformance[];
+  /** The regions the regional series and top-distributor lists are keyed by. */
+  regions: SalesRegionOption[];
   regionalGranularity: SalesGranularity;
   regionalPerformance: AdminDashboardRegionalPerformance[];
   topDealers: AdminDashboardTopDealer[];

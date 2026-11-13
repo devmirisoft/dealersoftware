@@ -31,6 +31,7 @@ import { fetchDealerStatusOverrides, normalizeDealerStatus, type DealerStatusDoc
 import PendingProductsPreview from "@/components/dashboard/PendingProductsPreview";
 import { refreshCurrentUser } from "@/lib/currentUser";
 import { staffRoleBadge } from "@/lib/staffRoleLabel";
+import { formatSalesRegionLabel, type SalesRegionOption } from "@/lib/salesRegions";
 import { SegmentedDropdown, type SegItem } from "@/components/SegmentedTabs";
 
 
@@ -46,7 +47,8 @@ type Dealer = {
   total: string;
 };
 
-type SalesRegionKey = "NORTH_1" | "NORTH_2" | "SOUTH_1" | "SOUTH_2" | "WEST_1" | "WEST_2" | "EAST" | "ROM" | "CENTRAL";
+// A sales_regions code; the list comes with the dashboard response.
+type SalesRegionKey = string;
 
 type SalesGranularity = "day" | "month" | "quarter" | "half" | "year";
 
@@ -67,6 +69,7 @@ type AdminDashboardApiResponse = {
       dealerCount?: number;
       orderCount?: number;
     };
+    regions?: SalesRegionOption[];
     monthlyPerformance?: Array<{
       month: string;
       total: string;
@@ -138,22 +141,8 @@ type PendingOrderRecord = {
   accept_order?: string;
 };
 
-const SALES_REGIONS: SalesRegionKey[] = ["NORTH_1", "NORTH_2", "SOUTH_1", "SOUTH_2", "WEST_1", "WEST_2", "EAST", "ROM", "CENTRAL"];
-const REGION_META: Record<SalesRegionKey, { label: string; color: string; soft: string }> = {
-  NORTH_1: { label: "North 1", color: "#4f8fcb", soft: "#dbeafe" },
-  NORTH_2: { label: "North 2", color: "#2563eb", soft: "#dbeafe" },
-  SOUTH_1: { label: "South 1", color: "#f2cf5b", soft: "#fef3c7" },
-  SOUTH_2: { label: "South 2", color: "#d97706", soft: "#fef3c7" },
-  WEST_1: { label: "West 1", color: "#c084fc", soft: "#f3e8ff" },
-  WEST_2: { label: "West 2", color: "#7c3aed", soft: "#f3e8ff" },
-  EAST: { label: "East", color: "#6fd08c", soft: "#dcfce7" },
-  ROM: { label: "ROM", color: "#0f766e", soft: "#ccfbf1" },
-  CENTRAL: { label: "Central", color: "#f97316", soft: "#ffedd5" },
-};
-
-function formatRegionLabel(region: SalesRegionKey) {
-  return REGION_META[region].label;
-}
+// Regions are admin-managed, so colours go by position and cycle past the last one.
+const REGION_COLORS = ["#4f8fcb", "#2563eb", "#f2cf5b", "#d97706", "#c084fc", "#7c3aed", "#6fd08c", "#0f766e", "#f97316"];
 
 const DEFAULT_GRANULARITY: SalesGranularity = "month";
 
@@ -166,17 +155,10 @@ const GRANULARITY_OPTIONS: Array<{ value: SalesGranularity; label: string; sub: 
 ];
 
 function mapRegionalPerformance(entries: RegionalPerformanceEntry[] | undefined): RegionalSalesPoint[] {
-  return (entries ?? []).map((entry) => ({
-    period: entry.period ?? entry.month,
-    ...Object.fromEntries(SALES_REGIONS.map((region) => [region, Number((entry as Record<string, unknown>)[region] ?? 0)])),
+  return (entries ?? []).map(({ month, period, ...totals }) => ({
+    period: period ?? month,
+    ...Object.fromEntries(Object.entries(totals).map(([region, total]) => [region, Number(total ?? 0)])),
   }) as RegionalSalesPoint);
-}
-
-function createEmptyRegionalDistributorMap(): Record<SalesRegionKey, RegionalDistributor[]> {
-  return SALES_REGIONS.reduce((acc, region) => {
-    acc[region] = [];
-    return acc;
-  }, {} as Record<SalesRegionKey, RegionalDistributor[]>);
 }
 
 type AsmOption = { id: string; name: string; assigned_states?: string[]; role?: string };
@@ -345,8 +327,12 @@ function AdminDashboardInner() {
   const [data, setData] = useState<Item[]>([]);
   const [dealerData, setDealerData] = useState<Dealer[]>([]);
   const [regionalSalesData, setRegionalSalesData] = useState<RegionalSalesPoint[]>([]);
-  const [regionalTopDistributors, setRegionalTopDistributors] = useState<Record<SalesRegionKey, RegionalDistributor[]>>(createEmptyRegionalDistributorMap);
-  const [selectedRegion, setSelectedRegion] = useState<SalesRegionKey>("NORTH_1");
+  const [regionalTopDistributors, setRegionalTopDistributors] = useState<Record<SalesRegionKey, RegionalDistributor[]>>({});
+  const [regions, setRegions] = useState<SalesRegionOption[]>([]);
+  const SALES_REGIONS = useMemo(() => regions.map((region) => region.value), [regions]);
+  const regionColor = (region: SalesRegionKey) => REGION_COLORS[Math.max(0, SALES_REGIONS.indexOf(region)) % REGION_COLORS.length];
+  const formatRegionLabel = (region: SalesRegionKey) => formatSalesRegionLabel(region, regions);
+  const [selectedRegion, setSelectedRegion] = useState<SalesRegionKey>("");
   // Slides the region pill under the active tab. Writes CSS vars straight to the
   // rail (no state), and re-measures if the tab resizes, e.g. when the font loads.
   const regionTabsRef = useRef<HTMLDivElement>(null);
@@ -416,8 +402,11 @@ function AdminDashboardInner() {
           total: dealer.total,
         }) as Dealer));
         setRegionalSalesData(mapRegionalPerformance(dashboardJson.data?.regionalPerformance));
-        const distributorsByRegion = createEmptyRegionalDistributorMap();
-        for (const region of SALES_REGIONS) {
+        const loadedRegions = dashboardJson.data?.regions ?? [];
+        setRegions(loadedRegions);
+        setSelectedRegion((current) => (loadedRegions.some((region) => region.value === current) ? current : loadedRegions[0]?.value ?? ""));
+        const distributorsByRegion: Record<SalesRegionKey, RegionalDistributor[]> = {};
+        for (const { value: region } of loadedRegions) {
           distributorsByRegion[region] = (dashboardJson.data?.topDistributorsByRegion?.[region] ?? []).map((dealer) => ({
             dealerId: dealer.dealerId,
             dealerName: dealer.dealerName,
@@ -601,8 +590,8 @@ function AdminDashboardInner() {
 
   const saleRegionItems: SegItem[] = useMemo(() => [
     { value: "", label: "All regions", tone: "neutral" as const },
-    ...SALES_REGIONS.map((region) => ({ value: region, label: formatRegionLabel(region), tone: "emerald" as const })),
-  ], []);
+    ...regions.map((region) => ({ value: region.value, label: region.label, tone: "emerald" as const })),
+  ], [regions]);
 
   const asmItems: SegItem[] = useMemo(() => [
     { value: "", label: "All ASMs", tone: "neutral" as const },
@@ -1181,7 +1170,7 @@ function AdminDashboardInner() {
                 className="pill-tabs sliding"
                 role="group"
                 aria-label="Region"
-                style={{ "--pill-color": REGION_META[selectedRegion].color } as React.CSSProperties}
+                style={{ "--pill-color": regionColor(selectedRegion) } as React.CSSProperties}
               >
                 {SALES_REGIONS.map((region) => (
                   <button
@@ -1190,7 +1179,7 @@ function AdminDashboardInner() {
                     className={`pill-tab${selectedRegion === region ? " active" : ""}`}
                     aria-pressed={selectedRegion === region}
                     onClick={() => setSelectedRegion(region)}
-                    style={{ "--tab-color": REGION_META[region].color } as React.CSSProperties}
+                    style={{ "--tab-color": regionColor(region) } as React.CSSProperties}
                   >
                     <span className="tab-dot" aria-hidden="true" />
                     {formatRegionLabel(region)}
@@ -1235,7 +1224,7 @@ function AdminDashboardInner() {
                 <div className="legend">
                   {SALES_REGIONS.map((region) => (
                     <span key={region} className="leg">
-                      <span className="leg-dot" style={{ background: REGION_META[region].color }} />
+                      <span className="leg-dot" style={{ background: regionColor(region) }} />
                       {formatRegionLabel(region)}
                     </span>
                   ))}
@@ -1280,10 +1269,10 @@ function AdminDashboardInner() {
                           key={region}
                           type="monotone"
                           dataKey={region}
-                          stroke={REGION_META[region].color}
+                          stroke={regionColor(region)}
                           strokeWidth={2.25}
-                          dot={{ r: 3, strokeWidth: 0, fill: REGION_META[region].color }}
-                          activeDot={{ r: 5, fill: "#fff", stroke: REGION_META[region].color, strokeWidth: 2 }}
+                          dot={{ r: 3, strokeWidth: 0, fill: regionColor(region) }}
+                          activeDot={{ r: 5, fill: "#fff", stroke: regionColor(region), strokeWidth: 2 }}
                         />
                       ))}
                     </LineChart>

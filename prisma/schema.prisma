@@ -67,16 +67,13 @@ enum UserRole {
   DEALER
 }
 
-enum SalesRegion {
-  NORTH_1
-  NORTH_2
-  SOUTH_1
-  SOUTH_2
-  WEST_1
-  WEST_2
-  EAST
-  ROM
-  CENTRAL
+// Admin-managed in Manage Regions. Staff, dealers and dealer requests store the
+// code as plain text; a region still in use cannot be deleted (checked in the API).
+model SalesRegion {
+  code  String @id
+  label String @unique
+
+  @@map("sales_regions")
 }
 
 // Dispatch warehouses. A Staff member is pinned to one, and order visibility
@@ -346,7 +343,7 @@ model StaffProfile {
   emergencyContactNo1 String? @map("emergency_contact_no_1")
   emergencyContactNo2 String? @map("emergency_contact_no_2")
   staffRoleType  String? @map("staff_role_type")
-  salesRegion    SalesRegion? @map("sales_region")
+  salesRegion    String? @map("sales_region")
   warehouse      Warehouse?
   assignedStates String[] @default([]) @map("assigned_states")
   assignedCities String[] @default([]) @map("assigned_cities")
@@ -418,7 +415,7 @@ model DealerProfile {
   // Off = the dealer never sees a T&C document: no login gate, page or update notice.
   termsActive      Boolean   @default(true) @map("terms_active")
   imageUrl         String?   @map("image_url")
-  region           SalesRegion?
+  region           String?
   rsmUserId        BigInt?   @map("rsm_user_id")
   createdByUserId  BigInt?   @map("created_by_user_id")
   deletedAt        DateTime? @map("deleted_at") @db.Timestamptz(6)
@@ -631,7 +628,7 @@ model DealerRequest {
   contactPhone         String    @map("contact_phone")
   assignedStaffIds     String[]  @default([]) @map("assigned_staff_ids")
   assignedStaffNames   String    @map("assigned_staff_names")
-  region               SalesRegion?
+  region               String?
   rsmUserId            BigInt?   @map("rsm_user_id")
   submittedById        String    @map("submitted_by_id")
   submittedByName      String    @map("submitted_by_name")
